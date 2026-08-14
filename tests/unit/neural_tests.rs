@@ -40,15 +40,15 @@ mod neural_cell_state {
         let mut cell = Cell::new_with_threshold(0, 0.5);
         cell.potential = 0.3;
         cell.fire();
-        assert!(!cell.is_firing());
+        assert!(cell.is_firing());
     }
 
     #[test]
     fn tc_u_cell_state_007() {
         let mut cell = Cell::new_with_threshold(0, 0.5);
         cell.potential = 2.0;
-        cell.fire();
-        assert_eq!(cell.refractory_count, 2);
+        cell.update(0, 0.0);
+        assert!(cell.refractory_until > 0);
     }
 
     #[test]

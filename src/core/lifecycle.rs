@@ -1,11 +1,10 @@
+use crate::core::state_machine::{RuntimeEvent, RuntimeState, StateMachine};
 /// Lifecycle management
 /// Implements: AC §19-20 Boot/Shutdown Contracts, SD-01
 /// Handles full boot sequence, graceful shutdown, and emergency stop
-
 use crate::error::{Error, Result};
-use crate::core::state_machine::{RuntimeState, RuntimeEvent, StateMachine};
-use std::time::{Duration, SystemTime};
 use std::sync::Arc;
+use std::time::{Duration, SystemTime};
 use tokio::sync::RwLock;
 
 /// Runtime lifecycle controller
@@ -50,35 +49,35 @@ impl Lifecycle {
     /// Returns when system is Running or encounters Fault
     pub async fn boot(&mut self) -> Result<()> {
         self.boot_start = Some(SystemTime::now());
-        
+
         // AC §19.1: PowerOff -> Boot
         self.emit_event(RuntimeEvent::PowerOn).await?;
-        
+
         // AC §19.2: Load configuration (defaults to safe values)
         tracing::info!("Loading runtime configuration");
         self.emit_event(RuntimeEvent::ConfigLoaded).await?;
-        
+
         // AC §19.3: Open brain.anr file
         tracing::info!("Opening brain.anr");
         self.emit_event(RuntimeEvent::BrainOpened).await?;
-        
+
         // AC §19.4: Validate brain integrity
         tracing::info!("Validating brain integrity");
         // (actual validation happens in storage module)
         // For now, mark as valid if file opened successfully
         self.set_brain_valid(true).await;
         self.emit_event(RuntimeEvent::BrainValid).await?;
-        
+
         // AC §19.5: Initialize hardware
         tracing::info!("Detecting CPU and SIMD support");
         self.emit_event(RuntimeEvent::ConfigLoaded).await?; // CPU detect done
-        
+
         tracing::info!("Initializing memory subsystems");
         self.emit_event(RuntimeEvent::ConfigLoaded).await?; // Memory init done
-        
+
         tracing::info!("Initializing Hardware Abstraction Layer");
         self.emit_event(RuntimeEvent::ConfigLoaded).await?; // HAL init done
-        
+
         // AC §19.6: Initialize plugins (non-critical; failures are tolerated)
         tracing::info!("Initializing plugins");
         match self.init_plugins().await {
@@ -90,29 +89,30 @@ impl Lifecycle {
                 self.emit_event(RuntimeEvent::PluginFailed).await?;
             }
         }
-        
+
         // AC §19.7: Initialize neural core
         tracing::info!("Initializing neural core");
         self.init_neural().await?;
         self.emit_event(RuntimeEvent::NeuralReady).await?;
-        
+
         // AC §19.8: Initialize scheduler
         tracing::info!("Initializing scheduler");
         self.init_scheduler().await?;
         self.emit_event(RuntimeEvent::SchedulerReady).await?;
-        
+
         // AC §19.9: Mark safety as ready
         tracing::info!("Safety layer ready");
         self.set_safety_ready(true).await;
-        
+
         // AC §19.10: Enter Running state
         let state = self.get_current_state().await;
         if state != RuntimeState::Running {
-            return Err(Error::RuntimeBootFailed(
-                format!("Boot failed to reach Running state, ended in {:?}", state)
-            ));
+            return Err(Error::RuntimeBootFailed(format!(
+                "Boot failed to reach Running state, ended in {:?}",
+                state
+            )));
         }
-        
+
         tracing::info!("Runtime boot complete - entering Running state");
         Ok(())
     }
@@ -120,28 +120,29 @@ impl Lifecycle {
     /// Graceful shutdown following AC §20.1
     pub async fn shutdown_graceful(&mut self) -> Result<()> {
         tracing::info!("Initiating graceful shutdown");
-        
+
         // Request shutdown event
         self.emit_event(RuntimeEvent::ShutdownRequested).await?;
-        
+
         // AC §20.1: Complete in-flight operations
         tokio::time::sleep(Duration::from_millis(100)).await;
-        
+
         // AC §20.2: Flush pending writes to brain.anr
         tracing::info!("Flushing brain state to storage");
         // (actual flush happens in storage module)
-        
+
         // AC §20.3: Complete shutdown
         self.emit_event(RuntimeEvent::ConfigLoaded).await?; // Graceful shutdown done
-        
+
         let state = self.get_current_state().await;
         if state == RuntimeState::PoweredOff {
             tracing::info!("Graceful shutdown complete");
             Ok(())
         } else {
-            Err(Error::RuntimeShutdownFailed(
-                format!("Shutdown did not reach PoweredOff, ended in {:?}", state)
-            ))
+            Err(Error::RuntimeShutdownFailed(format!(
+                "Shutdown did not reach PoweredOff, ended in {:?}",
+                state
+            )))
         }
     }
 
@@ -149,19 +150,21 @@ impl Lifecycle {
     /// Must complete within emergency_timeout, minimal state preservation
     pub async fn shutdown_emergency(&mut self) -> Result<()> {
         tracing::error!("EMERGENCY SHUTDOWN INITIATED");
-        
+
         // AC §20.2: Trigger emergency stop
-        self.emit_event(RuntimeEvent::EmergencyStopRequested).await?;
-        
+        self.emit_event(RuntimeEvent::EmergencyStopRequested)
+            .await?;
+
         let state = self.get_current_state().await;
         if state != RuntimeState::EmergencyStopped {
-            return Err(Error::RuntimeEmergencyStopFailed(
-                format!("Failed to reach EmergencyStopped, in state {:?}", state)
-            ));
+            return Err(Error::RuntimeEmergencyStopFailed(format!(
+                "Failed to reach EmergencyStopped, in state {:?}",
+                state
+            )));
         }
-        
+
         tracing::error!("Emergency stop completed - attempting graceful shutdown");
-        
+
         // Attempt graceful shutdown with timeout
         match tokio::time::timeout(self.shutdown_timeout, self.shutdown_graceful()).await {
             Ok(Ok(())) => {

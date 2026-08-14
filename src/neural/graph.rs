@@ -1,6 +1,5 @@
 /// Sparse Graph - sparse neural topology
 /// Implements: AC §15
-
 use super::synapse::Synapse;
 use std::collections::HashMap;
 
@@ -18,7 +17,10 @@ impl SparseGraph {
     }
 
     pub fn add_synapse(&mut self, synapse: Synapse) {
-        let target_list = self.adjacency.entry(synapse.source).or_insert_with(Vec::new);
+        let target_list = self
+            .adjacency
+            .entry(synapse.source)
+            .or_insert_with(Vec::new);
         target_list.push(synapse.id);
         self.synapses.insert(synapse.id, synapse);
     }

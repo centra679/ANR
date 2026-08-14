@@ -1,17 +1,16 @@
+pub mod block;
 /// Neural Core Module
 /// Implements: AC §10-14 (Cell, Column, Block, Synapse)
-
 pub mod cell;
 pub mod column;
-pub mod block;
-pub mod synapse;
 pub mod graph;
+pub mod synapse;
 
+pub use block::{Block, BlockPool};
 pub use cell::Cell;
 pub use column::Column;
-pub use block::Block;
-pub use synapse::Synapse;
 pub use graph::SparseGraph;
+pub use synapse::{Synapse, SynapseTable};
 
 use crate::Result;
 

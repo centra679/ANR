@@ -1,6 +1,5 @@
 /// Brain validation and verification
 /// Implements: AC §44
-
 use crate::Result;
 use std::path::Path;
 

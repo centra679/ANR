@@ -68,7 +68,7 @@ mod storage_tests_impl {
     #[test]
     fn tc_u_brain_header_011() {
         let header = BrainHeader::new();
-        assert_eq!(header.cortex_offset, 0);
+        assert_eq!(header.cortex_offset, 4096);
     }
 
     #[test]

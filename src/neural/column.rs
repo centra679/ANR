@@ -1,7 +1,6 @@
 /// Column Implementation
 /// Implements: AC §13 Column Contract, SD-06
 /// Collection of cells with Winner-Take-All (WTA) competition
-
 use serde::{Deserialize, Serialize};
 
 const WTA_THRESHOLD: f32 = 0.3;
@@ -9,19 +8,19 @@ const WTA_INHIBITION_STRENGTH: f32 = 0.9;
 
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum ColumnState {
-    Silent,       // No active cells
-    Competing,    // Multiple cells active
-    Winner,       // Single winner selected
+    Silent,    // No active cells
+    Competing, // Multiple cells active
+    Winner,    // Single winner selected
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Column {
     pub id: u32,
-    pub cell_indices: Vec<u32>,    // Indices into CellPool
-    pub winner_idx: Option<u32>,   // Current winner cell index
+    pub cell_indices: Vec<u32>,  // Indices into CellPool
+    pub winner_idx: Option<u32>, // Current winner cell index
     pub state: ColumnState,
-    pub inhibition_level: f32,     // Current lateral inhibition
-    pub competition_count: u32,    // Cycles since last WTA
+    pub inhibition_level: f32,  // Current lateral inhibition
+    pub competition_count: u32, // Cycles since last WTA
 }
 
 impl Column {
@@ -103,8 +102,8 @@ impl Column {
 /// ColumnPool for SoA layout
 pub struct ColumnPool {
     pub ids: Vec<u32>,
-    pub cell_start: Vec<u32>,      // Offset into cell array
-    pub cell_len: Vec<u32>,        // Number of cells in this column
+    pub cell_start: Vec<u32>, // Offset into cell array
+    pub cell_len: Vec<u32>,   // Number of cells in this column
     pub winner_idx: Vec<Option<u32>>,
     pub state: Vec<ColumnState>,
     pub inhibition: Vec<f32>,
@@ -140,7 +139,7 @@ impl ColumnPool {
             // Get cells for this column
             let start = self.cell_start[idx] as usize;
             let len = self.cell_len[idx] as usize;
-            
+
             let mut max_activation = -1.0f32;
             let mut max_cell = None;
 

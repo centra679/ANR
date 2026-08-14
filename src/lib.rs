@@ -3,25 +3,24 @@
 /// Architecture Contract: Final Architectural Baseline v1.1
 ///
 /// This is the core library providing all ANR functionality.
-
 pub mod error;
 pub use error::{Error, Result};
 
-pub mod core;
-pub mod neural;
+pub mod action;
 pub mod brain;
+pub mod core;
+pub mod hardware;
+pub mod interface;
 pub mod learning;
 pub mod memory;
-pub mod storage;
+pub mod neural;
 pub mod perception;
 pub mod plugins;
-pub mod hardware;
-pub mod action;
 pub mod simd;
-pub mod interface;
+pub mod storage;
 
 // Re-export commonly used types
+pub use brain::Brain;
 pub use core::Runtime;
 pub use neural::NeuralCore;
-pub use brain::Brain;
 pub use storage::BrainFile;

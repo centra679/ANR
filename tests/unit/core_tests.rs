@@ -11,7 +11,10 @@ mod core_boot {
     fn tc_u_core_boot_001_boot_sequence_starts() -> Result<()> {
         // Positive: Boot sequence initiates correctly
         let runtime = Runtime::new(&PathBuf::from("/tmp/test.anr"), None)?;
-        assert_eq!(runtime.state() as u8, anr::core::RuntimeState::PoweredOff as u8);
+        assert_eq!(
+            runtime.state() as u8,
+            anr::core::RuntimeState::PoweredOff as u8
+        );
         Ok(())
     }
 
@@ -19,7 +22,10 @@ mod core_boot {
     fn tc_u_core_boot_002_boot_state_valid() -> Result<()> {
         // Positive: Boot state is valid
         let runtime = Runtime::new(&PathBuf::from("/tmp/test.anr"), None)?;
-        assert_eq!(runtime.state() as u8, anr::core::RuntimeState::PoweredOff as u8);
+        assert_eq!(
+            runtime.state() as u8,
+            anr::core::RuntimeState::PoweredOff as u8
+        );
         Ok(())
     }
 
@@ -47,7 +53,10 @@ mod core_boot {
     fn tc_u_core_boot_005_missing_config() -> Result<()> {
         // Negative: Missing config falls back to default
         let runtime = Runtime::new(&PathBuf::from("/tmp/nonexistent.anr"), None)?;
-        assert_eq!(runtime.state() as u8, anr::core::RuntimeState::PoweredOff as u8);
+        assert_eq!(
+            runtime.state() as u8,
+            anr::core::RuntimeState::PoweredOff as u8
+        );
         Ok(())
     }
 
@@ -73,7 +82,10 @@ mod core_boot {
     fn tc_u_core_boot_008_state_transition_possible() -> Result<()> {
         // Boundary: Can transition from PoweredOff
         let runtime = Runtime::new(&PathBuf::from("/tmp/test.anr"), None)?;
-        assert_eq!(runtime.state() as u8, anr::core::RuntimeState::PoweredOff as u8);
+        assert_eq!(
+            runtime.state() as u8,
+            anr::core::RuntimeState::PoweredOff as u8
+        );
         Ok(())
     }
 

@@ -1,6 +1,5 @@
 /// Integration Tests
 /// 200 integration tests across 25 domains
-
 pub mod all_domains;
 
 #[cfg(test)]

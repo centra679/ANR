@@ -1,3 +1,6 @@
+pub mod catalog;
+pub mod e2e;
+pub mod integration;
 /// ANR Test Framework
 ///
 /// Implements: Master-Test-CI.md
@@ -7,11 +10,7 @@
 /// - Offline requirement
 /// - Deterministic execution
 /// - Architecture alignment
-
 pub mod unit;
-pub mod integration;
-pub mod e2e;
-pub mod catalog;
 
 pub use catalog::TestCatalog;
 

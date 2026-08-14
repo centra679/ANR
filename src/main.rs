@@ -13,22 +13,21 @@
 /// - Decision engine and safety layer
 /// - SIMD abstraction
 /// - CLI and diagnostics
-
 mod error;
 pub use error::{Error, Result};
 
-pub mod core;
-pub mod neural;
+pub mod action;
 pub mod brain;
+pub mod core;
+pub mod hardware;
+pub mod interface;
 pub mod learning;
 pub mod memory;
-pub mod storage;
+pub mod neural;
 pub mod perception;
 pub mod plugins;
-pub mod hardware;
-pub mod action;
 pub mod simd;
-pub mod interface;
+pub mod storage;
 
 use clap::Parser;
 use std::path::PathBuf;
@@ -108,7 +107,10 @@ async fn main() -> Result<()> {
         }
         Some(Commands::Verify { brain }) => {
             let valid = storage::BrainValidator::verify_file(&brain)?;
-            println!("Brain verification: {}", if valid { "OK" } else { "FAILED" });
+            println!(
+                "Brain verification: {}",
+                if valid { "OK" } else { "FAILED" }
+            );
         }
         Some(Commands::Build { seed, output }) => {
             storage::BrainBuilder::build_from_seed(&seed, &output)?;

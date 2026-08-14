@@ -1,7 +1,6 @@
 /// Neural Cell Implementation
 /// Implements: AC §12 Cell Contract, SD-06
 /// Individual neuron unit with activation, potential, threshold, and refractory dynamics
-
 use serde::{Deserialize, Serialize};
 
 const DEFAULT_THRESHOLD: f32 = 0.5;
@@ -11,21 +10,21 @@ const SPIKE_MAGNITUDE: f32 = 1.0;
 
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum CellState {
-    Resting,      // No recent activity
-    Integrating,  // Accumulating potential
-    Firing,       // Active spike
-    Refractory,   // Spike just fired, not receptive
+    Resting,     // No recent activity
+    Integrating, // Accumulating potential
+    Firing,      // Active spike
+    Refractory,  // Spike just fired, not receptive
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct Cell {
     pub id: u32,
-    pub activation: f32,           // [0.0, 1.0] - current firing rate
-    pub potential: f32,            // Membrane potential  
-    pub threshold: f32,            // Threshold for firing
-    pub state: CellState,          // Current state
-    pub refractory_until: u64,     // Cycle count until refractory ends
-    pub last_fired: u64,           // When last fired
+    pub activation: f32,       // [0.0, 1.0] - current firing rate
+    pub potential: f32,        // Membrane potential
+    pub threshold: f32,        // Threshold for firing
+    pub state: CellState,      // Current state
+    pub refractory_until: u64, // Cycle count until refractory ends
+    pub last_fired: u64,       // When last fired
 }
 
 impl Cell {
@@ -101,7 +100,7 @@ impl Cell {
         if self.state == CellState::Refractory {
             return false;
         }
-        
+
         self.state = CellState::Firing;
         self.activation = SPIKE_MAGNITUDE;
         self.potential = self.threshold + 0.1;
@@ -144,7 +143,7 @@ pub struct CellPool {
     pub state: Vec<CellState>,
     pub refractory_until: Vec<u64>,
     pub last_fired: Vec<u64>,
-    pub usage: Vec<u32>,  // Reference count for GC
+    pub usage: Vec<u32>, // Reference count for GC
 }
 
 impl CellPool {
@@ -168,14 +167,14 @@ impl CellPool {
     /// Update all active cells in pool
     pub fn update_all(&mut self, current_cycle: u64, input_currents: &[f32]) -> Vec<u32> {
         let mut fired = Vec::new();
-        
+
         for idx in 0..self.activation.len() {
             if self.usage[idx] == 0 {
                 continue; // Skip unused cells
             }
 
             let input = input_currents.get(idx).copied().unwrap_or(0.0);
-            
+
             // Check refractory
             if current_cycle < self.refractory_until[idx] {
                 self.state[idx] = CellState::Refractory;
@@ -211,7 +210,11 @@ impl CellPool {
             id: self.ids.get(idx).copied().unwrap_or(0),
             activation: self.activation.get(idx).copied().unwrap_or(0.0),
             potential: self.potential.get(idx).copied().unwrap_or(0.0),
-            threshold: self.threshold.get(idx).copied().unwrap_or(DEFAULT_THRESHOLD),
+            threshold: self
+                .threshold
+                .get(idx)
+                .copied()
+                .unwrap_or(DEFAULT_THRESHOLD),
             state: self.state.get(idx).copied().unwrap_or(CellState::Resting),
             refractory_until: self.refractory_until.get(idx).copied().unwrap_or(0),
             last_fired: self.last_fired.get(idx).copied().unwrap_or(0),

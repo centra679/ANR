@@ -1,19 +1,18 @@
 /// Test Catalog - Machine-readable test registry
 /// Implements: Master-Test-CI.md §5
-
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TestEntry {
     pub id: String,
-    pub level: String,              // unit, integration, e2e, fault-injection, performance, conformance, security
+    pub level: String, // unit, integration, e2e, fault-injection, performance, conformance, security
     pub domain: String,
-    pub requirement: String,        // Architecture Contract reference
-    pub test_type: String,          // positive, negative, boundary, invariant, regression
-    pub status: String,             // required, optional, deprecated
+    pub requirement: String, // Architecture Contract reference
+    pub test_type: String,   // positive, negative, boundary, invariant, regression
+    pub status: String,      // required, optional, deprecated
     pub owner: Option<String>,
-    pub criticality: String,        // high, medium, low
+    pub criticality: String, // high, medium, low
 }
 
 pub struct TestCatalog {
@@ -206,7 +205,11 @@ mod tests {
     #[test]
     fn test_catalog_count() {
         let catalog = TestCatalog::load();
-        assert_eq!(catalog.count_by_level("unit"), 840, "Should have 840 unit tests");
+        assert_eq!(
+            catalog.count_by_level("unit"),
+            840,
+            "Should have 840 unit tests"
+        );
     }
 
     #[test]

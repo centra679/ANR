@@ -1,10 +1,10 @@
 use crate::Result;
-use std::path::PathBuf;
 use serde::{Deserialize, Serialize};
+use std::path::PathBuf;
 
-pub mod state_machine;
-pub mod scheduler;
 pub mod lifecycle;
+pub mod scheduler;
+pub mod state_machine;
 
 pub use state_machine::RuntimeState;
 
@@ -51,8 +51,8 @@ impl Runtime {
 
     fn load_config(path: &PathBuf) -> Result<RuntimeConfig> {
         let content = std::fs::read_to_string(path)?;
-        let config: RuntimeConfig = toml::from_str(&content)
-            .map_err(|e| crate::Error::ConfigError(e.to_string()))?;
+        let config: RuntimeConfig =
+            toml::from_str(&content).map_err(|e| crate::Error::ConfigError(e.to_string()))?;
         Ok(config)
     }
 
@@ -66,7 +66,7 @@ impl Runtime {
     pub async fn boot(&mut self) -> Result<()> {
         tracing::info!("Starting boot sequence...");
         self.state = RuntimeState::Boot;
-        
+
         // Load configuration
         self.state = RuntimeState::ConfigLoad;
         tracing::debug!("Configuration loaded");
@@ -116,7 +116,7 @@ impl Runtime {
 
     pub async fn main_loop(&mut self, _maintenance_mode: bool) -> Result<()> {
         tracing::info!("Main loop started");
-        
+
         loop {
             tokio::select! {
                 _ = tokio::time::sleep(tokio::time::Duration::from_secs(1)) => {
@@ -135,7 +135,7 @@ impl Runtime {
     pub async fn shutdown(&mut self) -> Result<()> {
         tracing::info!("Starting shutdown sequence...");
         self.state = RuntimeState::ShuttingDown;
-        
+
         // Graceful shutdown
         tracing::debug!("Persisting brain state...");
         tracing::debug!("Cleaning up resources...");

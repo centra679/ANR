@@ -1,12 +1,11 @@
+pub mod cerebellum;
 /// Brain Module - Three Memory Subsystems
 /// Implements: AC §7 (Cortex), AC §8 (Cerebellum), AC §9 (Hippocampus)
-
 pub mod cortex;
-pub mod cerebellum;
 pub mod hippocampus;
 
-pub use cortex::Cortex;
 pub use cerebellum::Cerebellum;
+pub use cortex::Cortex;
 pub use hippocampus::Hippocampus;
 
 pub struct Brain {

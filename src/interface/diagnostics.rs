@@ -1,6 +1,6 @@
+use crate::core::Runtime;
 /// Diagnostics
 use crate::Result;
-use crate::core::Runtime;
 
 pub async fn run_diagnostic(runtime: &Runtime, action: &str) -> Result<()> {
     match action {

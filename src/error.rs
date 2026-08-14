@@ -1,6 +1,5 @@
 /// ANR Error Type Taxonomy
 /// Aligns with: AC §21
-
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -64,7 +63,11 @@ pub enum Error {
 
     // Memory Errors
     #[error("Memory quota exceeded: {section} (used: {used}/{max})")]
-    MemoryQuotaExceeded { section: String, used: u64, max: u64 },
+    MemoryQuotaExceeded {
+        section: String,
+        used: u64,
+        max: u64,
+    },
 
     #[error("Allocation failed: {0}")]
     AllocationFailed(String),

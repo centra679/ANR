@@ -1,18 +1,17 @@
+pub mod builder;
+pub mod format;
 /// Storage Module - brain.anr binary format and IO
 /// Implements: AC §5 (Single Brain Contract), SD-03, AC §44-45
-
 pub mod header;
-pub mod format;
-pub mod validator;
-pub mod builder;
-pub mod transaction;
 pub mod recovery;
+pub mod transaction;
+pub mod validator;
 
-pub use header::BrainHeader;
-pub use validator::BrainValidator;
 pub use builder::BrainBuilder;
-pub use transaction::Transaction;
+pub use header::BrainHeader;
 pub use recovery::Recovery;
+pub use transaction::TransactionManager;
+pub use validator::BrainValidator;
 
 use crate::Result;
 use std::path::Path;

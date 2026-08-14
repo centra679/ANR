@@ -1,12 +1,11 @@
 /// Memory Module - Subsystems
 /// Implements: AC §6-9 (Cortex, Cerebellum, Hippocampus)
-
 pub mod allocator;
-pub mod quota;
 pub mod gc;
+pub mod quota;
 
-pub use quota::MemoryQuota;
 pub use gc::GarbageCollector;
+pub use quota::MemoryQuota;
 
 use crate::Result;
 

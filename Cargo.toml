@@ -51,3 +51,11 @@ simd-avx = []
 plugins-static = []
 plugins-dynamic = []
 android-support = []
+
+[[test]]
+name = "integration"
+path = "tests/integration/all_domains.rs"
+
+[[test]]
+name = "e2e"
+path = "tests/e2e/all_scenarios.rs"
