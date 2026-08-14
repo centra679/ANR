@@ -66,7 +66,7 @@ impl TransactionManager {
         let mut tx = self
             .current_tx
             .clone()
-            .ok_or_else(|| Error::TransactionError("No active transaction".to_string()))?;
+            .ok_or_else(|| Error::InternalTransactionError("No active transaction".to_string()))?;
         tx.checksum = checksum;
         tx.state = TxState::Committed;
         let now_secs = SystemTime::now()

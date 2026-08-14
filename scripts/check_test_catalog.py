@@ -11,7 +11,7 @@ def read_progress_completed_domains(path="docs/PROGRESS.md"):
     try:
         with open(path, "r") as f:
             for line in f:
-                m = re.search(r"completed_domains\s*=\s*\[([^\]]*)\]", line)
+                m = re.search(r"completed_domains.*?\[([^\]]*)\]", line)
                 if m:
                     text = m.group(1)
                     for part in text.split(","):

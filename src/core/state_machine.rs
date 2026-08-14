@@ -202,7 +202,7 @@ impl StateMachine {
             (RuntimeState::Fault, RuntimeEvent::PowerOn) => Ok(RuntimeState::Boot),
 
             // Invalid transition
-            _ => Err(Error::RuntimeStateTransitionInvalid(format!(
+            _ => Err(Error::InternalRuntimeStateTransitionInvalid(format!(
                 "{} -> {}",
                 self.current,
                 event.name()

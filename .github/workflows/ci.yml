@@ -201,11 +201,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  # Test catalog compliance job
+  catalog-check:
+    name: Test Catalog Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      
+      - name: Generate catalog
+        run: bash scripts/gen_catalog.sh tests/catalog.toml
+      
+      - name: Check catalog
+        run: bash scripts/check_test_catalog.sh 0
+
   # All checks must pass before merging
   final-check:
     name: Final Check
     runs-on: ubuntu-latest
-    needs: [test, lint, audit, conformance, test-gate]
+    needs: [test, lint, audit, conformance, test-gate, catalog-check]
     steps:
       - name: All checks passed ✓
         run: echo "All CI checks passed successfully!"

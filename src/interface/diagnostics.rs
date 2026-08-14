@@ -9,7 +9,11 @@ pub async fn run_diagnostic(runtime: &Runtime, action: &str) -> Result<()> {
         "storage" => println!("Storage diagnostics..."),
         "neural" => println!("Neural core diagnostics..."),
         "safety" => println!("Safety layer diagnostics..."),
-        _ => return Err(crate::Error::Other("Unknown diagnostic".to_string())),
+        _ => {
+            return Err(crate::Error::InternalOther(
+                "Unknown diagnostic".to_string(),
+            ))
+        }
     }
     Ok(())
 }

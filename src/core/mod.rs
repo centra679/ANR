@@ -1,11 +1,13 @@
 use crate::Result;
-use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
+pub mod config;
 pub mod lifecycle;
+pub mod logging;
 pub mod scheduler;
 pub mod state_machine;
 
+pub use config::RuntimeConfig;
 pub use state_machine::RuntimeState;
 
 /// Runtime lifecycle and state management
@@ -15,29 +17,10 @@ pub struct Runtime {
     _config: RuntimeConfig,
 }
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct RuntimeConfig {
-    pub state_trace: bool,
-    pub shutdown_timeout_ms: u64,
-    pub emergency_stop_timeout_ms: u64,
-    pub allow_volatile_degraded_mode: bool,
-}
-
-impl Default for RuntimeConfig {
-    fn default() -> Self {
-        Self {
-            state_trace: false,
-            shutdown_timeout_ms: 5000,
-            emergency_stop_timeout_ms: 100,
-            allow_volatile_degraded_mode: false,
-        }
-    }
-}
-
 impl Runtime {
     pub fn new(brain_path: &std::path::Path, config_path: Option<PathBuf>) -> Result<Self> {
         let config = if let Some(path) = config_path {
-            Self::load_config(&path)?
+            RuntimeConfig::load_from_toml(&path)?
         } else {
             RuntimeConfig::default()
         };
@@ -47,13 +30,6 @@ impl Runtime {
             state: RuntimeState::PoweredOff,
             _config: config,
         })
-    }
-
-    fn load_config(path: &PathBuf) -> Result<RuntimeConfig> {
-        let content = std::fs::read_to_string(path)?;
-        let config: RuntimeConfig =
-            toml::from_str(&content).map_err(|e| crate::Error::ConfigError(e.to_string()))?;
-        Ok(config)
     }
 
     pub async fn run(&mut self, maintenance_mode: bool) -> Result<()> {

@@ -107,7 +107,7 @@ impl Lifecycle {
         // AC §19.10: Enter Running state
         let state = self.get_current_state().await;
         if state != RuntimeState::Running {
-            return Err(Error::RuntimeBootFailed(format!(
+            return Err(Error::InternalRuntimeBootFailed(format!(
                 "Boot failed to reach Running state, ended in {:?}",
                 state
             )));
@@ -139,7 +139,7 @@ impl Lifecycle {
             tracing::info!("Graceful shutdown complete");
             Ok(())
         } else {
-            Err(Error::RuntimeShutdownFailed(format!(
+            Err(Error::InternalRuntimeShutdownFailed(format!(
                 "Shutdown did not reach PoweredOff, ended in {:?}",
                 state
             )))
@@ -157,7 +157,7 @@ impl Lifecycle {
 
         let state = self.get_current_state().await;
         if state != RuntimeState::EmergencyStopped {
-            return Err(Error::RuntimeEmergencyStopFailed(format!(
+            return Err(Error::InternalRuntimeEmergencyStopFailed(format!(
                 "Failed to reach EmergencyStopped, in state {:?}",
                 state
             )));

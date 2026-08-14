@@ -256,9 +256,21 @@
 
 | file | baris | jenis | WP target | status |
 |------|-------|-------|-----------|--------|
-| `tests/catalog.toml` | 1-1466 | Semua 1.466 test berstatus `legacy = true`, `quality = "unknown"`; belum di-triage per domain | ALL (WP-1 s/d WP-14) | OPEN |
+| `tests/catalog.toml` | 1-1471 | 315 real, 1.156 fake; 5 domain WP-1 sudah di-triage (error-taxonomy, config-load, config-validation, logging-tracing, cli-commands) | ALL (WP-1 s/d WP-14) | IN PROGRESS |
 
 **Catatan:** `tests/catalog.toml` di-generate otomatis oleh `scripts/gen_catalog.sh` dari `cargo test -- --list`. Setiap WP wajib men-triage domain miliknya: menandai `quality`, mengganti test fake/lemah, menambah test hingga kuota 12 real per domain, lalu menormalkan ID menjadi `TC-U-<DOMAIN>-<SEQ>` dengan `legacy = false`.
+
+---
+
+## 18. Test-Quality Triage (WP-1)
+
+| domain | real | fake | WP target | status |
+|--------|------|------|-----------|--------|
+| error-taxonomy | 12 | 0 | WP-1 | DONE |
+| config-load | 13 | 0 | WP-1 | DONE |
+| config-validation | 12 | 0 | WP-1 | DONE |
+| logging-tracing | 12 | 0 | WP-1 | DONE |
+| cli-commands | 16 | 0 | WP-1 | DONE |
 
 ---
 

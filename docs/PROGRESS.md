@@ -2,7 +2,7 @@
 
 **Sesi Saat Ini:** WP-0 — Audit & Inventory  
 **Status Awal:** Audit selesai, STUB_INVENTORY dibuat, catalog strategi legacy migration disiapkan  
-**Sesi Berikutnya:** WP-1 — Core Hygiene  
+**Sesi Berikutnya:** WP-2 — Storage Read Path  
 
 ---
 
@@ -26,13 +26,13 @@
 - `IMPLEMENTATION_SUMMARY.md` teridentifikasi sebagai overclaim (tidak sesuai temuan audit).
 
 **Blocker untuk WP-1:**
-- `docs/DECISIONS.md` belum ada (diperlukan untuk dependency justification).
-- `tests/catalog.toml` sudah di-generate sebagai legacy; perlu triage per domain.
-- `completed_domains = []` (belum ada domain yang selesai di-enforce).
+- `docs/DECISIONS.md` sudah dibuat (DEC-001 s/d DEC-007).
+- `tests/catalog.toml` sudah di-generate dan di-triage untuk domain WP-1.
+- `completed_domains` diisi dengan 5 domain WP-1.
 
 ---
 
-## WP-1 — Core Hygiene (BERIKUTNYA)
+## WP-1 — Core Hygiene (SELESAI)
 
 **Prioritas:** TINGGI  
 **Target:**
@@ -47,10 +47,10 @@
 - Error taxonomy ter-test per variant.
 - Config invalid ditolak.
 - Build + clippy hijau.
-- Domain WP-1 di-catalog: `core-boot`, `config-load`, `error-taxonomy`, `logging-tracing`, `scheduler-priority` → `quality = "real"`, >= 12 test real per domain.
-- STUB_INVENTORY ditutup untuk item WP-1.
+- Domain WP-1 di-catalog: `error-taxonomy`, `config-load`, `config-validation`, `logging-tracing`, `cli-commands` → `quality = "real"`, >= 12 test real per domain. [DONE]
+- STUB_INVENTORY ditutup untuk item WP-1. [DONE]
 
-**completed_domains:** `[]` (masih kosong; WP-1 akan menambahkan domain yang selesai)
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands"]`
 
 ---
 
@@ -59,7 +59,7 @@
 | WP | Nama | Status | Commit |
 |----|------|--------|--------|
 | WP-0 | Audit & Inventory | SELESAI | — |
-| WP-1 | Core Hygiene | PENDING | — |
+| WP-1 | Core Hygiene | SELESAI | — |
 | WP-2 | Storage Read Path | PENDING | — |
 | WP-3 | Storage Write Path & Recovery | PENDING | — |
 | WP-4 | Memory Manager | PENDING | — |

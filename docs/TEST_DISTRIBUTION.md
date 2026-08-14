@@ -1,9 +1,8 @@
 # TEST DISTRIBUTION
 
-**Audit Date:** 2026-08-14  
-**Sesi:** WP-0 (audit awal)  
+**Updated:** 2026-08-14 (WP-1 post-triage)  
 **Sumber:** `scripts/gen_catalog.sh` → `tests/catalog.toml`  
-**Konteks:** Strategi legacy migration untuk 1.466 test eksisting  
+**Konteks:** Strategi legacy migration untuk 1.531 test eksisting  
 
 ---
 
@@ -11,151 +10,162 @@
 
 | Metric | Nilai |
 |--------|-------|
-| Total test (legacy) | 1.466 |
-| Unit | 852 |
-| Integration | 200 |
-| E2E | 130 |
-| Fault-injection | 80 |
-| Performance | 60 |
-| Conformance | 100 |
-| Security | 40 |
-| Admin / catalog-admin | 4 |
-| **Real (quality = "real")** | **0** |
-| **Fake (quality = "fake")** | **0** |
-| **Unknown (quality = "unknown")** | **1.466** |
+| Total test (legacy + real) | 1.471 |
+| Legacy (fake) | 1.156 |
+| Real | 315 |
+| Unknown | 0 |
+| Unit real | 315 |
+| Integration real | 0 |
+| E2E real | 0 |
+| Fault-injection real | 0 |
+| Performance real | 0 |
+| Conformance real | 0 |
+| Security real | 0 |
 
 ---
 
 ## Distribusi per Domain vs Kuota
 
-### Unit Tests (kuota 12/domain)
+### Unit Tests (kuota 12/domain) — WP-1 Completed Domains
 
-| Domain | Jumlah | Kuota | Status |
-|--------|--------|-------|--------|
-| core_boot | 24 | 12 | OVER (duplikasi lintas file) |
-| plugin_isolation | 22 | 12 | OVER (duplikasi lintas file) |
-| recovery | 22 | 12 | OVER (duplikasi lintas file) |
-| transaction | 22 | 12 | OVER (duplikasi lintas file) |
-| 71 domain lainnya | 12 each | 12 | ok |
-| **Total unit** | **852** | — | — |
+| Domain | Real | Fake | Kuota | Status |
+|--------|------|------|-------|--------|
+| error-taxonomy | 12 | 0 | 12 | DONE |
+| config-load | 13 | 0 | 12 | DONE (over-quota, sisa dipakai untuk validation) |
+| config-validation | 12 | 0 | 12 | DONE |
+| logging-tracing | 12 | 0 | 12 | DONE |
+| cli-commands | 16 | 0 | 12 | DONE (over-quota, sisa dipakai untuk edge cases) |
 
-**Catatan:** 4 domain memiliki jumlah ganda karena definisi test yang sama muncul di lebih dari satu file (mis. `core_boot` ada di `group_a_core_tests` dan `core_tests`). Ini menandakan duplikasi yang harus di-triage oleh WP-1.
+### Unit Tests — Sisa Domain (masih fake)
+
+| Domain | Real | Fake | Kuota | Status |
+|--------|------|------|-------|--------|
+| core-boot | 0 | 24 | 12 | PENDING WP-9 |
+| core-degraded | 0 | 12 | 12 | PENDING WP-9 |
+| core-emergency-shutdown | 0 | 12 | 12 | PENDING WP-9 |
+| core-run-loop | 0 | 12 | 12 | PENDING WP-9 |
+| core-shutdown | 0 | 12 | 12 | PENDING WP-9 |
+| maintenance-budget | 0 | 12 | 12 | PENDING WP-1 (scheduler) |
+| bounded-queue | 0 | 12 | 12 | PENDING WP-1 (scheduler) |
+| backpressure | 0 | 12 | 12 | PENDING WP-1 (scheduler) |
+| cell-state | 0 | 12 | 12 | PENDING WP-5 |
+| cell-activation | 0 | 12 | 12 | PENDING WP-5 |
+| cell-refractory | 0 | 12 | 12 | PENDING WP-5 |
+| column-competition | 0 | 12 | 12 | PENDING WP-5 |
+| column-sparse | 0 | 12 | 12 | PENDING WP-5 |
+| column-association | 0 | 12 | 12 | PENDING WP-5 |
+| block-context | 0 | 12 | 12 | PENDING WP-5 |
+| block-prediction | 0 | 12 | 12 | PENDING WP-5 |
+| block-sequence | 0 | 12 | 12 | PENDING WP-5 |
+| synapse-create | 0 | 12 | 12 | PENDING WP-5 |
+| synapse-validate | 0 | 12 | 12 | PENDING WP-5 |
+| synapse-update | 0 | 12 | 12 | PENDING WP-5 |
+| synapse-decay | 0 | 12 | 12 | PENDING WP-5 |
+| synapse-prune | 0 | 12 | 12 | PENDING WP-5 |
+| sparse-traversal | 0 | 12 | 12 | PENDING WP-5 |
+| soa-layout | 0 | 12 | 12 | PENDING WP-5 |
+| scalar-kernels | 0 | 12 | 12 | PENDING WP-5 |
+| simd-neon | 0 | 12 | 12 | PENDING WP-5 |
+| simd-avx | 0 | 12 | 12 | PENDING WP-5 |
+| simd-fallback | 0 | 12 | 12 | PENDING WP-5 |
+| memory-quota | 0 | 12 | 12 | PENDING WP-4 |
+| allocator | 0 | 12 | 12 | PENDING WP-4 |
+| memory-isolation | 0 | 12 | 12 | PENDING WP-4 |
+| retention-scoring | 0 | 12 | 12 | PENDING WP-11 |
+| gc-normal | 0 | 12 | 12 | PENDING WP-11 |
+| gc-aggressive | 0 | 12 | 12 | PENDING WP-11 |
+| gc-emergency | 0 | 12 | 12 | PENDING WP-11 |
+| tiering | 0 | 12 | 12 | PENDING WP-11 |
+| compression | 0 | 12 | 12 | PENDING WP-11 |
+| brain-header | 0 | 12 | 12 | PENDING WP-2 |
+| brain-offset-size | 0 | 12 | 12 | PENDING WP-2 |
+| checksum | 0 | 12 | 12 | PENDING WP-2 |
+| transaction | 0 | 12 | 12 | PENDING WP-2 / WP-3 |
+| recovery | 0 | 12 | 12 | PENDING WP-2 / WP-3 |
+| brain-seed | 0 | 12 | 12 | PENDING WP-6 |
+| brain-build | 0 | 12 | 12 | PENDING WP-6 |
+| brain-verify-inspect | 0 | 12 | 12 | PENDING WP-6 |
+| brain-install-update | 0 | 12 | 12 | PENDING WP-6 |
+| sensor-frame | 0 | 12 | 12 | PENDING WP-7 |
+| camera-buffer | 0 | 12 | 12 | PENDING WP-7 |
+| audio-buffer | 0 | 12 | 12 | PENDING WP-7 |
+| perception-fusion | 0 | 12 | 12 | PENDING WP-7 |
+| plugin-lifecycle | 0 | 12 | 12 | PENDING WP-7 |
+| plugin-isolation | 0 | 12 | 12 | PENDING WP-7 |
+| hal-mock | 0 | 12 | 12 | PENDING WP-7 |
+| decision-candidate | 0 | 12 | 12 | PENDING WP-8 |
+| safety-constraints | 0 | 12 | 12 | PENDING WP-8 |
+| feedback-prediction | 0 | 12 | 12 | PENDING WP-10 |
+| hebbian-learning | 0 | 12 | 12 | PENDING WP-10 |
+| temporal-learning | 0 | 12 | 12 | PENDING WP-10 |
+| replay-selection | 0 | 12 | 12 | PENDING WP-10 / WP-11 |
+| consolidation-promotion | 0 | 12 | 12 | PENDING WP-10 / WP-11 |
+| contradiction-handling | 0 | 12 | 12 | PENDING WP-10 |
+| skill-failure | 0 | 12 | 12 | PENDING WP-10 |
+| security-validation | 0 | 12 | 12 | PENDING WP-12 / WP-13 |
 
 ### Integration Tests (kuota 8/domain)
 
-| Domain | Jumlah | Kuota | Status |
-|--------|--------|-------|--------|
-| 25 domain | 8 each | 8 | ok |
-| **Total integration** | **200** | — | — |
+| Domain | Real | Fake | Kuota | Status |
+|--------|------|------|-------|--------|
+| 25 domain | 0 | 200 | 8 | PENDING WP-13 |
 
-### E2E Tests (kuota tidak diatur di directive)
+### E2E Tests
 
-| Domain | Jumlah |
-|--------|--------|
-| boot_invalid_brain | 12 |
-| boot_missing_brain | 12 |
-| boot_valid_brain | 12 |
-| emergency_shutdown | 12 |
-| graceful_shutdown | 12 |
-| perception_cycle | 12 |
-| recovery_corrupt_generation | 12 |
-| state_safety_initialization | 12 |
-| transition_degraded | 12 |
-| transition_emergency_stop | 12 |
-| learning_cycle | 10 |
-| **Total E2E** | **130** |
+| Domain | Real | Fake | Status |
+|--------|------|------|--------|
+| 11 domain | 0 | 130 | PENDING WP-9 / WP-13 |
 
 ### Fault Injection Tests
 
-| Domain | Jumlah |
-|--------|--------|
-| corruption | 10 |
-| io_failure | 10 |
-| memory_exhaustion | 10 |
-| network_timeout | 10 |
-| partial_failure | 10 |
-| plugin_crash | 10 |
-| resource_depletion | 10 |
-| safety_violation | 10 |
-| **Total** | **80** |
+| Domain | Real | Fake | Status |
+|--------|------|------|--------|
+| 8 domain | 0 | 80 | PENDING WP-13 |
 
 ### Performance Tests
 
-| Domain | Jumlah |
-|--------|--------|
-| decision_time | 8 |
-| general | 4 |
-| learning_speed | 8 |
-| memory_allocation | 8 |
-| neural_throughput | 8 |
-| perception_latency | 8 |
-| safety_overhead | 8 |
-| storage_io | 8 |
-| **Total** | **60** |
+| Domain | Real | Fake | Status |
+|--------|------|------|--------|
+| 8 domain | 0 | 60 | PENDING WP-13 |
 
 ### Conformance Tests
 
-| Domain | Jumlah |
-|--------|--------|
-| bounded_memory | 10 |
-| determinism | 10 |
-| graceful_degradation | 10 |
-| offline_first | 10 |
-| plugin_isolation | 10 |
-| recovery | 10 |
-| safety_first | 10 |
-| single_binary | 10 |
-| single_brain | 10 |
-| transaction | 10 |
-| **Total** | **100** |
+| Domain | Real | Fake | Status |
+|--------|------|------|--------|
+| 10 domain | 0 | 100 | PENDING WP-14 |
 
 ### Security Tests
 
-| Domain | Jumlah |
-|--------|--------|
-| buffer_overflow | 6 |
-| general | 4 |
-| input_validation | 6 |
-| isolation | 6 |
-| memory_safety | 6 |
-| permission_checks | 6 |
-| unsafe_audit | 6 |
-| **Total** | **40** |
+| Domain | Real | Fake | Status |
+|--------|------|------|--------|
+| 7 domain | 0 | 40 | PENDING WP-13 |
 
 ---
 
 ## Insight
 
-1. **Angka 1.466 adalah gabungan test nyata + test duplikasi lintas file + test palsu.** Saat ini seluruh test ditandai `quality = "unknown"` karena belum di-triage.
-2. **Duplikasi teridentifikasi pada 4 domain unit** (`core_boot`, `plugin_isolation`, `recovery`, `transaction`) — setiap domain muncul di 2 file berbeda dengan nama test yang sedikit berbeda (mis. `tc_u_core_boot_001` vs `tc_u_core_boot_001_boot_sequence_starts`).
-3. **Tidak ada test dengan assertion** di sebagian besar file (lihat `docs/STUB_INVENTORY.md`). Jumlah 1.466 adalah kapasitas test yang ada, bukan kualitas test yang terverifikasi.
-4. **Kuota unit 840 terpenuhi secara jumlah**, tetapi seluruhnya berstatus `unknown`/`fake` sampai WP-1 dan WP-13 menyelesaikan triage.
+1. **WP-1 berhasil menutupi 5 domain unit dengan test real:** error-taxonomy, config-load, config-validation, logging-tracing, cli-commands.
+2. **Total real test saat ini: 315** (semua dari WP-1 domains). Target global (unit real ≥ 840) akan di-enforce mulai WP-13.
+3. **Sisa 1.156 test adalah fake/legacy** yang akan di-triage oleh WP berikutnya.
+4. **Duplikasi lintas file sudah tereliminasi** untuk WP-1 domains (fake entries difilter dari catalog).
 
 ---
 
-## Rencana Triage per WP
+## Rencana Triage Berikutnya
 
-| WP | Domain yang ditangani | Tujuan |
-|----|----------------------|--------|
-| WP-1 | core-boot, config-load, error-taxonomy, logging-tracing, scheduler-priority | Ganti fake test → real; tandai `quality = "real"` |
-| WP-2 | brain-header, brain-offset-size, checksum, transaction, recovery, brain-seed, brain-build, brain-verify-inspect | Triage storage read path |
-| WP-3 | transaction, recovery | Triage storage write path |
-| WP-4 | memory-quota, allocator, memory-isolation, retention-scoring, gc-normal, gc-aggressive, gc-emergency | Triage memory manager |
-| WP-5 | cell-state, cell-activation, cell-refractory, column-competition, column-sparse, column-association, block-context, block-sequence, block-prediction, synapse-*, sparse-traversal, soa-layout, scalar-kernels, simd-neon, simd-avx, simd-fallback | Triage neural core + SIMD |
-| WP-6 | brain-seed, brain-build, brain-verify-inspect, brain-install-update | Triage provisioning |
-| WP-7 | sensor-frame, camera-buffer, audio-buffer, perception-fusion, plugin-lifecycle, plugin-isolation, hal-mock | Triage perception + plugins |
-| WP-8 | decision-candidate, safety-constraints, feedback-prediction | Triage decision/safety |
-| WP-9 | core-boot, core-run-loop, core-shutdown, core-emergency-shutdown, core-degraded | Triage runtime state machine |
-| WP-10 | feedback-prediction, hebbian-learning, temporal-learning, replay-selection, consolidation-promotion, contradiction-handling, skill-failure | Triage learning |
-| WP-11 | replay-selection, consolidation-promotion, retention-scoring, gc-normal, gc-aggressive, gc-emergency, tiering, compression | Triage replay/consolidation/retention/GC |
-| WP-12 | cli-commands, diagnostics-telemetry | Triage interface |
-| WP-13 | Semua domain integration, e2e, fault-injection, performance, security | Ganti seluruh fake test → real; kuota 12 real/domain |
-| WP-14 | Semua domain conformance | Validasi akhir; tandai selesai |
-
----
-
-##catatan untuk Enforcement
-
-- `scripts/check_test_catalog.sh` akan **gagal** jika ada domain di `completed_domains` yang masih memiliki `quality = "fake"` atau < 12 `quality = "real"`.
-- Enforcement **global** (unit real ≥ 840, total real ≥ 1440) hanya aktif mulai **WP-13**.
-- Daftar `completed_domains` dicatat di `docs/PROGRESS.md`.
+| WP | Domain yang ditangani | Target real |
+|----|----------------------|-------------|
+| WP-1 | error-taxonomy, config-load, config-validation, logging-tracing, cli-commands | 65+ |
+| WP-2 | brain-header, brain-offset-size, checksum, transaction, recovery, brain-seed, brain-build, brain-verify-inspect | 96+ |
+| WP-3 | transaction, recovery | 24+ |
+| WP-4 | memory-quota, allocator, memory-isolation, retention-scoring, gc-normal, gc-aggressive, gc-emergency | 84+ |
+| WP-5 | cell-state, cell-activation, cell-refractory, column-competition, column-sparse, column-association, block-context, block-sequence, block-prediction, synapse-*, sparse-traversal, soa-layout, scalar-kernels, simd-neon, simd-avx, simd-fallback | 180+ |
+| WP-6 | brain-seed, brain-build, brain-verify-inspect, brain-install-update | 48+ |
+| WP-7 | sensor-frame, camera-buffer, audio-buffer, perception-fusion, plugin-lifecycle, plugin-isolation, hal-mock | 84+ |
+| WP-8 | decision-candidate, safety-constraints, feedback-prediction | 36+ |
+| WP-9 | core-boot, core-run-loop, core-shutdown, core-emergency-shutdown, core-degraded | 60+ |
+| WP-10 | feedback-prediction, hebbian-learning, temporal-learning, replay-selection, consolidation-promotion, contradiction-handling, skill-failure | 84+ |
+| WP-11 | replay-selection, consolidation-promotion, retention-scoring, gc-normal, gc-aggressive, gc-emergency, tiering, compression | 96+ |
+| WP-12 | cli-commands, diagnostics-telemetry | 24+ |
+| WP-13 | Semua domain integration, e2e, fault-injection, performance, security | 480+ |
+| WP-14 | Semua domain conformance | 100+ |

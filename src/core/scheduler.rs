@@ -86,10 +86,10 @@ impl BoundedQueue {
                 }
                 BackpressurePolicy::Reject => {
                     self.dropped_count += 1;
-                    return Err(Error::Other("Queue full, rejected".to_string()));
+                    return Err(Error::InternalOther("Queue full, rejected".to_string()));
                 }
                 BackpressurePolicy::Block => {
-                    return Err(Error::Other("Queue full, block".to_string()));
+                    return Err(Error::InternalOther("Queue full, block".to_string()));
                 }
                 BackpressurePolicy::Sample => {
                     if self.queue.len() > 1 {
@@ -194,7 +194,7 @@ impl Scheduler {
         let queue = self
             .queues
             .get_mut(&task.priority)
-            .ok_or_else(|| Error::Other("Unknown priority class".to_string()))?;
+            .ok_or_else(|| Error::InternalOther("Unknown priority class".to_string()))?;
         queue.push(task)
     }
 
