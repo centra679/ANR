@@ -5,6 +5,7 @@ use crate::error::{Error, Result};
 
 use super::checksum::compute_header_checksum;
 use super::validate::validate_header;
+use super::{SUPERBLOCK_BACKUP_OFFSET, SUPERBLOCK_OFFSET};
 
 const BRAIN_MAGIC: &[u8; 4] = b"ANRB";
 const BRAIN_FORMAT_VERSION: u32 = 1;
@@ -13,46 +14,31 @@ const BRAIN_HEADER_SIZE: u32 = 288;
 
 #[derive(Debug, Clone)]
 pub struct BrainHeader {
-    // Magic and version
     pub magic: [u8; 4],
     pub format_version: u32,
     pub header_size: u32,
     pub flags: u32,
-
-    // File size
     pub total_size: u64,
-
-    // Generation (transaction number - must be monotonic)
     pub generation: u64,
-
-    // Section offsets and sizes (must be 4096-aligned)
     pub cortex_offset: u64,
     pub cortex_size: u64,
     pub cerebellum_offset: u64,
     pub cerebellum_size: u64,
     pub hippocampus_offset: u64,
     pub hippocampus_size: u64,
-
-    // Index and metadata
     pub index_offset: u64,
     pub index_size: u64,
     pub metadata_offset: u64,
     pub metadata_size: u64,
     pub allocation_table_offset: u64,
     pub allocation_table_size: u64,
-
-    // Section table
     pub section_table_offset: u64,
     pub section_table_count: u32,
     pub block_size: u32,
-
-    // Checksum config
-    pub checksum_algo: u8, // 0=BLAKE3, 1=CRC32C
+    pub checksum_algo: u8,
     pub checksum_scope: u8,
-
-    // Checksums (calculated over entire superblock + sections)
     pub header_crc: u32,
-    pub checksum: [u8; 32], // BLAKE3 or CRC32 result
+    pub checksum: [u8; 32],
 }
 
 impl BrainHeader {
@@ -79,14 +65,13 @@ impl BrainHeader {
             section_table_offset: 0,
             section_table_count: 3,
             block_size: BRAIN_BLOCK_SIZE,
-            checksum_algo: 0, // BLAKE3
+            checksum_algo: 0,
             checksum_scope: 0,
             header_crc: 0,
             checksum: [0u8; 32],
         }
     }
 
-    /// Read header from file path
     pub fn read(path: &std::path::Path) -> Result<Self> {
         use std::fs::File;
         use std::io::Read as StdRead;
@@ -101,7 +86,6 @@ impl BrainHeader {
         Self::deserialize(&buf)
     }
 
-    /// Write header to file path
     pub fn write(&self, path: &std::path::Path) -> Result<()> {
         use std::fs::File;
         use std::io::Write as StdWrite;
@@ -116,77 +100,159 @@ impl BrainHeader {
         Ok(())
     }
 
-    /// Serialize header to binary format
-    /// AC §48: Header layout must be strict binary format
+    /// Write header atomically: backup first, fsync, then primary, fsync.
+    /// This implements AC §45 transactional write contract.
+    pub fn write_atomic(&mut self, path: &std::path::Path) -> Result<()> {
+        use std::fs::OpenOptions;
+        use std::io::{Seek, SeekFrom, Write};
+
+        let data = self.serialize();
+
+        let mut file = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .truncate(false)
+            .open(path)
+            .map_err(|e| {
+                Error::StorageWriteFailed(format!("Cannot open file for atomic write: {}", e))
+            })?;
+
+        let backup_offset = SUPERBLOCK_BACKUP_OFFSET;
+        file.seek(SeekFrom::Start(backup_offset)).map_err(|e| {
+            Error::StorageWriteFailed(format!("Cannot seek to backup offset: {}", e))
+        })?;
+        file.write_all(&data).map_err(|e| {
+            Error::StorageWriteFailed(format!("Cannot write backup superblock: {}", e))
+        })?;
+        file.sync_all().map_err(|e| {
+            Error::StorageFsyncFailed(format!("fsync after backup write failed: {}", e))
+        })?;
+
+        file.seek(SeekFrom::Start(SUPERBLOCK_OFFSET)).map_err(|e| {
+            Error::StorageWriteFailed(format!("Cannot seek to primary offset: {}", e))
+        })?;
+        file.write_all(&data).map_err(|e| {
+            Error::StorageWriteFailed(format!("Cannot write primary superblock: {}", e))
+        })?;
+        file.sync_all().map_err(|e| {
+            Error::StorageFsyncFailed(format!("fsync after primary write failed: {}", e))
+        })?;
+
+        Ok(())
+    }
+
+    /// Write only the backup superblock (used during recovery prep)
+    pub fn write_backup(&self, path: &std::path::Path) -> Result<()> {
+        use std::fs::OpenOptions;
+        use std::io::{Seek, SeekFrom, Write};
+
+        let data = self.serialize();
+
+        let mut file = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .truncate(false)
+            .open(path)
+            .map_err(|e| {
+                Error::StorageWriteFailed(format!("Cannot open file for backup write: {}", e))
+            })?;
+
+        let backup_offset = SUPERBLOCK_BACKUP_OFFSET;
+        file.seek(SeekFrom::Start(backup_offset)).map_err(|e| {
+            Error::StorageWriteFailed(format!("Cannot seek to backup offset: {}", e))
+        })?;
+        file.write_all(&data).map_err(|e| {
+            Error::StorageWriteFailed(format!("Cannot write backup superblock: {}", e))
+        })?;
+        file.sync_all().map_err(|e| {
+            Error::StorageFsyncFailed(format!("fsync after backup write failed: {}", e))
+        })?;
+
+        Ok(())
+    }
+
+    /// Write section data at the specified offset
+    pub fn write_section_data(path: &std::path::Path, offset: u64, data: &[u8]) -> Result<()> {
+        use std::fs::OpenOptions;
+        use std::io::{Seek, SeekFrom, Write};
+
+        let mut file = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .truncate(false)
+            .open(path)
+            .map_err(|e| {
+                Error::StorageWriteFailed(format!("Cannot open file for section write: {}", e))
+            })?;
+
+        file.seek(SeekFrom::Start(offset)).map_err(|e| {
+            Error::StorageWriteFailed(format!("Cannot seek to section offset: {}", e))
+        })?;
+        file.write_all(data)
+            .map_err(|e| Error::StorageWriteFailed(format!("Cannot write section data: {}", e)))?;
+        file.sync_all().map_err(|e| {
+            Error::StorageFsyncFailed(format!("fsync after section write failed: {}", e))
+        })?;
+
+        Ok(())
+    }
+
+    /// Read header from backup superblock location
+    pub fn read_backup(path: &std::path::Path) -> Result<Self> {
+        use std::fs::File;
+        use std::io::{Read, Seek, SeekFrom};
+
+        let mut file = File::open(path).map_err(|e| {
+            Error::StorageBackupCorrupt(format!("Cannot open file for backup read: {}", e))
+        })?;
+
+        file.seek(SeekFrom::Start(SUPERBLOCK_BACKUP_OFFSET))
+            .map_err(|e| {
+                Error::StorageBackupCorrupt(format!("Cannot seek to backup offset: {}", e))
+            })?;
+
+        let mut buf = vec![0u8; BRAIN_HEADER_SIZE as usize];
+        file.read_exact(&mut buf).map_err(|e| {
+            Error::StorageBackupCorrupt(format!("Cannot read backup header: {}", e))
+        })?;
+
+        Self::deserialize(&buf)
+    }
+
     pub fn serialize(&self) -> Vec<u8> {
         let mut buf = Vec::with_capacity(BRAIN_HEADER_SIZE as usize);
 
-        // Magic (4)
         buf.extend_from_slice(&self.magic);
-
-        // Format version (4)
         buf.extend_from_slice(&self.format_version.to_le_bytes());
-
-        // Header size (4)
         buf.extend_from_slice(&self.header_size.to_le_bytes());
-
-        // Flags (4)
         buf.extend_from_slice(&self.flags.to_le_bytes());
-
-        // Total size (8)
         buf.extend_from_slice(&self.total_size.to_le_bytes());
-
-        // Generation (8)
         buf.extend_from_slice(&self.generation.to_le_bytes());
-
-        // Cortex (8+8)
         buf.extend_from_slice(&self.cortex_offset.to_le_bytes());
         buf.extend_from_slice(&self.cortex_size.to_le_bytes());
-
-        // Cerebellum (8+8)
         buf.extend_from_slice(&self.cerebellum_offset.to_le_bytes());
         buf.extend_from_slice(&self.cerebellum_size.to_le_bytes());
-
-        // Hippocampus (8+8)
         buf.extend_from_slice(&self.hippocampus_offset.to_le_bytes());
         buf.extend_from_slice(&self.hippocampus_size.to_le_bytes());
-
-        // Index (8+8)
         buf.extend_from_slice(&self.index_offset.to_le_bytes());
         buf.extend_from_slice(&self.index_size.to_le_bytes());
-
-        // Metadata (8+8)
         buf.extend_from_slice(&self.metadata_offset.to_le_bytes());
         buf.extend_from_slice(&self.metadata_size.to_le_bytes());
-
-        // Allocation table (8+8)
         buf.extend_from_slice(&self.allocation_table_offset.to_le_bytes());
         buf.extend_from_slice(&self.allocation_table_size.to_le_bytes());
-
-        // Section table (8+4)
         buf.extend_from_slice(&self.section_table_offset.to_le_bytes());
         buf.extend_from_slice(&self.section_table_count.to_le_bytes());
-
-        // Block size (4)
         buf.extend_from_slice(&self.block_size.to_le_bytes());
-
-        // Checksum algo and scope (1+1)
         buf.push(self.checksum_algo);
         buf.push(self.checksum_scope);
-
-        // Reserved (102)
         buf.extend_from_slice(&[0u8; 102]);
-
-        // Header CRC (4)
         buf.extend_from_slice(&self.header_crc.to_le_bytes());
-
-        // Reserved (4)
         buf.extend_from_slice(&[0u8; 4]);
-
-        // Checksum (32)
         buf.extend_from_slice(&self.checksum);
 
-        // Pad to header_size
         while buf.len() < BRAIN_HEADER_SIZE as usize {
             buf.push(0);
         }
@@ -194,7 +260,6 @@ impl BrainHeader {
         buf
     }
 
-    /// Deserialize header from binary
     pub fn deserialize(buf: &[u8]) -> Result<Self> {
         if buf.len() < BRAIN_HEADER_SIZE as usize {
             return Err(Error::BrainValidation("Header too short".to_string()));
@@ -202,14 +267,12 @@ impl BrainHeader {
 
         let mut pos = 0;
 
-        // Magic
         let magic = [buf[pos], buf[pos + 1], buf[pos + 2], buf[pos + 3]];
         if magic != *BRAIN_MAGIC {
             return Err(Error::BrainValidation("Invalid magic number".to_string()));
         }
         pos += 4;
 
-        // Version
         let format_version =
             u32::from_le_bytes([buf[pos], buf[pos + 1], buf[pos + 2], buf[pos + 3]]);
         if format_version != BRAIN_FORMAT_VERSION {
@@ -220,7 +283,6 @@ impl BrainHeader {
         }
         pos += 4;
 
-        // Parse remaining fields
         let header_size = u32::from_le_bytes([buf[pos], buf[pos + 1], buf[pos + 2], buf[pos + 3]]);
         pos += 4;
 
@@ -251,7 +313,6 @@ impl BrainHeader {
         ]);
         pos += 8;
 
-        // Parse section offsets
         let cortex_offset = u64::from_le_bytes([
             buf[pos],
             buf[pos + 1],
@@ -413,14 +474,11 @@ impl BrainHeader {
         let checksum_scope = buf[pos];
         pos += 1;
 
-        // Skip reserved (102 bytes)
         pos += 102;
 
-        // Header CRC
         let header_crc = u32::from_le_bytes([buf[pos], buf[pos + 1], buf[pos + 2], buf[pos + 3]]);
-        pos += 4 + 4; // Skip 4 bytes of reserved
+        pos += 4 + 4;
 
-        // Checksum
         let mut checksum = [0u8; 32];
         checksum.copy_from_slice(&buf[pos..pos + 32]);
 
@@ -453,12 +511,10 @@ impl BrainHeader {
         })
     }
 
-    /// Validate header integrity using AC §44 rules
     pub fn validate(&self) -> Result<()> {
         validate_header(self)
     }
 
-    /// Generate BLAKE3 checksum for header
     pub fn compute_checksum(&mut self) -> [u8; 32] {
         let header_bytes = self.serialize();
         let hash = compute_header_checksum(&header_bytes);

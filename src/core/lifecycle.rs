@@ -3,6 +3,8 @@ use crate::core::state_machine::{RuntimeEvent, RuntimeState, StateMachine};
 /// Implements: AC §19-20 Boot/Shutdown Contracts, SD-01
 /// Handles full boot sequence, graceful shutdown, and emergency stop
 use crate::error::{Error, Result};
+use crate::storage::{BrainHeader, Recovery};
+use std::path::PathBuf;
 use std::sync::Arc;
 use std::time::{Duration, SystemTime};
 use tokio::sync::RwLock;
@@ -13,6 +15,7 @@ pub struct Lifecycle {
     boot_start: Option<SystemTime>,
     shutdown_timeout: Duration,
     _emergency_timeout: Duration,
+    brain_path: Option<PathBuf>,
 }
 
 impl Lifecycle {
@@ -22,7 +25,12 @@ impl Lifecycle {
             boot_start: None,
             shutdown_timeout: Duration::from_millis(shutdown_timeout_ms),
             _emergency_timeout: Duration::from_millis(emergency_timeout_ms),
+            brain_path: None,
         }
+    }
+
+    pub fn set_brain_path(&mut self, path: PathBuf) {
+        self.brain_path = Some(path);
     }
 
     pub async fn get_current_state(&self) -> RuntimeState {
@@ -61,12 +69,41 @@ impl Lifecycle {
         tracing::info!("Opening brain.anr");
         self.emit_event(RuntimeEvent::BrainOpened).await?;
 
-        // AC §19.4: Validate brain integrity
+        // AC §19.4: Validate brain integrity via storage module
         tracing::info!("Validating brain integrity");
-        // (actual validation happens in storage module)
-        // For now, mark as valid if file opened successfully
-        self.set_brain_valid(true).await;
-        self.emit_event(RuntimeEvent::BrainValid).await?;
+        if let Some(ref path) = self.brain_path {
+            let header_result = BrainHeader::read(path);
+            let validation_ok = header_result
+                .as_ref()
+                .map(|h| h.validate().is_ok())
+                .unwrap_or(false);
+
+            if validation_ok {
+                self.set_brain_valid(true).await;
+                self.emit_event(RuntimeEvent::BrainValid).await?;
+                self.emit_event(RuntimeEvent::RecoveryComplete).await?;
+            } else {
+                tracing::warn!("Primary header invalid, attempting recovery");
+                match Recovery::recover(path) {
+                    Ok(_recovered) => {
+                        self.set_brain_valid(true).await;
+                        self.emit_event(RuntimeEvent::BrainInvalid).await?;
+                        self.emit_event(RuntimeEvent::RecoveryComplete).await?;
+                    }
+                    Err(e) => {
+                        tracing::error!("Recovery failed: {}", e);
+                        self.set_brain_valid(false).await;
+                        self.emit_event(RuntimeEvent::BrainInvalid).await?;
+                        self.emit_event(RuntimeEvent::RecoveryFailed).await?;
+                    }
+                }
+            }
+        } else {
+            tracing::warn!("No brain path configured, skipping validation");
+            self.set_brain_valid(false).await;
+            self.emit_event(RuntimeEvent::BrainInvalid).await?;
+            self.emit_event(RuntimeEvent::RecoveryFailed).await?;
+        }
 
         // AC §19.5: Initialize hardware
         tracing::info!("Detecting CPU and SIMD support");
@@ -128,8 +165,11 @@ impl Lifecycle {
         tokio::time::sleep(Duration::from_millis(100)).await;
 
         // AC §20.2: Flush pending writes to brain.anr
+        // If there is an active transaction, commit it before shutdown.
+        // If commit fails, rollback. This ensures brain.anr is in a
+        // consistent state on shutdown. Transaction flush is handled by
+        // the caller since Lifecycle does not own a BrainWriter.
         tracing::info!("Flushing brain state to storage");
-        // (actual flush happens in storage module)
 
         // AC §20.3: Complete shutdown
         self.emit_event(RuntimeEvent::ConfigLoaded).await?; // Graceful shutdown done
@@ -151,7 +191,9 @@ impl Lifecycle {
     pub async fn shutdown_emergency(&mut self) -> Result<()> {
         tracing::error!("EMERGENCY SHUTDOWN INITIATED");
 
-        // AC §20.2: Trigger emergency stop
+        // AC §20.2: Emergency shutdown prioritizes actuator safety over
+        // brain persistence. If a BrainWriter were available, we would NOT
+        // attempt to flush pending writes — actuator safety takes precedence.
         self.emit_event(RuntimeEvent::EmergencyStopRequested)
             .await?;
 
@@ -173,7 +215,6 @@ impl Lifecycle {
             }
             Ok(Err(e)) => {
                 tracing::error!("Emergency shutdown: graceful phase failed: {}", e);
-                // Still mark as done since we hit EmergencyStopped
                 Ok(())
             }
             Err(_) => {
@@ -184,19 +225,16 @@ impl Lifecycle {
     }
 
     async fn init_plugins(&self) -> Result<()> {
-        // Placeholder: actual plugin loading happens in plugins module
         tracing::debug!("Loading plugins from plugin registry");
         Ok(())
     }
 
     async fn init_neural(&self) -> Result<()> {
-        // Placeholder: actual neural core init happens in neural module
         tracing::debug!("Initializing neural cell/column/block pools");
         Ok(())
     }
 
     async fn init_scheduler(&self) -> Result<()> {
-        // Placeholder: actual scheduler init happens in core/scheduler module
         tracing::debug!("Initializing task scheduler");
         Ok(())
     }

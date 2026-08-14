@@ -49,6 +49,21 @@ pub enum Error {
     #[error("ANR-E-STORAGE-004: IO error: {0}")]
     StorageIo(#[from] std::io::Error),
 
+    #[error("ANR-E-STORAGE-005: storage write failed: {0}")]
+    StorageWriteFailed(String),
+
+    #[error("ANR-E-STORAGE-006: storage fsync failed: {0}")]
+    StorageFsyncFailed(String),
+
+    #[error("ANR-E-STORAGE-007: storage backup corrupt: {0}")]
+    StorageBackupCorrupt(String),
+
+    #[error("ANR-E-STORAGE-008: storage transaction conflict")]
+    StorageTransactionConflict,
+
+    #[error("ANR-E-STORAGE-009: storage recovery failed: {0}")]
+    StorageRecoveryFailed(String),
+
     // BRAIN
     #[error("ANR-E-BRAIN-001: brain not valid: {0}")]
     BrainNotValid(String),
@@ -189,6 +204,10 @@ impl PartialEq for Error {
             (ConfigInvalid(a), ConfigInvalid(b))
             | (ConfigNotFound(a), ConfigNotFound(b))
             | (StorageHeaderCorrupt(a), StorageHeaderCorrupt(b))
+            | (StorageWriteFailed(a), StorageWriteFailed(b))
+            | (StorageFsyncFailed(a), StorageFsyncFailed(b))
+            | (StorageBackupCorrupt(a), StorageBackupCorrupt(b))
+            | (StorageRecoveryFailed(a), StorageRecoveryFailed(b))
             | (BrainNotValid(a), BrainNotValid(b))
             | (BrainError(a), BrainError(b))
             | (BrainValidation(a), BrainValidation(b))
@@ -230,6 +249,7 @@ impl PartialEq for Error {
             | (InternalOther(a), InternalOther(b)) => a == b,
             (StorageChecksumMismatch, StorageChecksumMismatch)
             | (StorageCorruptGeneration, StorageCorruptGeneration)
+            | (StorageTransactionConflict, StorageTransactionConflict)
             | (ActuatorRejected, ActuatorRejected) => true,
             (
                 MemoryQuotaExceeded {
@@ -267,6 +287,7 @@ impl Error {
             Error::InternalFatal(_)
             | Error::StorageCorruptGeneration
             | Error::StorageChecksumMismatch
+            | Error::StorageRecoveryFailed(_)
             | Error::InternalRuntimeBootFailed(_)
             | Error::InternalRuntimeEmergencyStopFailed(_)
             | Error::SafetyNotReady(_)
@@ -279,12 +300,16 @@ impl Error {
             | Error::MemoryAllocationFailed(_)
             | Error::MemoryGCFailed(_)
             | Error::SafetyViolation(_)
+            | Error::StorageFsyncFailed(_)
+            | Error::StorageBackupCorrupt(_)
             | Error::InternalRuntimeStateTransitionInvalid(_)
             | Error::ActuatorRejected => Severity::High,
 
             Error::ConfigInvalid(_)
             | Error::ConfigNotFound(_)
             | Error::StorageHeaderCorrupt(_)
+            | Error::StorageWriteFailed(_)
+            | Error::StorageTransactionConflict
             | Error::BrainError(_)
             | Error::ValidationInvalid(_)
             | Error::ValidationSchema(_)
@@ -321,6 +346,7 @@ impl Error {
             Error::InternalFatal(_)
                 | Error::StorageCorruptGeneration
                 | Error::StorageChecksumMismatch
+                | Error::StorageRecoveryFailed(_)
                 | Error::InternalRuntimeBootFailed(_)
                 | Error::InternalRuntimeEmergencyStopFailed(_)
                 | Error::SafetyNotReady(_)

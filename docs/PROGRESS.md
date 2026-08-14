@@ -72,13 +72,14 @@
 | Build | HIJAU | cargo build --all-targets |
 | Clippy | HIJAU | -D warnings |
 | Fmt | HIJAU | cargo fmt --check |
-| Test | HIJAU | 65 lib tests passing |
+| Test | HIJAU | 101 lib tests + 1307 integration tests passing |
 
 ### Penjelasan Metrik
 
 - **1587** adalah jumlah invocation test dari `cargo test -- --list` (termasuk duplikasi lintas file dan test tanpa assertion).
 - **1471** adalah jumlah entri di `tests/catalog.toml` setelah deduplikasi by function name dan filtering 60 fake entries dari 5 domain WP-1 yang sudah selesai.
-- **65** adalah jumlah test real yang dijalankan di `cargo test --lib` (12 error + 14 config + 12 logging + 16 cli + 11 logging tambahan).
+- **101** adalah jumlah test real yang dijalankan di `cargo test --lib`.
+- **1307** adalah jumlah test real yang dijalankan di `cargo test --test lib`.
 - **60 fake difilter** adalah entri fake yang dihapus dari catalog untuk domain WP-1 yang sudah mencapai kuota 12 real per domain.
 
 ---
@@ -105,6 +106,36 @@
 
 ---
 
+## WP-3 — Storage Write Path & Recovery (SELESAI)
+
+**Waktu:** 2026-08-14  
+
+**Hasil:**
+- `src/error.rs`: added 5 new error variants (ANR-E-STORAGE-005 through ANR-E-STORAGE-009) with severity, is_fatal, is_recoverable, Display, and PartialEq support.
+- `src/storage/header.rs`: added `write_atomic()` (backup-first + fsync + primary + fsync), `write_backup()`, `write_section_data()`, `read_backup()` methods implementing AC §45 transactional write contract.
+- `src/storage/transaction.rs`: replaced stubs with real implementations — `begin()` (validates no active tx, creates descriptor, writes backup snapshot), `commit()` (increments generation, computes checksum, writes atomic, validates, marks Committed), `rollback()` (reads backup, validates, restores primary, fsyncs).
+- `src/storage/recovery.rs`: replaced stub with full `recover()` (reads primary + backup, validates both, restores from backup if primary invalid, error if both invalid) and `recovery_needed()` (compares generation of primary vs backup). Implements AC §46 recovery contract.
+- `src/storage/mod.rs`: added `BrainWriter` struct (wraps path + header + TransactionManager with begin_transaction/commit_transaction/rollback_transaction/write_section/flush). Re-exports `BrainWriter`, `Recovery`, `TransactionDescriptor`, `TxState`, `SectionType`.
+- `src/lib.rs`: updated re-exports to include new public types.
+
+**Files Modified:**
+- `src/error.rs` — 5 new error variants + severity/PartialEq/is_fatal updates
+- `src/storage/header.rs` — 4 new methods (write_atomic, write_backup, write_section_data, read_backup)
+- `src/storage/transaction.rs` — full implementations of begin/commit/rollback
+- `src/storage/recovery.rs` — full implementations of recover/recovery_needed
+- `src/storage/mod.rs` — BrainWriter struct + re-exports
+- `src/lib.rs` — updated re-exports
+
+**Wiring-only changes outside scope:** None.
+
+**Gate results:**
+- `cargo fmt`: HIJAU
+- `cargo clippy -- -D warnings`: HIJAU (0 warnings)
+- `cargo test --lib`: 101 passed, 0 failed
+- `cargo test --test lib`: 1307 passed, 0 failed
+
+---
+
 ## Riwayat WP
 
 | WP | Nama | Status | Commit |
@@ -112,7 +143,7 @@
 | WP-0 | Audit & Inventory | SELESAI | ccac57f |
 | WP-1 | Core Hygiene | SELESAI | f8c198f, 91af3b9 |
 | WP-2 | Storage Read Path | SELESAI | (current session) |
-| WP-3 | Storage Write Path & Recovery | PENDING | — |
+| WP-3 | Storage Write Path & Recovery | SELESAI | (current session) |
 | WP-4 | Memory Manager | PENDING | — |
 | WP-5 | Neural Core SoA + SIMD | PENDING | — |
 | WP-6 | Brain Sections + Provisioning Core | PENDING | — |

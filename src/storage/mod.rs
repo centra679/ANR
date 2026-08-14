@@ -15,15 +15,16 @@ pub mod fixture_tests;
 
 pub use builder::BrainBuilder;
 pub use checksum::{compute_blake3, verify_blake3, ChecksumScope};
+pub use format::SectionType;
 pub use header::BrainHeader;
 pub use inspect::{dump_header_json, dump_header_text, inspect_brain, InspectFormat};
 pub use recovery::Recovery;
-pub use transaction::TransactionManager;
+pub use transaction::{TransactionDescriptor, TransactionManager, TxState};
 pub use validate::validate_header;
 pub use validator::BrainValidator;
 
-use crate::Result;
-use std::path::Path;
+use crate::error::{Error, Result};
+use std::path::{Path, PathBuf};
 
 /// Magic bytes for brain.anr files
 pub const BRAIN_MAGIC: &[u8] = b"ANRB";
@@ -54,5 +55,73 @@ impl BrainFile {
 
     pub fn header(&self) -> &BrainHeader {
         &self.header
+    }
+}
+
+pub struct BrainWriter {
+    path: PathBuf,
+    header: BrainHeader,
+    tx_manager: TransactionManager,
+}
+
+impl BrainWriter {
+    pub fn open(path: &Path) -> Result<Self> {
+        let header = BrainHeader::read(path)?;
+        let tm = TransactionManager::new(header.generation);
+        Ok(Self {
+            path: path.to_path_buf(),
+            header,
+            tx_manager: tm,
+        })
+    }
+
+    pub fn header(&self) -> &BrainHeader {
+        &self.header
+    }
+
+    pub fn header_mut(&mut self) -> &mut BrainHeader {
+        &mut self.header
+    }
+
+    pub fn begin_transaction(&mut self) -> Result<()> {
+        self.tx_manager.begin(&self.header, &self.path)?;
+        Ok(())
+    }
+
+    pub fn commit_transaction(&mut self) -> Result<()> {
+        self.tx_manager.commit(&mut self.header, &self.path)
+    }
+
+    pub fn rollback_transaction(&mut self) -> Result<()> {
+        self.tx_manager.rollback(&self.path)
+    }
+
+    pub fn write_section(&mut self, section_type: SectionType, data: &[u8]) -> Result<()> {
+        let offset = match section_type {
+            SectionType::Cortex => self.header.cortex_offset,
+            SectionType::Cerebellum => self.header.cerebellum_offset,
+            SectionType::Hippocampus => self.header.hippocampus_offset,
+        };
+
+        if offset == 0 {
+            return Err(Error::StorageWriteFailed(format!(
+                "Section {:?} has zero offset",
+                section_type
+            )));
+        }
+
+        BrainHeader::write_section_data(&self.path, offset, data)?;
+
+        match section_type {
+            SectionType::Cortex => self.header.cortex_size = data.len() as u64,
+            SectionType::Cerebellum => self.header.cerebellum_size = data.len() as u64,
+            SectionType::Hippocampus => self.header.hippocampus_size = data.len() as u64,
+        }
+
+        Ok(())
+    }
+
+    pub fn flush(&mut self) -> Result<()> {
+        self.header.write_atomic(&self.path)
     }
 }

@@ -56,31 +56,89 @@ impl TransactionManager {
         }
     }
 
-    pub fn begin(&mut self) -> TransactionDescriptor {
+    /// Begin a new transaction: validate no active tx, create descriptor,
+    /// write backup superblock as snapshot of current state
+    pub fn begin(
+        &mut self,
+        header: &crate::storage::BrainHeader,
+        path: &std::path::Path,
+    ) -> Result<&TransactionDescriptor> {
+        if self.current_tx.is_some() {
+            return Err(Error::StorageTransactionConflict);
+        }
+
         let tx = TransactionDescriptor::new(self.current_generation + 1, self.current_generation);
-        self.current_tx = Some(tx.clone());
-        tx
+
+        header.write_backup(path)?;
+
+        self.current_tx = Some(tx);
+        Ok(self.current_tx.as_ref().unwrap())
     }
 
-    pub fn commit(&mut self, checksum: [u8; 32]) -> Result<TransactionDescriptor> {
+    /// Commit transaction: update header with new generation,
+    /// write atomic (backup + primary), validate, return committed descriptor
+    pub fn commit(
+        &mut self,
+        header: &mut crate::storage::BrainHeader,
+        path: &std::path::Path,
+    ) -> Result<()> {
         let mut tx = self
             .current_tx
-            .clone()
-            .ok_or_else(|| Error::InternalTransactionError("No active transaction".to_string()))?;
-        tx.checksum = checksum;
+            .take()
+            .ok_or(Error::StorageTransactionConflict)?;
+
+        header.generation = tx.generation;
+        let _hash = header.compute_checksum();
+
+        header.write_atomic(path)?;
+
+        header.validate()?;
+
+        tx.checksum = header.checksum;
         tx.state = TxState::Committed;
         let now_secs = SystemTime::now()
             .duration_since(UNIX_EPOCH)
             .map(|d| d.as_secs())
             .unwrap_or(0);
         tx.committed_at = Some(now_secs);
+
         self.current_generation = tx.generation;
-        self.current_tx = None;
-        Ok(tx)
+        Ok(())
     }
 
-    pub fn rollback(&mut self) -> Result<()> {
-        if let Some(_tx) = self.current_tx.take() {}
+    /// Rollback: restore from backup superblock
+    pub fn rollback(&mut self, path: &std::path::Path) -> Result<()> {
+        let _tx = self
+            .current_tx
+            .take()
+            .ok_or(Error::StorageTransactionConflict)?;
+
+        let backup_header = crate::storage::BrainHeader::read_backup(path)?;
+
+        backup_header.validate()?;
+
+        let data = backup_header.serialize();
+        use std::fs::OpenOptions;
+        use std::io::{Seek, SeekFrom, Write};
+
+        let mut file = OpenOptions::new()
+            .read(true)
+            .write(true)
+            .open(path)
+            .map_err(|e| {
+                Error::StorageWriteFailed(format!("Cannot open file for rollback: {}", e))
+            })?;
+
+        file.seek(SeekFrom::Start(0)).map_err(|e| {
+            Error::StorageWriteFailed(format!("Cannot seek to primary offset: {}", e))
+        })?;
+        file.write_all(&data).map_err(|e| {
+            Error::StorageWriteFailed(format!("Cannot write primary during rollback: {}", e))
+        })?;
+        file.sync_all().map_err(|e| {
+            Error::StorageFsyncFailed(format!("fsync during rollback failed: {}", e))
+        })?;
+
         Ok(())
     }
 

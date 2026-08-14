@@ -14,6 +14,8 @@ pub mod memory_tests;
 pub mod neural_tests;
 pub mod perception_tests;
 pub mod plugin_tests;
+pub mod recovery_tests;
 pub mod security_tests;
 pub mod simd_tests;
 pub mod storage_tests;
+pub mod transaction_tests;

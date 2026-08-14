@@ -52,6 +52,7 @@ plugins-static = []
 plugins-dynamic = []
 android-support = []
 
+
 [[test]]
 name = "integration"
 path = "tests/integration/all_domains.rs"
@@ -59,3 +60,7 @@ path = "tests/integration/all_domains.rs"
 [[test]]
 name = "e2e"
 path = "tests/e2e/all_scenarios.rs"
+
+[[test]]
+name = "unit"
+path = "tests/unit/mod.rs"
