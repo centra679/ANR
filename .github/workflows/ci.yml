@@ -1,0 +1,211 @@
+# CI/CD Pipeline Configuration
+# ANR - Autonomous Neural Runtime
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  # Test job - runs all test suites
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-gnu
+      
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      
+      - name: Cache cargo index
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+      
+      - name: Cache cargo build
+        uses: actions/cache@v3
+        with:
+          path: target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+      
+      - name: Build
+        run: cargo build --verbose
+      
+      - name: Run all tests
+        run: cargo test --verbose
+        env:
+          RUST_LOG: debug
+
+  # Linting and formatting job
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      
+      - name: Clippy lints
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+  # Security audit job
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rustsec/audit-check-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  # Architecture compliance job
+  conformance:
+    name: Architecture Conformance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      
+      - name: Build library
+        run: cargo build --lib --verbose
+      
+      - name: Run conformance tests
+        run: cargo test --test conformance --verbose
+        env:
+          RUST_LOG: debug
+
+  # Test coverage job
+  coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      
+      - name: Install tarpaulin
+        run: cargo install cargo-tarpaulin
+      
+      - name: Generate coverage
+        run: cargo tarpaulin --out Xml --timeout 300
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./cobertura.xml
+
+  # Test count validation job
+  test-gate:
+    name: Test Count Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      
+      - name: Count tests
+        run: |
+          echo "Counting unit tests..."
+          UNIT_COUNT=$(grep -r "#\[test\]" tests/unit/ | wc -l)
+          echo "Unit tests: $UNIT_COUNT"
+          
+          if [ $UNIT_COUNT -lt 840 ]; then
+            echo "ERROR: Unit tests ($UNIT_COUNT) below minimum (840)"
+            exit 1
+          fi
+          
+          echo "Counting integration tests..."
+          INT_COUNT=$(grep -r "#\[test\]" tests/integration/ | wc -l)
+          echo "Integration tests: $INT_COUNT"
+          
+          if [ $INT_COUNT -lt 200 ]; then
+            echo "ERROR: Integration tests ($INT_COUNT) below minimum (200)"
+            exit 1
+          fi
+          
+          echo "Counting E2E tests..."
+          E2E_COUNT=$(grep -r "#\[test\]" tests/e2e/ | wc -l)
+          echo "E2E tests: $E2E_COUNT"
+          
+          if [ $E2E_COUNT -lt 120 ]; then
+            echo "ERROR: E2E tests ($E2E_COUNT) below minimum (120)"
+            exit 1
+          fi
+          
+          TOTAL=$((UNIT_COUNT + INT_COUNT + E2E_COUNT))
+          echo "Total: $TOTAL tests (minimum: 1440)"
+          
+          if [ $TOTAL -lt 1440 ]; then
+            echo "ERROR: Total tests below minimum"
+            exit 1
+          fi
+          
+          echo "✓ All test gates passed!"
+
+  # Performance benchmark job
+  benchmark:
+    name: Performance Benchmarks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      
+      - name: Run performance tests
+        run: cargo test --test performance --verbose
+        env:
+          RUST_LOG: info
+
+  # Build documentation
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      
+      - name: Build docs
+        run: cargo doc --no-deps --verbose
+
+  # Release build job (only on tags)
+  release:
+    name: Release Build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      
+      - name: Build release
+        run: cargo build --release
+      
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/anr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # All checks must pass before merging
+  final-check:
+    name: Final Check
+    runs-on: ubuntu-latest
+    needs: [test, lint, audit, conformance, test-gate]
+    steps:
+      - name: All checks passed ✓
+        run: echo "All CI checks passed successfully!"

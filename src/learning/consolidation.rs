@@ -1,0 +1,2 @@
+/// Consolidation
+pub struct Consolidation;
