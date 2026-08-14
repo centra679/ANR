@@ -1,6 +1,5 @@
 pub mod builder;
 pub mod checksum;
-pub mod format;
 /// Storage Module - brain.anr binary format and IO
 /// Implements: AC §5 (Single Brain Contract), SD-03, AC §44-45
 pub mod header;
@@ -8,20 +7,17 @@ pub mod inspect;
 pub mod recovery;
 pub mod transaction;
 pub mod validate;
-pub mod validator;
 
 #[cfg(test)]
 pub mod fixture_tests;
 
 pub use builder::BrainBuilder;
 pub use checksum::{compute_blake3, verify_blake3, ChecksumScope};
-pub use format::SectionType;
 pub use header::BrainHeader;
 pub use inspect::{dump_header_json, dump_header_text, inspect_brain, InspectFormat};
 pub use recovery::Recovery;
 pub use transaction::{TransactionDescriptor, TransactionManager, TxState};
 pub use validate::validate_header;
-pub use validator::BrainValidator;
 
 use crate::error::{Error, Result};
 use std::path::{Path, PathBuf};
@@ -34,6 +30,26 @@ pub const FORMAT_VERSION: u32 = 1;
 /// Primary superblock location
 pub const SUPERBLOCK_OFFSET: u64 = 0;
 pub const SUPERBLOCK_BACKUP_OFFSET: u64 = BLOCK_SIZE;
+
+/// Section type identifier for brain.anr sections (SD-03 §3.4.2)
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u8)]
+pub enum SectionType {
+    Cortex = 1,
+    Cerebellum = 2,
+    Hippocampus = 3,
+}
+
+impl SectionType {
+    pub fn from_u8(value: u8) -> Option<Self> {
+        match value {
+            1 => Some(SectionType::Cortex),
+            2 => Some(SectionType::Cerebellum),
+            3 => Some(SectionType::Hippocampus),
+            _ => None,
+        }
+    }
+}
 
 pub struct BrainFile {
     path: std::path::PathBuf,
@@ -50,7 +66,8 @@ impl BrainFile {
     }
 
     pub fn validate(&self) -> Result<()> {
-        BrainValidator::validate(&self.path)
+        let header = BrainHeader::read(&self.path)?;
+        header.validate()
     }
 
     pub fn header(&self) -> &BrainHeader {

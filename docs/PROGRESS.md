@@ -1,8 +1,8 @@
 # PROGRESS
 
-**Sesi Saat Ini:** WP-3 — Storage Write Path & Recovery  
-**Status Awal:** WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai  
-**Sesi Berikutnya:** WP-4 — Memory Manager  
+*Sesi Saat Ini:* WP-4 — Memory Manager  
+*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai  
+*Sesi Berikutnya:* WP-5 — Neural Core SoA + SIMD  
 
 ---
 
@@ -65,8 +65,8 @@
 | Real | 315 | Test dengan assertion |
 | Fake (legacy) | 1.156 | Test tanpa assertion / stub |
 | Unknown | 0 | Semua sudah dikategorikan |
-| Unit real | 315 | Target global 840 (di-enforce mulai WP-13) |
-| Domain kanonik | 46 | Dari 136 generated domain |
+| Unit real | 339 | Target global 840 (di-enforce mulai WP-13) |
+| Domain kanonik | 48 | Dari 136 generated domain; +2: transaction, recovery |
 | Domain WP-1 selesai | 5 | error-taxonomy, config-load, config-validation, logging-tracing, cli-commands |
 | Fake difilter | 60 | Dari domain WP-1 yang sudah selesai |
 | Build | HIJAU | cargo build --all-targets |
@@ -109,30 +109,19 @@
 ## WP-3 — Storage Write Path & Recovery (SELESAI)
 
 **Waktu:** 2026-08-14  
+**Commit:** 08c9ad9
 
 **Hasil:**
-- `src/error.rs`: added 5 new error variants (ANR-E-STORAGE-005 through ANR-E-STORAGE-009) with severity, is_fatal, is_recoverable, Display, and PartialEq support.
-- `src/storage/header.rs`: added `write_atomic()` (backup-first + fsync + primary + fsync), `write_backup()`, `write_section_data()`, `read_backup()` methods implementing AC §45 transactional write contract.
-- `src/storage/transaction.rs`: replaced stubs with real implementations — `begin()` (validates no active tx, creates descriptor, writes backup snapshot), `commit()` (increments generation, computes checksum, writes atomic, validates, marks Committed), `rollback()` (reads backup, validates, restores primary, fsyncs).
-- `src/storage/recovery.rs`: replaced stub with full `recover()` (reads primary + backup, validates both, restores from backup if primary invalid, error if both invalid) and `recovery_needed()` (compares generation of primary vs backup). Implements AC §46 recovery contract.
-- `src/storage/mod.rs`: added `BrainWriter` struct (wraps path + header + TransactionManager with begin_transaction/commit_transaction/rollback_transaction/write_section/flush). Re-exports `BrainWriter`, `Recovery`, `TransactionDescriptor`, `TxState`, `SectionType`.
-- `src/lib.rs`: updated re-exports to include new public types.
+- `src/storage/header.rs`: atomic dual-copy write (backup + fsync + primary + fsync)
+- `src/storage/transaction.rs`: real begin/commit/rollback with disk persistence
+- `src/storage/recovery.rs`: recover from backup superblock, detect power-loss
+- `src/storage/mod.rs`: BrainWriter struct for write-path operations
+- `src/error.rs`: 5 new storage error variants
+- `src/core/lifecycle.rs`: boot validates brain, shutdown documents flush
+- 12 transaction tests + 12 recovery tests (24 real tests)
+- CI: catalog-check validates transaction + recovery domains
 
-**Files Modified:**
-- `src/error.rs` — 5 new error variants + severity/PartialEq/is_fatal updates
-- `src/storage/header.rs` — 4 new methods (write_atomic, write_backup, write_section_data, read_backup)
-- `src/storage/transaction.rs` — full implementations of begin/commit/rollback
-- `src/storage/recovery.rs` — full implementations of recover/recovery_needed
-- `src/storage/mod.rs` — BrainWriter struct + re-exports
-- `src/lib.rs` — updated re-exports
-
-**Wiring-only changes outside scope:** None.
-
-**Gate results:**
-- `cargo fmt`: HIJAU
-- `cargo clippy -- -D warnings`: HIJAU (0 warnings)
-- `cargo test --lib`: 101 passed, 0 failed
-- `cargo test --test lib`: 1307 passed, 0 failed
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery"]`
 
 ---
 
@@ -143,7 +132,7 @@
 | WP-0 | Audit & Inventory | SELESAI | ccac57f |
 | WP-1 | Core Hygiene | SELESAI | f8c198f, 91af3b9 |
 | WP-2 | Storage Read Path | SELESAI | (current session) |
-| WP-3 | Storage Write Path & Recovery | SELESAI | (current session) |
+| WP-3 | Storage Write Path & Recovery | SELESAI | 08c9ad9 |
 | WP-4 | Memory Manager | PENDING | — |
 | WP-5 | Neural Core SoA + SIMD | PENDING | — |
 | WP-6 | Brain Sections + Provisioning Core | PENDING | — |

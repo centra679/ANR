@@ -55,8 +55,8 @@
 |------|-------|-------|-----------|--------|
 | `src/storage/builder.rs` | 17 | `build_from_seed` menulis header kosong, tidak parsing seed | WP-6 | OPEN |
 | `src/storage/validator.rs` | 23 | `validate` delegasi ke stub `verify_file` | WP-2 | DONE |
-| `src/storage/recovery.rs` | 10 | `recover_from_backup` body kosong | WP-3 | OPEN |
-| `src/storage/transaction.rs` | 84 | `rollback` body kosong (hanya `take()`) | WP-3 | OPEN |
+| `src/storage/recovery.rs` | 10 | `recover_from_backup` body kosong | WP-3 | DONE |
+| `src/storage/transaction.rs` | 84 | `rollback` body kosong (hanya `take()`) | WP-3 | DONE |
 | `src/interface/diagnostics.rs` | 14 | `run_diagnostic` print hardcoded, tidak ada diagnostik nyata | WP-12 | OPEN |
 | `src/core/mod.rs` | 132 | `perception_cycle` stub dengan komentar placeholder | WP-9 | OPEN |
 | `src/core/mod.rs` | 63, 114, 145 | `load_config`, `boot` (akhir), `shutdown` tidak memanggil subsystem nyata | WP-9 | OPEN |
@@ -148,8 +148,8 @@
 | `src/core/mod.rs` | 117-128 | `main_loop` adalah infinite sleep loop tanpa sense/perceive/decide/act; melanggar AC §18 Autonomous Loop Contract | WP-9 | OPEN |
 | `src/storage/header.rs` | 454-510 | `validate()` tidak memeriksa `total_size`, `generation`, `checksum` match, `allocation_table_*`, `metadata_*`, `section_table_offset`, atau cross-section boundary overlap — AC §44 tidak terpenuhi penuh | WP-2 | DONE |
 | `src/storage/builder.rs` | 8-17 | `build_from_seed` hanya menulis header kosong; tidak ada TLV record construction, tidak ada seed parsing, tidak ada section allocation — AC §49 tidak terpenuhi | WP-6 | OPEN |
-| `src/storage/transaction.rs` | 82-85 | `rollback` body kosong; tidak ada isolation region corrupt, tidak ada generation fallback — AC §45 tidak terpenuhi | WP-3 | OPEN |
-| `src/storage/recovery.rs` | 8-11 | `recover_from_backup` body kosong; tidak ada recovery logic — AC §43 tidak terpenuhi | WP-3 | OPEN |
+| `src/storage/transaction.rs` | 82-85 | `rollback` body kosong; tidak ada isolation region corrupt, tidak ada generation fallback — AC §45 tidak terpenuhi | WP-3 | DONE |
+| `src/storage/recovery.rs` | 8-11 | `recover_from_backup` body kosong; tidak ada recovery logic — AC §43 tidak terpenuhi | WP-3 | DONE |
 | `src/neural/graph.rs` | 7-8 | `SparseGraph` menggunakan `HashMap<u32, Vec<u32>>` untuk adjacency — bukan layout SoA, tidak mendukung SIMD, melanggar AC §16 | WP-5 | OPEN |
 | `src/error.rs` | 1-167 | Error taxonomy tidak sesuai SD-16: hilang variant CONFIG, STORAGE, BRAIN, VALIDATION, MEMORY, NEURAL, LEARNING, PERCEPTION, PLUGIN, HAL, ACTUATOR, SAFETY, INTERNAL; tidak ada kode ANR-E-* | WP-1 | OPEN |
 | `Cargo.toml` | 29, 34-36 | `tokio` dengan feature `full` (termasuk networking), `anyhow`, `rand`, `parking_lot`, `crossbeam` tanpa justifikasi di DECISIONS.md; `lazy_static`, `once_cell` juga tanpa justifikasi | WP-1 | OPEN |

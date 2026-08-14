@@ -24,6 +24,6 @@ pub use brain::Brain;
 pub use core::Runtime;
 pub use neural::NeuralCore;
 pub use storage::{
-    inspect_brain, validate_header, BrainFile, BrainHeader, BrainValidator, BrainWriter,
-    ChecksumScope, InspectFormat, Recovery, TransactionDescriptor, TransactionManager, TxState,
+    inspect_brain, validate_header, BrainFile, BrainHeader, BrainWriter, ChecksumScope,
+    InspectFormat, Recovery, TransactionDescriptor, TransactionManager, TxState,
 };

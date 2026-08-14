@@ -41,11 +41,9 @@ async fn main() -> anr::Result<()> {
                 println!("Brain initialized: {}", output.display());
             }
             anr::interface::cli::BrainAction::Verify { brain } => {
-                let valid = anr::storage::BrainValidator::verify_file(&brain)?;
-                println!(
-                    "Brain verification: {}",
-                    if valid { "OK" } else { "FAILED" }
-                );
+                let header = anr::storage::BrainHeader::read(&brain)?;
+                header.validate()?;
+                println!("Brain verification: OK");
             }
             anr::interface::cli::BrainAction::Inspect { brain, format } => {
                 let fmt = match format.as_str() {
