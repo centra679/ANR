@@ -1,6 +1,5 @@
 /// Hippocampus - Episodic Experience Memory
 /// Implements: AC §9
-
 pub struct Hippocampus;
 
 impl Hippocampus {

@@ -12,7 +12,7 @@ pub struct Lifecycle {
     state_machine: Arc<RwLock<StateMachine>>,
     boot_start: Option<SystemTime>,
     shutdown_timeout: Duration,
-    emergency_timeout: Duration,
+    _emergency_timeout: Duration,
 }
 
 impl Lifecycle {
@@ -21,7 +21,7 @@ impl Lifecycle {
             state_machine: Arc::new(RwLock::new(StateMachine::new())),
             boot_start: None,
             shutdown_timeout: Duration::from_millis(shutdown_timeout_ms),
-            emergency_timeout: Duration::from_millis(emergency_timeout_ms),
+            _emergency_timeout: Duration::from_millis(emergency_timeout_ms),
         }
     }
 

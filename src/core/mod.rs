@@ -10,9 +10,9 @@ pub use state_machine::RuntimeState;
 
 /// Runtime lifecycle and state management
 pub struct Runtime {
-    brain_path: PathBuf,
+    _brain_path: PathBuf,
     state: RuntimeState,
-    config: RuntimeConfig,
+    _config: RuntimeConfig,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -35,7 +35,7 @@ impl Default for RuntimeConfig {
 }
 
 impl Runtime {
-    pub fn new(brain_path: &PathBuf, config_path: Option<PathBuf>) -> Result<Self> {
+    pub fn new(brain_path: &std::path::Path, config_path: Option<PathBuf>) -> Result<Self> {
         let config = if let Some(path) = config_path {
             Self::load_config(&path)?
         } else {
@@ -43,9 +43,9 @@ impl Runtime {
         };
 
         Ok(Self {
-            brain_path: brain_path.clone(),
+            _brain_path: brain_path.to_path_buf(),
             state: RuntimeState::PoweredOff,
-            config,
+            _config: config,
         })
     }
 

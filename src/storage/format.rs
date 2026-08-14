@@ -1,6 +1,6 @@
 /// brain.anr Format specifications
 /// Implements: AC §5, SD-03
-use crate::storage::{BrainHeader, BLOCK_SIZE};
+use crate::storage::BLOCK_SIZE;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum RecordType {
@@ -50,16 +50,11 @@ impl SectionType {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum ChecksumAlgorithm {
+    #[default]
     Blake3 = 0,
     Crc32c = 1,
-}
-
-impl Default for ChecksumAlgorithm {
-    fn default() -> Self {
-        ChecksumAlgorithm::Blake3
-    }
 }
 
 pub struct BrainFormat;

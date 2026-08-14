@@ -74,7 +74,7 @@ pub struct StateMachine {
     previous: RuntimeState,
     brain_valid: bool,
     safety_ready: bool,
-    maintenance_active: bool,
+    _maintenance_active: bool,
 }
 
 impl StateMachine {
@@ -84,7 +84,7 @@ impl StateMachine {
             previous: RuntimeState::PoweredOff,
             brain_valid: false,
             safety_ready: false,
-            maintenance_active: false,
+            _maintenance_active: false,
         }
     }
 
@@ -240,11 +240,10 @@ impl StateMachine {
         }
 
         // Emergency stop must be reachable from Running/Degraded
-        if matches!(event, RuntimeEvent::EmergencyStopRequested) {
-            if !matches!(from, RuntimeState::Running | RuntimeState::Degraded) {
-                // Allow from most states as fail-safe
-                tracing::warn!("Emergency stop from non-operational state: {}", from);
-            }
+        if matches!(event, RuntimeEvent::EmergencyStopRequested)
+            && !matches!(from, RuntimeState::Running | RuntimeState::Degraded)
+        {
+            tracing::warn!("Emergency stop from non-operational state: {}", from);
         }
 
         Ok(())

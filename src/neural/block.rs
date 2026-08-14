@@ -94,7 +94,7 @@ impl BlockPool {
         if idx < self.prediction_score.len() {
             self.prediction_score[idx] = predicted;
             let error = (predicted - actual).abs();
-            let current_error = self.state.get(idx).copied().unwrap_or(0) as f32 / 255.0;
+            let _current_error = self.state.get(idx).copied().unwrap_or(0) as f32 / 255.0;
             let new_error = (error * 255.0).clamp(0.0, 255.0) as u8;
             if let Some(s) = self.state.get_mut(idx) {
                 *s = new_error;

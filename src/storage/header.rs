@@ -2,7 +2,6 @@
 /// Implements: AC §48, SD-03 §3.4.1
 /// Complete binary format with BLAKE3 checksum and validation
 use crate::error::{Error, Result};
-use std::io::{Read, Write};
 
 const BRAIN_MAGIC: &[u8; 4] = b"ANRB";
 const BRAIN_FORMAT_VERSION: u32 = 1;
@@ -476,17 +475,25 @@ impl BrainHeader {
         }
 
         // Offsets must be 4096-aligned for main sections
-        if self.cortex_offset > 0 && self.cortex_offset % BRAIN_BLOCK_SIZE as u64 != 0 {
+        if self.cortex_offset > 0 && !self.cortex_offset.is_multiple_of(BRAIN_BLOCK_SIZE as u64) {
             return Err(Error::BrainValidation(
                 "Cortex offset not aligned".to_string(),
             ));
         }
-        if self.cerebellum_offset > 0 && self.cerebellum_offset % BRAIN_BLOCK_SIZE as u64 != 0 {
+        if self.cerebellum_offset > 0
+            && !self
+                .cerebellum_offset
+                .is_multiple_of(BRAIN_BLOCK_SIZE as u64)
+        {
             return Err(Error::BrainValidation(
                 "Cerebellum offset not aligned".to_string(),
             ));
         }
-        if self.hippocampus_offset > 0 && !self.hippocampus_offset.is_multiple_of(BRAIN_BLOCK_SIZE as u64) {
+        if self.hippocampus_offset > 0
+            && !self
+                .hippocampus_offset
+                .is_multiple_of(BRAIN_BLOCK_SIZE as u64)
+        {
             return Err(Error::BrainValidation(
                 "Hippocampus offset not aligned".to_string(),
             ));
@@ -507,7 +514,7 @@ impl BrainHeader {
         let data = self.serialize();
         // Only checksum up to the checksum field (256 bytes)
         let hash = blake3::hash(&data[0..256]);
-        let result = hash.as_bytes().clone();
+        let result = *hash.as_bytes();
         self.checksum = result;
         result
     }

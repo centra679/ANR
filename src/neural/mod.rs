@@ -12,24 +12,7 @@ pub use column::Column;
 pub use graph::SparseGraph;
 pub use synapse::{Synapse, SynapseTable};
 
-use crate::Result;
-
+#[derive(Default)]
 pub struct NeuralCore {
-    graph: SparseGraph,
-}
-
-impl NeuralCore {
-    pub fn new() -> Result<Self> {
-        Ok(Self {
-            graph: SparseGraph::new(),
-        })
-    }
-}
-
-impl Default for NeuralCore {
-    fn default() -> Self {
-        Self {
-            graph: SparseGraph::new(),
-        }
-    }
+    _graph: SparseGraph,
 }

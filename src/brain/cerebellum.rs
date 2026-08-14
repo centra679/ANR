@@ -1,6 +1,5 @@
 /// Cerebellum - Procedural Skill Memory
 /// Implements: AC §8
-
 pub struct Cerebellum;
 
 impl Cerebellum {

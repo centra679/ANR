@@ -198,7 +198,7 @@ impl Scheduler {
         queue.push(task)
     }
 
-    pub fn next(&mut self) -> Option<Task> {
+    pub fn dequeue(&mut self) -> Option<Task> {
         for priority in [
             PriorityClass::Realtime,
             PriorityClass::High,

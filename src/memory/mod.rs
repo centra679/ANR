@@ -10,13 +10,13 @@ pub use quota::MemoryQuota;
 use crate::Result;
 
 pub struct MemoryManager {
-    quota: MemoryQuota,
+    _quota: MemoryQuota,
 }
 
 impl MemoryManager {
     pub fn new(max_bytes: u64) -> Result<Self> {
         Ok(Self {
-            quota: MemoryQuota::new(max_bytes),
+            _quota: MemoryQuota::new(max_bytes),
         })
     }
 }
@@ -24,7 +24,7 @@ impl MemoryManager {
 impl Default for MemoryManager {
     fn default() -> Self {
         Self {
-            quota: MemoryQuota::new(1024 * 1024 * 100), // 100MB default
+            _quota: MemoryQuota::new(1024 * 1024 * 100), // 100MB default
         }
     }
 }

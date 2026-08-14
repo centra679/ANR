@@ -1,6 +1,5 @@
 /// Garbage collector
 /// Implements: AC §29-30
-
 pub struct GarbageCollector;
 
 impl GarbageCollector {

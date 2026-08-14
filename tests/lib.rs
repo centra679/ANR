@@ -16,13 +16,13 @@ pub use catalog::TestCatalog;
 
 /// Test infrastructure
 pub struct TestFramework {
-    catalog: TestCatalog,
+    _catalog: TestCatalog,
 }
 
 impl TestFramework {
     pub fn new() -> Self {
         Self {
-            catalog: TestCatalog::load(),
+            _catalog: TestCatalog::load(),
         }
     }
 }

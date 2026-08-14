@@ -1,6 +1,5 @@
 /// Macro for generating domain tests
-/// This macro generates all 840 unit tests across 70 domains
-
+// This macro generates all 840 unit tests across 70 domains
 /// Test generation macro
 /// Usage: generate_tests!(domain_name, group_a, test_count)
 #[macro_export]

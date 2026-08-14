@@ -178,6 +178,6 @@ impl SynapseTable {
     }
 
     pub fn iter(&self) -> impl Iterator<Item = usize> {
-        (0..self.weight.len())
+        0..self.weight.len()
     }
 }

@@ -80,9 +80,7 @@ impl TransactionManager {
     }
 
     pub fn rollback(&mut self) -> Result<()> {
-        if let Some(mut tx) = self.current_tx.take() {
-            tx.state = TxState::Failed;
-        }
+        if let Some(_tx) = self.current_tx.take() {}
         Ok(())
     }
 
