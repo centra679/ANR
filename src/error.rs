@@ -9,6 +9,24 @@ pub enum Error {
     #[error("Runtime state error: {0}")]
     RuntimeState(String),
 
+    #[error("Runtime state transition invalid: {0}")]
+    RuntimeStateTransitionInvalid(String),
+
+    #[error("Runtime boot failed: {0}")]
+    RuntimeBootFailed(String),
+
+    #[error("Runtime shutdown failed: {0}")]
+    RuntimeShutdownFailed(String),
+
+    #[error("Runtime emergency stop failed: {0}")]
+    RuntimeEmergencyStopFailed(String),
+
+    #[error("Brain not valid: {0}")]
+    BrainNotValid(String),
+
+    #[error("Safety not ready: {0}")]
+    SafetyNotReady(String),
+
     #[error("Configuration error: {0}")]
     ConfigError(String),
 
@@ -133,6 +151,10 @@ impl Error {
                 | Error::CorruptGeneration
                 | Error::RecoveryImpossible(_)
                 | Error::ChecksumMismatch
+                | Error::RuntimeBootFailed(_)
+                | Error::RuntimeEmergencyStopFailed(_)
+                | Error::SafetyNotReady(_)
+                | Error::BrainNotValid(_)
         )
     }
 
