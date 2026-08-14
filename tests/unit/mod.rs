@@ -1,5 +1,6 @@
 pub mod action_tests;
 pub mod cli_tests;
+pub mod builder_tests;
 /// Unit Tests
 /// 840 unit tests across 70 domains
 pub mod core_tests;
