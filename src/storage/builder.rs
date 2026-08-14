@@ -10,8 +10,10 @@ impl BrainBuilder {
             return Err(crate::Error::BrainError("Seed file not found".to_string()));
         }
 
-        // Create new brain.anr from seed
-        let header = super::header::BrainHeader::new();
+        // Create new brain.anr from seed — no sections allocated yet
+        let mut header = super::header::BrainHeader::new();
+        header.cortex_offset = 0;
+        header.compute_checksum();
         header.write(output_path)?;
 
         Ok(())

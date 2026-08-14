@@ -1,7 +1,7 @@
 # PROGRESS
 
 *Sesi Saat Ini:* WP-4 — Memory Manager  
-*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai  
+*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai  
 *Sesi Berikutnya:* WP-5 — Neural Core SoA + SIMD  
 
 ---
@@ -61,26 +61,27 @@
 
 | Metrik | Nilai | Keterangan |
 |--------|-------|------------|
-| Total test (catalog.toml) | 1.471 | Gabungan real + fake |
-| Real | 315 | Test dengan assertion |
-| Fake (legacy) | 1.156 | Test tanpa assertion / stub |
-| Unknown | 0 | Semua sudah dikategorikan |
-| Unit real | 339 | Target global 840 (di-enforce mulai WP-13) |
-| Domain kanonik | 48 | Dari 136 generated domain; +2: transaction, recovery |
-| Domain WP-1 selesai | 5 | error-taxonomy, config-load, config-validation, logging-tracing, cli-commands |
-| Fake difilter | 60 | Dari domain WP-1 yang sudah selesai |
+| Total test invocations | 3.265 | Dari `cargo test -- --list` |
+| Total catalog entries | 1.451 | Setelah filter 20 fake trans/recovery |
+| Real | 173 | Test dengan assertion |
+| Fake (legacy) | 1.274 | Test tanpa assertion / stub |
+| Unknown | 4 | Belum dikategorikan |
+| Unit real | 173 (catalog strict) / 101 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
+| Domain kanonik | 11 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) |
+| Fake difilter | 80 | 60 WP-1 + 20 trans/recovery |
 | Build | HIJAU | cargo build --all-targets |
 | Clippy | HIJAU | -D warnings |
 | Fmt | HIJAU | cargo fmt --check |
-| Test | HIJAU | 101 lib tests + 1307 integration tests passing |
+| Test | HIJAU | 101 lib tests + 1443 integration tests passing |
 
 ### Penjelasan Metrik
 
-- **1587** adalah jumlah invocation test dari `cargo test -- --list` (termasuk duplikasi lintas file dan test tanpa assertion).
-- **1471** adalah jumlah entri di `tests/catalog.toml` setelah deduplikasi by function name dan filtering 60 fake entries dari 5 domain WP-1 yang sudah selesai.
+- **3265** adalah jumlah invocation test dari `cargo test -- --list`.
+- **1451** adalah jumlah entri di `tests/catalog.toml` setelah filtering 80 fake entries (60 WP-1 + 20 trans/recovery).
 - **101** adalah jumlah test real yang dijalankan di `cargo test --lib`.
-- **1307** adalah jumlah test real yang dijalankan di `cargo test --test lib`.
-- **60 fake difilter** adalah entri fake yang dihapus dari catalog untuk domain WP-1 yang sudah mencapai kuota 12 real per domain.
+- **1443** adalah jumlah test real yang dijalankan di `cargo test --test lib`.
+- **80 fake difilter** adalah entri fake yang dihapus dari catalog untuk domain yang sudah selesai (kuota 12 real per domain).
+- **BLOK-R**: fix `tc_u_builder_006` — `build_from_seed` menghasilkan header dengan `cortex_offset=4096` tetapi `cortex_size=0`, melanggar `validate_section_sizes`. Fix: set `cortex_offset=0` di builder. Filter 20 fake entries dari transaction/recovery domains.
 
 ---
 
@@ -125,6 +126,18 @@
 
 ---
 
+## BLOK-R — Finalization (SELESAI)
+
+**Waktu:** 2026-08-14
+
+**Hasil:**
+- Fix `tc_u_builder_006`: `build_from_seed` menghasilkan header dengan `cortex_offset=4096` tetapi `cortex_size=0`, gagal validasi `validate_section_sizes`. Fix: set `cortex_offset=0` di builder.
+- Filter 20 fake entries dari `tests/catalog.toml` (10 transaction + 10 recovery) sehingga completed domain validation bersih.
+- Semua 12 builder tests pass.
+- Gate: fmt + clippy + test + catalog-check + coverage-check semua HIJAU.
+
+---
+
 ## Riwayat WP
 
 | WP | Nama | Status | Commit |
@@ -133,6 +146,7 @@
 | WP-1 | Core Hygiene | SELESAI | f8c198f, 91af3b9, a8fb95d |
 | WP-2 | Storage Read Path | SELESAI | 96a09ca |
 | WP-3 | Storage Write Path & Recovery | SELESAI | 08c9ad9 |
+| BLOK-R | Finalization | SELESAI | (sesi ini) |
 | WP-4 | Memory Manager | PENDING | — |
 | WP-5 | Neural Core SoA + SIMD | PENDING | — |
 | WP-6 | Brain Sections + Provisioning Core | PENDING | — |
