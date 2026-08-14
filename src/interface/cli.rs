@@ -1,8 +1,61 @@
 /// CLI Argument Parsing and Command Routing
 /// Aligns with: AC §56, DEC-005
 use crate::error::{Error, Result};
+use crate::interface::diagnostics;
+use crate::storage::{self, BrainHeader, InspectFormat};
 use clap::Parser;
 use std::path::PathBuf;
+
+pub async fn run() -> crate::Result<()> {
+    let args = Cli::parse();
+
+    if args.verbose {
+        crate::core::logging::set_log_level("debug");
+    } else {
+        crate::core::logging::init_logging();
+    }
+
+    args.validate()?;
+
+    match args.command {
+        Some(Commands::Run { maintenance }) => {
+            let mut runtime = crate::core::Runtime::new(&args.brain, args.config)?;
+            runtime.run(maintenance).await?;
+        }
+        Some(Commands::Brain { action }) => match action {
+            BrainAction::Init { output } => {
+                let mut header = BrainHeader::new();
+                header.cortex_offset = 0;
+                header.compute_checksum();
+                header.write(&output)?;
+                println!("Brain initialized: {}", output.display());
+            }
+            BrainAction::Verify { brain } => {
+                let header = BrainHeader::read(&brain)?;
+                header.validate()?;
+                println!("Brain verification: OK");
+            }
+            BrainAction::Inspect { brain, format } => {
+                let fmt = match format.as_str() {
+                    "json" => InspectFormat::Json,
+                    _ => InspectFormat::Text,
+                };
+                let output = storage::inspect_brain(&brain, fmt)?;
+                println!("{}", output);
+            }
+        },
+        Some(Commands::Diag { action }) => {
+            let runtime = crate::core::Runtime::new(&args.brain, args.config)?;
+            diagnostics::run_diagnostic(&runtime, &action).await?;
+        }
+        None => {
+            let mut runtime = crate::core::Runtime::new(&args.brain, args.config)?;
+            runtime.run(false).await?;
+        }
+    }
+
+    Ok(())
+}
 
 /// ANR - Autonomous Neural Runtime
 #[derive(Parser, Debug, Clone)]
