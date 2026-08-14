@@ -265,3 +265,21 @@ A-4. Blok metrik kanonik wajib di setiap LAPORAN SESI dan PROGRESS.md:
      delta_explanation.
 A-5. Adaptasi environment (tooling, absence of binaries) wajib masuk
      docs/DECISIONS.md sebagai DEC-xxx.
+
+
+## 10. Amendemen v1.2
+
+A-6. Setiap WP WAJIB mencapai line coverage ≥90% untuk seluruh file
+     yang ia miliki; modul critical (storage/, memory/, brain/,
+     neural/, action/, core/) ≥95%. Diukur sebelum commit WP.
+A-7. CI coverage job WAJIB enforce bertahap melalui
+     docs/coverage_gate.toml: threshold per-file untuk modul milik
+     completed domains. Threshold global (overall ≥85%, critical
+     ≥95%) aktif mulai WP-13. Coverage job yang hanya report =
+     non-conformance.
+A-8. File berisi kode dengan coverage <10% diklasifikasikan
+     "untested-implementation" (half-done) dan WAJIB masuk
+     STUB_INVENTORY dengan WP pemilik. Dua implementasi untuk satu
+     fungsi WAJIB dikonsolidasi; yang mati dihapus.
+A-9. Domain yang sudah ditandai completed tetapi file miliknya
+     <90% coverage WAJIB di-reopen di PROGRESS.md.
