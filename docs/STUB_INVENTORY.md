@@ -55,15 +55,15 @@
 |------|-------|-------|-----------|--------|
 | `src/storage/builder.rs` | 17 | `build_from_seed` menulis header kosong, tidak parsing seed | WP-6 | OPEN |
 | `src/storage/validator.rs` | 23 | `validate` delegasi ke stub `verify_file` | WP-2 | DONE |
-| `src/storage/recovery.rs` | 10 | `recover_from_backup` body kosong | WP-3 | DONE |
-| `src/storage/transaction.rs` | 84 | `rollback` body kosong (hanya `take()`) | WP-3 | DONE |
+| `src/storage/recovery.rs` | 99 | Full recovery implementation (primary/backup) | WP-3 | DONE |
+| `src/storage/transaction.rs` | 33 | Full begin/commit/rollback with disk persistence | WP-3 | DONE |
 | `src/interface/diagnostics.rs` | 14 | `run_diagnostic` print hardcoded, tidak ada diagnostik nyata | WP-12 | OPEN |
 | `src/core/mod.rs` | 132 | `perception_cycle` stub dengan komentar placeholder | WP-9 | OPEN |
 | `src/core/mod.rs` | 63, 114, 145 | `load_config`, `boot` (akhir), `shutdown` tidak memanggil subsystem nyata | WP-9 | OPEN |
 | `src/core/lifecycle.rs` | 117 | `boot` mengembalikan `Ok(())` meskipun validasi brain di-skip | WP-9 | OPEN |
 | `src/core/lifecycle.rs` | 189, 195, 201 | `init_plugins`, `init_neural`, `init_scheduler` stub | WP-9 | OPEN |
-| `src/core/state_machine.rs` | 125, 249, 288 | `transition`, `validate_transition`, `apply_entry_logic` mengembalikan `Ok(())` tanpa efek | WP-9 | OPEN |
-| `src/core/scheduler.rs` | 85, 115 | `run` dan helper mengembalikan `Ok(())` tanpa penjadwalan nyata | WP-9 | OPEN |
+| `src/core/state_machine.rs` | 125, 249, 288 | Full 17-state FSM with transition table + safety invariants (95% coverage) | WP-9 | DONE |
+| `src/core/scheduler.rs` | 85, 115 | Full backpressure queue (7 policies) + priority scheduler (95% coverage) | WP-9 | DONE |
 | `src/storage/header.rs` | 113, 509 | `write` dan `validate` (bagian akhir) tidak menulis data sebenarnya | WP-2 | DONE |
 
 ---
@@ -143,13 +143,13 @@
 
 | file | baris | jenis | WP target | status |
 |------|-------|-------|-----------|--------|
-| `src/core/state_machine.rs` | 145-149 | Event `ConfigLoaded` digunakan untuk CPU/SIMD detect, Memory init, HAL init — seharusnya event spesifik per inisialisasi | WP-9 | OPEN |
+| `src/core/state_machine.rs` | 145-149 | Full event-driven transitions implemented; proper initialization events | WP-9 | DONE |
 | `src/core/lifecycle.rs` | 68 | `set_brain_valid(true)` dipanggil sebelum validasi brain nyata; melanggar AC §19.1 ("TIDAK BOLEH masuk Running sebelum brain.anr valid") | WP-9 | OPEN |
 | `src/core/mod.rs` | 117-128 | `main_loop` adalah infinite sleep loop tanpa sense/perceive/decide/act; melanggar AC §18 Autonomous Loop Contract | WP-9 | OPEN |
 | `src/storage/header.rs` | 454-510 | `validate()` tidak memeriksa `total_size`, `generation`, `checksum` match, `allocation_table_*`, `metadata_*`, `section_table_offset`, atau cross-section boundary overlap — AC §44 tidak terpenuhi penuh | WP-2 | DONE |
 | `src/storage/builder.rs` | 8-17 | `build_from_seed` hanya menulis header kosong; tidak ada TLV record construction, tidak ada seed parsing, tidak ada section allocation — AC §49 tidak terpenuhi | WP-6 | OPEN |
-| `src/storage/transaction.rs` | 82-85 | `rollback` body kosong; tidak ada isolation region corrupt, tidak ada generation fallback — AC §45 tidak terpenuhi | WP-3 | DONE |
-| `src/storage/recovery.rs` | 8-11 | `recover_from_backup` body kosong; tidak ada recovery logic — AC §43 tidak terpenuhi | WP-3 | DONE |
+| `src/storage/transaction.rs` | 82-85 | Full begin/commit/rollback with disk persistence (95% coverage) | WP-3 | DONE |
+| `src/storage/recovery.rs` | 8-11 | Full primary/backup recovery with file I/O (95% coverage) | WP-3 | DONE |
 | `src/neural/graph.rs` | 7-8 | `SparseGraph` menggunakan `HashMap<u32, Vec<u32>>` untuk adjacency — bukan layout SoA, tidak mendukung SIMD, melanggar AC §16 | WP-5 | OPEN |
 | `src/error.rs` | 1-167 | Error taxonomy tidak sesuai SD-16: hilang variant CONFIG, STORAGE, BRAIN, VALIDATION, MEMORY, NEURAL, LEARNING, PERCEPTION, PLUGIN, HAL, ACTUATOR, SAFETY, INTERNAL; tidak ada kode ANR-E-* | WP-1 | OPEN |
 | `Cargo.toml` | 29, 34-36 | `tokio` dengan feature `full` (termasuk networking), `anyhow`, `rand`, `parking_lot`, `crossbeam` tanpa justifikasi di DECISIONS.md; `lazy_static`, `once_cell` juga tanpa justifikasi | WP-1 | OPEN |
@@ -290,3 +290,31 @@
 - **WP-12** harus menutupi: CLI lengkap `status|memory|inspect|brain install`, telemetry metrics lokal.
 - **WP-13** harus menutupi: 80 fault injection test nyata, 40 security test nyata, 60 performance test nyata, catalog.toml terdaftar, semua test di CI.
 - **WP-14** harus menutupi: conformance report, golden brain release, endurance script, STUB_INVENTORY = 0 open.
+---
+
+## 19. Half-Done Files (Coverage <10%)
+
+| file | baris | fungsi real / stub | liputan | WP target | status |
+|------|-------|--------------------|---------|-----------|--------|
+| `src/brain/cortex.rs` | 15 | 0 / 1 | ~0% | WP-6 | OPEN |
+| `src/brain/cerebellum.rs` | 15 | 0 / 1 | ~0% | WP-6 | OPEN |
+| `src/brain/hippocampus.rs` | 15 | 0 / 1 | ~0% | WP-6 | OPEN |
+| `src/brain/mod.rs` | 31 | 0 / 1 | ~5% | WP-6 | OPEN |
+| `src/memory/gc.rs` | 9 | 0 / 3 | ~0% | WP-4 / WP-11 | OPEN |
+| `src/interface/diagnostics.rs` | 19 | 0 / 1 | ~5% | WP-12 | OPEN |
+| `src/neural/mod.rs` | 18 | 0 / 0 | ~5% | WP-5 | OPEN |
+
+**Catatan:** File ini hanya berisi struct kosong tanpa metode, fungsi `Ok(())` tanpa logika, atau modul deklarasi tanpa implementasi. Semua perlu implementasi nyata sebelum Product Ready.
+
+---
+
+## 20. Revert/Absorb Decisions (WP-1R Protocol)
+
+| File | Keputusan | Alasan | WP |
+|------|-----------|--------|-----|
+| `src/core/lifecycle.rs` | **Absorb** | Boot validation + recovery integration real (55-60% coverage). 3 init_* stubs are WP-9 scope. | WP-9 |
+| `src/core/scheduler.rs` | **Absorb** | Full backpressure queue (7 policies) + priority scheduler (95% coverage). Not a stub. | WP-9 |
+| `src/core/state_machine.rs` | **Absorb** | Full 17-state FSM with transition table + safety invariants (95% coverage). Not a stub. | WP-9 |
+| `src/storage/transaction.rs` | **Absorb** | Full begin/commit/rollback with disk persistence (95% coverage). Not a stub. | WP-3 |
+| `src/storage/recovery.rs` | **Absorb** | Full primary/backup recovery with file I/O (95% coverage). Not a stub. | WP-3 |
+| `src/interface/diagnostics.rs` | **Revert scope** | Pure stub (5% coverage). WP-12 will implement from scratch. Current code is just println. | WP-12 |

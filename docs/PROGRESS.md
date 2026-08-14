@@ -35,13 +35,13 @@
 ## WP-1 — Core Hygiene (SELESAI)
 
 **Waktu:** 2026-08-14  
-**Commit:** f8c198f (`ANR-WP1: core hygiene`) + 91af3b9 (`ANR-WP1R: scope reconciliation`)
+**Commit:** f8c198f (`ANR-WP1: core hygiene`) + 91af3b9 (`ANR-WP1R: scope reconciliation`) + a8fb95d (`ANR-WP1R: consolidation — remove format.rs and validator.rs duplicates`)
 
 **Hasil:**
 - `src/error.rs`: taxonomy lengkap SD-16 (13 kelas), Severity, kode ANR-E-*, 12 test real.
-- `src/core/config.rs`: RuntimeConfig default safe, load TOML, validasi, 14 test real.
+- `src/core/config.rs`: RuntimeConfig default safe, load TOML, validasi, 25 test real.
 - `src/core/logging.rs`: logging lokal-only, 12 test real.
-- `src/interface/cli.rs`: --version/--help, subcommand validation, 16 test real.
+- `src/interface/cli.rs`: --version/--help, subcommand validation, 15 test real.
 - `tests/catalog.toml`: 1.471 entries (315 real, 1.156 fake).
 - 5 domain WP-1 selesai: error-taxonomy, config-load, config-validation, logging-tracing, cli-commands.
 - CI: job catalog-check ditambahkan.
@@ -87,14 +87,14 @@
 ## WP-2 — Storage Read Path (SELESAI)
 
 **Waktu:** 2026-08-14  
-**Commit:** (current session)
+**Commit:** 96a09ca
 
 **Hasil:**
-- `src/storage/validate.rs`: full validation rules (magic, version, header_size, block_size, total_size, generation, section offsets, section sizes, section boundaries, section table, checksum) with 14 tests real.
+- `src/storage/validate.rs`: full validation rules (magic, version, header_size, block_size, total_size, generation, section offsets, section sizes, section boundaries, section table, checksum) with 13 tests real.
 - `src/storage/checksum.rs`: BLAKE3 checksum module with scope support and 7 tests real.
 - `src/storage/inspect.rs`: dump text + JSON with 5 tests real.
 - `src/storage/header.rs`: updated serialize/deserialize/validate/compute_checksum methods.
-- `src/interface/cli.rs`: `anr brain init | verify | inspect` subcommands with 8 tests real.
+- `src/interface/cli.rs`: `anr brain init | verify | inspect` subcommands with 15 tests real.
 - `src/main.rs`: brain init writes valid header with checksum.
 - `tests/fixtures/brains/valid_golden.anr`: golden fixture for regression testing.
 - `tests/fixtures/brains/corrupt/*.anr`: 10 corrupt fixture classes.
@@ -130,8 +130,8 @@
 | WP | Nama | Status | Commit |
 |----|------|--------|--------|
 | WP-0 | Audit & Inventory | SELESAI | ccac57f |
-| WP-1 | Core Hygiene | SELESAI | f8c198f, 91af3b9 |
-| WP-2 | Storage Read Path | SELESAI | (current session) |
+| WP-1 | Core Hygiene | SELESAI | f8c198f, 91af3b9, a8fb95d |
+| WP-2 | Storage Read Path | SELESAI | 96a09ca |
 | WP-3 | Storage Write Path & Recovery | SELESAI | 08c9ad9 |
 | WP-4 | Memory Manager | PENDING | — |
 | WP-5 | Neural Core SoA + SIMD | PENDING | — |
