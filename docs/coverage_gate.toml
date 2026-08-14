@@ -1,0 +1,72 @@
+# ANR Coverage Gate Configuration
+# Amendment v1.2 — Per-file coverage thresholds
+# CI FAILS if any file in [thresholds] is below its minimum_coverage
+# 
+# Format:
+#   [thresholds."src/path/to/file.rs"]
+#   minimum_coverage = 85  # percentage
+#   critical = true        # if true, failure blocks merge
+
+[global]
+overall_minimum = 85
+critical_module_minimum = 95
+
+[thresholds."src/error.rs"]
+minimum_coverage = 90
+critical = true
+
+[thresholds."src/storage/header.rs"]
+minimum_coverage = 85
+critical = true
+
+[thresholds."src/storage/validate.rs"]
+minimum_coverage = 85
+critical = true
+
+[thresholds."src/storage/checksum.rs"]
+minimum_coverage = 85
+critical = false
+
+[thresholds."src/storage/inspect.rs"]
+minimum_coverage = 80
+critical = false
+
+[thresholds."src/storage/transaction.rs"]
+minimum_coverage = 95
+critical = true
+
+[thresholds."src/storage/recovery.rs"]
+minimum_coverage = 95
+critical = true
+
+[thresholds."src/storage/builder.rs"]
+minimum_coverage = 90
+critical = true
+
+[thresholds."src/storage/mod.rs"]
+minimum_coverage = 80
+critical = false
+
+[thresholds."src/core/config.rs"]
+minimum_coverage = 85
+critical = false
+
+[thresholds."src/core/logging.rs"]
+minimum_coverage = 85
+critical = false
+
+[thresholds."src/core/state_machine.rs"]
+minimum_coverage = 80
+critical = true
+
+[thresholds."src/core/scheduler.rs"]
+minimum_coverage = 80
+critical = true
+
+[thresholds."src/core/lifecycle.rs"]
+minimum_coverage = 70
+critical = true
+
+[thresholds."src/interface/cli.rs"]
+minimum_coverage = 90
+critical = true

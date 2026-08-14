@@ -15,3 +15,6 @@
    (completed_domains, metrik kanonik, resume_token).
 10. Gate sebelum handoff: fmt, clippy -D warnings, cargo test,
     check_test_catalog.
+11. Coverage gate: setiap file dalam docs/coverage_gate.toml WAJIB mencapai
+    minimum_coverage sebelum WP dinyatakan selesai. CI coverage job FAIL
+    bila file di bawah threshold. Critical file = true menghalangi merge.
