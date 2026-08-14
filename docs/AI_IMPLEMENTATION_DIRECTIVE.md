@@ -283,3 +283,9 @@ A-8. File berisi kode dengan coverage <10% diklasifikasikan
      fungsi WAJIB dikonsolidasi; yang mati dihapus.
 A-9. Domain yang sudah ditandai completed tetapi file miliknya
      <90% coverage WAJIB di-reopen di PROGRESS.md.
+A-10. Header PROGRESS.md (Sesi Saat Ini / Sesi Berikutnya) hanya boleh
+      diperbarui BERSAMAAN dengan seksi hasil WP dan commit hash-nya.
+      WP tanpa hash commit DILARANG ditandai SELESAI.
+      "Sesi Berikutnya" hanya menunjuk WP yang WP sebelumnya SAH.
+A-11. Angka test dalam laporan WAJIB berlabel suite + komposisi:
+      "1.408 pass (339 real + 1.069 fake)" — bukan "test real".
