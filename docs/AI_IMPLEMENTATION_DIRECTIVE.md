@@ -246,3 +246,22 @@ Inventory     : <n> baris STUB_INVENTORY ditutup
 Progress.md   : updated
 Sesi berikut  : WP-<y>
 Blocker       : <jika ada>
+
+
+## 9. Amendemen v1.1
+
+A-1. Perubahan di luar scope WP dilarang. Perubahan wiring-only
+     (deklarasi modul, re-export) diizinkan HANYA jika dirinci di
+     laporan sebagai "wiring-only". Selain itu wajib rekonsiliasi:
+     revert atau serap ke WP pemilik secara tercatat.
+A-2. Test yang terklasifikasi fake WAJIB dihapus atau dikonversi oleh
+     WP pemilik domainnya. Domain selesai ⇒ fake = 0.
+     WP-13 ⇒ fake global = 0.
+A-3. Daftar 70 domain kanonik (Tests-CI Contract §6) adalah otoritas
+     kuota. Pemetaan domain generated → kanonik wajib ada di
+     docs/DOMAIN_MAP.toml dan dipakai check_test_catalog.
+A-4. Blok metrik kanonik wajib di setiap LAPORAN SESI dan PROGRESS.md:
+     tests_executed, catalog_entries (real/fake/unknown),
+     delta_explanation.
+A-5. Adaptasi environment (tooling, absence of binaries) wajib masuk
+     docs/DECISIONS.md sebagai DEC-xxx.
