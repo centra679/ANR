@@ -23,4 +23,7 @@ pub mod storage;
 pub use brain::Brain;
 pub use core::Runtime;
 pub use neural::NeuralCore;
-pub use storage::BrainFile;
+pub use storage::{
+    inspect_brain, validate_header, BrainFile, BrainHeader, BrainValidator, ChecksumScope,
+    InspectFormat,
+};

@@ -54,7 +54,7 @@
 | file | baris | jenis | WP target | status |
 |------|-------|-------|-----------|--------|
 | `src/storage/builder.rs` | 17 | `build_from_seed` menulis header kosong, tidak parsing seed | WP-6 | OPEN |
-| `src/storage/validator.rs` | 23 | `validate` delegasi ke stub `verify_file` | WP-2 | OPEN |
+| `src/storage/validator.rs` | 23 | `validate` delegasi ke stub `verify_file` | WP-2 | DONE |
 | `src/storage/recovery.rs` | 10 | `recover_from_backup` body kosong | WP-3 | OPEN |
 | `src/storage/transaction.rs` | 84 | `rollback` body kosong (hanya `take()`) | WP-3 | OPEN |
 | `src/interface/diagnostics.rs` | 14 | `run_diagnostic` print hardcoded, tidak ada diagnostik nyata | WP-12 | OPEN |
@@ -64,7 +64,7 @@
 | `src/core/lifecycle.rs` | 189, 195, 201 | `init_plugins`, `init_neural`, `init_scheduler` stub | WP-9 | OPEN |
 | `src/core/state_machine.rs` | 125, 249, 288 | `transition`, `validate_transition`, `apply_entry_logic` mengembalikan `Ok(())` tanpa efek | WP-9 | OPEN |
 | `src/core/scheduler.rs` | 85, 115 | `run` dan helper mengembalikan `Ok(())` tanpa penjadwalan nyata | WP-9 | OPEN |
-| `src/storage/header.rs` | 113, 509 | `write` dan `validate` (bagian akhir) tidak menulis data sebenarnya | WP-2 | OPEN |
+| `src/storage/header.rs` | 113, 509 | `write` dan `validate` (bagian akhir) tidak menulis data sebenarnya | WP-2 | DONE |
 
 ---
 
@@ -146,7 +146,7 @@
 | `src/core/state_machine.rs` | 145-149 | Event `ConfigLoaded` digunakan untuk CPU/SIMD detect, Memory init, HAL init — seharusnya event spesifik per inisialisasi | WP-9 | OPEN |
 | `src/core/lifecycle.rs` | 68 | `set_brain_valid(true)` dipanggil sebelum validasi brain nyata; melanggar AC §19.1 ("TIDAK BOLEH masuk Running sebelum brain.anr valid") | WP-9 | OPEN |
 | `src/core/mod.rs` | 117-128 | `main_loop` adalah infinite sleep loop tanpa sense/perceive/decide/act; melanggar AC §18 Autonomous Loop Contract | WP-9 | OPEN |
-| `src/storage/header.rs` | 454-510 | `validate()` tidak memeriksa `total_size`, `generation`, `checksum` match, `allocation_table_*`, `metadata_*`, `section_table_offset`, atau cross-section boundary overlap — AC §44 tidak terpenuhi penuh | WP-2 | OPEN |
+| `src/storage/header.rs` | 454-510 | `validate()` tidak memeriksa `total_size`, `generation`, `checksum` match, `allocation_table_*`, `metadata_*`, `section_table_offset`, atau cross-section boundary overlap — AC §44 tidak terpenuhi penuh | WP-2 | DONE |
 | `src/storage/builder.rs` | 8-17 | `build_from_seed` hanya menulis header kosong; tidak ada TLV record construction, tidak ada seed parsing, tidak ada section allocation — AC §49 tidak terpenuhi | WP-6 | OPEN |
 | `src/storage/transaction.rs` | 82-85 | `rollback` body kosong; tidak ada isolation region corrupt, tidak ada generation fallback — AC §45 tidak terpenuhi | WP-3 | OPEN |
 | `src/storage/recovery.rs` | 8-11 | `recover_from_backup` body kosong; tidak ada recovery logic — AC §43 tidak terpenuhi | WP-3 | OPEN |

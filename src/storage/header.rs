@@ -3,6 +3,9 @@
 /// Complete binary format with BLAKE3 checksum and validation
 use crate::error::{Error, Result};
 
+use super::checksum::compute_header_checksum;
+use super::validate::validate_header;
+
 const BRAIN_MAGIC: &[u8; 4] = b"ANRB";
 const BRAIN_FORMAT_VERSION: u32 = 1;
 const BRAIN_BLOCK_SIZE: u32 = 4096;
@@ -59,8 +62,8 @@ impl BrainHeader {
             format_version: BRAIN_FORMAT_VERSION,
             header_size: BRAIN_HEADER_SIZE,
             flags: 0,
-            total_size: 0,
-            generation: 0,
+            total_size: BRAIN_HEADER_SIZE as u64,
+            generation: 1,
             cortex_offset: BRAIN_BLOCK_SIZE as u64,
             cortex_size: 0,
             cerebellum_offset: 0,
@@ -450,73 +453,17 @@ impl BrainHeader {
         })
     }
 
-    /// Validate header integrity
+    /// Validate header integrity using AC §44 rules
     pub fn validate(&self) -> Result<()> {
-        // Magic
-        if self.magic != *BRAIN_MAGIC {
-            return Err(Error::BrainValidation("Invalid magic".to_string()));
-        }
-
-        // Version
-        if self.format_version != BRAIN_FORMAT_VERSION {
-            return Err(Error::BrainValidation(
-                "Unsupported format version".to_string(),
-            ));
-        }
-
-        // Header size
-        if self.header_size != BRAIN_HEADER_SIZE {
-            return Err(Error::BrainValidation("Invalid header size".to_string()));
-        }
-
-        // Block size
-        if self.block_size != BRAIN_BLOCK_SIZE {
-            return Err(Error::BrainValidation("Invalid block size".to_string()));
-        }
-
-        // Offsets must be 4096-aligned for main sections
-        if self.cortex_offset > 0 && !self.cortex_offset.is_multiple_of(BRAIN_BLOCK_SIZE as u64) {
-            return Err(Error::BrainValidation(
-                "Cortex offset not aligned".to_string(),
-            ));
-        }
-        if self.cerebellum_offset > 0
-            && !self
-                .cerebellum_offset
-                .is_multiple_of(BRAIN_BLOCK_SIZE as u64)
-        {
-            return Err(Error::BrainValidation(
-                "Cerebellum offset not aligned".to_string(),
-            ));
-        }
-        if self.hippocampus_offset > 0
-            && !self
-                .hippocampus_offset
-                .is_multiple_of(BRAIN_BLOCK_SIZE as u64)
-        {
-            return Err(Error::BrainValidation(
-                "Hippocampus offset not aligned".to_string(),
-            ));
-        }
-
-        // Section counts
-        if self.section_table_count != 3 {
-            return Err(Error::BrainValidation(
-                "Invalid section table count".to_string(),
-            ));
-        }
-
-        Ok(())
+        validate_header(self)
     }
 
     /// Generate BLAKE3 checksum for header
     pub fn compute_checksum(&mut self) -> [u8; 32] {
-        let data = self.serialize();
-        // Only checksum up to the checksum field (256 bytes)
-        let hash = blake3::hash(&data[0..256]);
-        let result = *hash.as_bytes();
-        self.checksum = result;
-        result
+        let header_bytes = self.serialize();
+        let hash = compute_header_checksum(&header_bytes);
+        self.checksum = hash;
+        hash
     }
 }
 

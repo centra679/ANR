@@ -23,14 +23,16 @@ mod storage_tests_impl {
 
     #[test]
     fn tc_u_brain_header_004() {
-        let header = BrainHeader::new();
+        let mut header = BrainHeader::new();
+        header.cortex_offset = 0;
+        header.compute_checksum();
         assert!(header.validate().is_ok());
     }
 
     #[test]
     fn tc_u_brain_header_005() {
         let header = BrainHeader::new();
-        assert_eq!(header.generation, 0);
+        assert_eq!(header.generation, 1);
     }
 
     #[test]
@@ -54,14 +56,14 @@ mod storage_tests_impl {
     #[test]
     fn tc_u_brain_header_009() {
         let header = BrainHeader::new();
-        assert_eq!(header.total_size, 0);
+        assert_eq!(header.total_size, 288);
     }
 
     #[test]
     fn tc_u_brain_header_010() {
         let header = BrainHeader::new();
         let mut h2 = BrainHeader::new();
-        h2.generation = 1;
+        h2.generation = 2;
         assert_ne!(header.generation, h2.generation);
     }
 

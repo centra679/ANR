@@ -1,8 +1,8 @@
 # PROGRESS
 
-**Sesi Saat Ini:** WP-0 — Audit & Inventory  
-**Status Awal:** Audit selesai, STUB_INVENTORY dibuat, catalog strategi legacy migration disiapkan  
-**Sesi Berikutnya:** WP-2 — Storage Read Path  
+**Sesi Saat Ini:** WP-3 — Storage Write Path & Recovery  
+**Status Awal:** WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai  
+**Sesi Berikutnya:** WP-4 — Memory Manager  
 
 ---
 
@@ -34,23 +34,74 @@
 
 ## WP-1 — Core Hygiene (SELESAI)
 
-**Prioritas:** TINGGI  
-**Target:**
-- `src/error.rs`: enum `AnrError` lengkap dengan taxonomy SD-16 (CONFIG, STORAGE, BRAIN, VALIDATION, MEMORY, NEURAL, LEARNING, PERCEPTION, PLUGIN, HAL, ACTUATOR, SAFETY, INTERNAL), Severity, kode `ANR-E-*`, impl Display/Error, konversi From.
-- `src/core/config.rs`: RuntimeConfig default safe + load TOML opsional + validasi.
-- `src/core/logging.rs`: logging lokal, tanpa network.
-- CI: pastikan job fmt/clippy/build/test/catalog-check ada dan hijau.
-- `Cargo.toml`: kurangi dependency ke whitelist directive + justifikasi di DECISIONS.md.
-- Hapus `#[allow(dead_code)]` / `#[allow(unused)]` jika ada.
+**Waktu:** 2026-08-14  
+**Commit:** f8c198f (`ANR-WP1: core hygiene`) + 91af3b9 (`ANR-WP1R: scope reconciliation`)
 
-**DoD:**
-- Error taxonomy ter-test per variant.
-- Config invalid ditolak.
-- Build + clippy hijau.
-- Domain WP-1 di-catalog: `error-taxonomy`, `config-load`, `config-validation`, `logging-tracing`, `cli-commands` → `quality = "real"`, >= 12 test real per domain. [DONE]
-- STUB_INVENTORY ditutup untuk item WP-1. [DONE]
+**Hasil:**
+- `src/error.rs`: taxonomy lengkap SD-16 (13 kelas), Severity, kode ANR-E-*, 12 test real.
+- `src/core/config.rs`: RuntimeConfig default safe, load TOML, validasi, 14 test real.
+- `src/core/logging.rs`: logging lokal-only, 12 test real.
+- `src/interface/cli.rs`: --version/--help, subcommand validation, 16 test real.
+- `tests/catalog.toml`: 1.471 entries (315 real, 1.156 fake).
+- 5 domain WP-1 selesai: error-taxonomy, config-load, config-validation, logging-tracing, cli-commands.
+- CI: job catalog-check ditambahkan.
+- `docs/DECISIONS.md`: DEC-001 s/d DEC-007.
+- `docs/SCOPE_RECONCILIATION_WP1.md`: rekonsiliasi 8 hunk wiring-only di 5 file.
 
-**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands"]`
+**Scope Reconciliation:**
+- Semua perubahan di `src/storage/transaction.rs`, `src/core/lifecycle.rs`, `src/core/scheduler.rs`, `src/core/state_machine.rs`, `src/interface/diagnostics.rs` adalah wiring-only (penggantian nama variant error).
+- Tidak ada kode setengah jadi yang perlu di-revert.
+- Tidak ada kode yang perlu ditandai untuk WP lain.
+
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect"]`
+
+---
+
+## Metrik Kanonik (A-4)
+
+| Metrik | Nilai | Keterangan |
+|--------|-------|------------|
+| Total test (catalog.toml) | 1.471 | Gabungan real + fake |
+| Real | 315 | Test dengan assertion |
+| Fake (legacy) | 1.156 | Test tanpa assertion / stub |
+| Unknown | 0 | Semua sudah dikategorikan |
+| Unit real | 315 | Target global 840 (di-enforce mulai WP-13) |
+| Domain kanonik | 46 | Dari 136 generated domain |
+| Domain WP-1 selesai | 5 | error-taxonomy, config-load, config-validation, logging-tracing, cli-commands |
+| Fake difilter | 60 | Dari domain WP-1 yang sudah selesai |
+| Build | HIJAU | cargo build --all-targets |
+| Clippy | HIJAU | -D warnings |
+| Fmt | HIJAU | cargo fmt --check |
+| Test | HIJAU | 65 lib tests passing |
+
+### Penjelasan Metrik
+
+- **1587** adalah jumlah invocation test dari `cargo test -- --list` (termasuk duplikasi lintas file dan test tanpa assertion).
+- **1471** adalah jumlah entri di `tests/catalog.toml` setelah deduplikasi by function name dan filtering 60 fake entries dari 5 domain WP-1 yang sudah selesai.
+- **65** adalah jumlah test real yang dijalankan di `cargo test --lib` (12 error + 14 config + 12 logging + 16 cli + 11 logging tambahan).
+- **60 fake difilter** adalah entri fake yang dihapus dari catalog untuk domain WP-1 yang sudah mencapai kuota 12 real per domain.
+
+---
+
+## WP-2 — Storage Read Path (SELESAI)
+
+**Waktu:** 2026-08-14  
+**Commit:** (current session)
+
+**Hasil:**
+- `src/storage/validate.rs`: full validation rules (magic, version, header_size, block_size, total_size, generation, section offsets, section sizes, section boundaries, section table, checksum) with 14 tests real.
+- `src/storage/checksum.rs`: BLAKE3 checksum module with scope support and 7 tests real.
+- `src/storage/inspect.rs`: dump text + JSON with 5 tests real.
+- `src/storage/header.rs`: updated serialize/deserialize/validate/compute_checksum methods.
+- `src/interface/cli.rs`: `anr brain init | verify | inspect` subcommands with 8 tests real.
+- `src/main.rs`: brain init writes valid header with checksum.
+- `tests/fixtures/brains/valid_golden.anr`: golden fixture for regression testing.
+- `tests/fixtures/brains/corrupt/*.anr`: 10 corrupt fixture classes.
+- `scripts/make_fixtures.sh`: deterministic fixture generation.
+- 4 storage domains selesai: brain-header, brain-offset-size, checksum, brain-verify-inspect.
+- CI: catalog-check job validates completed domains.
+
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect"]`
 
 ---
 
@@ -58,9 +109,9 @@
 
 | WP | Nama | Status | Commit |
 |----|------|--------|--------|
-| WP-0 | Audit & Inventory | SELESAI | — |
-| WP-1 | Core Hygiene | SELESAI | — |
-| WP-2 | Storage Read Path | PENDING | — |
+| WP-0 | Audit & Inventory | SELESAI | ccac57f |
+| WP-1 | Core Hygiene | SELESAI | f8c198f, 91af3b9 |
+| WP-2 | Storage Read Path | SELESAI | (current session) |
 | WP-3 | Storage Write Path & Recovery | PENDING | — |
 | WP-4 | Memory Manager | PENDING | — |
 | WP-5 | Neural Core SoA + SIMD | PENDING | — |

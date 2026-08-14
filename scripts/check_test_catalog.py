@@ -23,12 +23,36 @@ def read_progress_completed_domains(path="docs/PROGRESS.md"):
     return domains
 
 
+def load_domain_map(path="docs/DOMAIN_MAP.toml"):
+    mapping = {}
+    try:
+        with open(path, "r") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if "=" in line:
+                    key, val = line.split("=", 1)
+                    key = key.strip().strip("\"'")
+                    val = val.strip().strip("\"'")
+                    if key and val:
+                        mapping[key] = val
+    except FileNotFoundError:
+        pass
+    return mapping
+
+
+def canonical_domain(domain, domain_map):
+    return domain_map.get(domain, domain)
+
+
 def check(catalog_path="tests/catalog.toml", progress_path="docs/PROGRESS.md", wp="0", enforce_global=False):
     with open(catalog_path, "rb") as f:
         data = tomllib.load(f)
 
     legacy = data.get("legacy", False)
     quality = data.get("quality", "unknown")
+    domain_map = load_domain_map()
 
     completed = read_progress_completed_domains(progress_path)
 
@@ -36,13 +60,13 @@ def check(catalog_path="tests/catalog.toml", progress_path="docs/PROGRESS.md", w
     for entry in data.get("test", []):
         dom = entry.get("domain", "")
         q = entry.get("quality", quality)
-        domains[dom].append((entry.get("id", ""), q))
+        domains[dom].append((entry.get("id", ""), q, dom))
 
     errors = []
     for dom in completed:
         entries = domains.get(dom, [])
-        real_count = sum(1 for _, q in entries if q == "real")
-        fake_count = sum(1 for _, q in entries if q == "fake")
+        real_count = sum(1 for _, q, _ in entries if q == "real")
+        fake_count = sum(1 for _, q, _ in entries if q == "fake")
         if fake_count > 0:
             errors.append(f"DOMAIN {dom}: {fake_count} fake test(s) in completed domain")
         if real_count < 12:
@@ -67,7 +91,7 @@ def check(catalog_path="tests/catalog.toml", progress_path="docs/PROGRESS.md", w
         for e in errors:
             print(f"  - {e}")
         sys.exit(1)
-    print(f"CHECK_TEST_CATALOG PASSED: {len(domains)} domains, {sum(len(v) for v in domains.values())} tests")
+    print(f"CHECK_TEST_CATALOG PASSED: {len(domains)} canonical domains, {sum(len(v) for v in domains.values())} tests")
     if completed:
         print(f"  completed_domains = {completed}")
     else:

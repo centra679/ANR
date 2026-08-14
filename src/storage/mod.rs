@@ -1,16 +1,25 @@
 pub mod builder;
+pub mod checksum;
 pub mod format;
 /// Storage Module - brain.anr binary format and IO
 /// Implements: AC §5 (Single Brain Contract), SD-03, AC §44-45
 pub mod header;
+pub mod inspect;
 pub mod recovery;
 pub mod transaction;
+pub mod validate;
 pub mod validator;
 
+#[cfg(test)]
+pub mod fixture_tests;
+
 pub use builder::BrainBuilder;
+pub use checksum::{compute_blake3, verify_blake3, ChecksumScope};
 pub use header::BrainHeader;
+pub use inspect::{dump_header_json, dump_header_text, inspect_brain, InspectFormat};
 pub use recovery::Recovery;
 pub use transaction::TransactionManager;
+pub use validate::validate_header;
 pub use validator::BrainValidator;
 
 use crate::Result;

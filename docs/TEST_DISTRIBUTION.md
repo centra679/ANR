@@ -1,6 +1,6 @@
 # TEST DISTRIBUTION
 
-**Updated:** 2026-08-14 (WP-1 post-triage)  
+**Updated:** 2026-08-14 (WP-2 post-triage)  
 **Sumber:** `scripts/gen_catalog.sh` → `tests/catalog.toml`  
 **Konteks:** Strategi legacy migration untuk 1.531 test eksisting  
 
@@ -77,14 +77,14 @@
 | gc-emergency | 0 | 12 | 12 | PENDING WP-11 |
 | tiering | 0 | 12 | 12 | PENDING WP-11 |
 | compression | 0 | 12 | 12 | PENDING WP-11 |
-| brain-header | 0 | 12 | 12 | PENDING WP-2 |
-| brain-offset-size | 0 | 12 | 12 | PENDING WP-2 |
-| checksum | 0 | 12 | 12 | PENDING WP-2 |
+| brain-header | 14 | 0 | 12 | DONE (real: validate rules) |
+| brain-offset-size | 7 | 0 | 12 | DONE (real: BLAKE3 checksum) |
+| checksum | 7 | 0 | 12 | DONE (real: checksum module) |
 | transaction | 0 | 12 | 12 | PENDING WP-2 / WP-3 |
 | recovery | 0 | 12 | 12 | PENDING WP-2 / WP-3 |
 | brain-seed | 0 | 12 | 12 | PENDING WP-6 |
 | brain-build | 0 | 12 | 12 | PENDING WP-6 |
-| brain-verify-inspect | 0 | 12 | 12 | PENDING WP-6 |
+| brain-verify-inspect | 13 | 0 | 12 | DONE (real: inspect + CLI) |
 | brain-install-update | 0 | 12 | 12 | PENDING WP-6 |
 | sensor-frame | 0 | 12 | 12 | PENDING WP-7 |
 | camera-buffer | 0 | 12 | 12 | PENDING WP-7 |
@@ -144,9 +144,9 @@
 
 ## Insight
 
-1. **WP-1 berhasil menutupi 5 domain unit dengan test real:** error-taxonomy, config-load, config-validation, logging-tracing, cli-commands.
-2. **Total real test saat ini: 315** (semua dari WP-1 domains). Target global (unit real ≥ 840) akan di-enforce mulai WP-13.
-3. **Sisa 1.156 test adalah fake/legacy** yang akan di-triage oleh WP berikutnya.
+1. **WP-1 berhasil menutupi 5 domain unit dengan test real:** error-taxonomy, config-load, config-validation, logging-tracing, cli-commands. **WP-2 berhasil menutupi 4 domain storage:** brain-header, brain-offset-size, checksum, brain-verify-inspect.
+2. **Total real test saat ini: 349** (315 dari WP-1 + 34 dari WP-2 domains). Target global (unit real ≥ 840) akan di-enforce mulai WP-13.
+3. **Sisa 1.122 test adalah fake/legacy** yang akan di-triage oleh WP berikutnya.
 4. **Duplikasi lintas file sudah tereliminasi** untuk WP-1 domains (fake entries difilter dari catalog).
 
 ---

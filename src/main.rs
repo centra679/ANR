@@ -32,17 +32,30 @@ async fn main() -> anr::Result<()> {
             let mut runtime = anr::core::Runtime::new(&args.brain, args.config)?;
             runtime.run(maintenance).await?;
         }
-        Some(Commands::Verify { brain }) => {
-            let valid = anr::storage::BrainValidator::verify_file(&brain)?;
-            println!(
-                "Brain verification: {}",
-                if valid { "OK" } else { "FAILED" }
-            );
-        }
-        Some(Commands::Build { seed, output }) => {
-            anr::storage::BrainBuilder::build_from_seed(&seed, &output)?;
-            println!("Brain built successfully: {}", output.display());
-        }
+        Some(Commands::Brain { action }) => match action {
+            anr::interface::cli::BrainAction::Init { output } => {
+                let mut header = anr::storage::BrainHeader::new();
+                header.cortex_offset = 0;
+                header.compute_checksum();
+                header.write(&output)?;
+                println!("Brain initialized: {}", output.display());
+            }
+            anr::interface::cli::BrainAction::Verify { brain } => {
+                let valid = anr::storage::BrainValidator::verify_file(&brain)?;
+                println!(
+                    "Brain verification: {}",
+                    if valid { "OK" } else { "FAILED" }
+                );
+            }
+            anr::interface::cli::BrainAction::Inspect { brain, format } => {
+                let fmt = match format.as_str() {
+                    "json" => anr::storage::InspectFormat::Json,
+                    _ => anr::storage::InspectFormat::Text,
+                };
+                let output = anr::storage::inspect_brain(&brain, fmt)?;
+                println!("{}", output);
+            }
+        },
         Some(Commands::Diag { action }) => {
             let runtime = anr::core::Runtime::new(&args.brain, args.config)?;
             anr::interface::diagnostics::run_diagnostic(&runtime, &action).await?;

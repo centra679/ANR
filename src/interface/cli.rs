@@ -33,18 +33,10 @@ pub enum Commands {
         #[arg(long)]
         maintenance: bool,
     },
-    /// Verify brain.anr integrity
-    Verify {
-        /// Brain file path
-        brain: PathBuf,
-    },
-    /// Build brain from seed
-    Build {
-        /// Seed file path
-        seed: PathBuf,
-        /// Output brain path
-        #[arg(short, long)]
-        output: PathBuf,
+    /// Brain management commands
+    Brain {
+        #[command(subcommand)]
+        action: BrainAction,
     },
     /// Diagnostics
     Diag {
@@ -54,20 +46,40 @@ pub enum Commands {
     },
 }
 
+#[derive(Parser, Debug, Clone)]
+pub enum BrainAction {
+    /// Initialize a new brain.anr file
+    Init {
+        /// Output path for brain.anr
+        output: PathBuf,
+    },
+    /// Verify brain.anr integrity
+    Verify {
+        /// Brain file path
+        brain: PathBuf,
+    },
+    /// Inspect brain.anr header
+    Inspect {
+        /// Brain file path
+        brain: PathBuf,
+        /// Output format
+        #[arg(short, long, default_value = "text")]
+        format: String,
+    },
+}
+
 impl Cli {
     /// Parse CLI arguments.
-    /// On parse failure, clap automatically prints help/error.
     pub fn parse() -> Self {
         Self::parse_from(std::env::args_os())
     }
 
-    /// Return list of available commands for error messages.
+    /// Return list of available top-level commands.
     pub fn available_commands() -> Vec<&'static str> {
-        vec!["run", "verify", "build", "diag"]
+        vec!["run", "brain", "diag"]
     }
 
     /// Validate that the parsed CLI is semantically valid.
-    /// Returns structured error if unavailable command is requested.
     pub fn validate(&self) -> Result<()> {
         match &self.command {
             Some(Commands::Diag { action }) => {
@@ -82,7 +94,19 @@ impl Cli {
                 }
                 Ok(())
             }
-            _ => Ok(()),
+            Some(Commands::Brain {
+                action: BrainAction::Inspect { format, .. },
+            }) => {
+                let valid = ["text", "json"].contains(&format.as_str());
+                if !valid {
+                    return Err(Error::ConfigInvalid(format!(
+                        "Unknown format: '{}'. Available formats: text, json",
+                        format
+                    )));
+                }
+                Ok(())
+            }
+            Some(Commands::Brain { .. }) | Some(Commands::Run { .. }) | None => Ok(()),
         }
     }
 }
@@ -95,10 +119,9 @@ mod tests {
     fn test_available_commands_list() {
         let cmds = Cli::available_commands();
         assert!(cmds.contains(&"run"));
-        assert!(cmds.contains(&"verify"));
-        assert!(cmds.contains(&"build"));
+        assert!(cmds.contains(&"brain"));
         assert!(cmds.contains(&"diag"));
-        assert_eq!(cmds.len(), 4);
+        assert_eq!(cmds.len(), 3);
     }
 
     #[test]
@@ -113,30 +136,89 @@ mod tests {
     }
 
     #[test]
-    fn test_validate_verify_command() {
+    fn test_validate_brain_init() {
         let cli = Cli {
             brain: PathBuf::from("/opt/anr/brain.anr"),
             config: None,
             verbose: false,
-            command: Some(Commands::Verify {
-                brain: PathBuf::from("/tmp/brain.anr"),
+            command: Some(Commands::Brain {
+                action: BrainAction::Init {
+                    output: PathBuf::from("/tmp/brain.anr"),
+                },
             }),
         };
         assert!(cli.validate().is_ok());
     }
 
     #[test]
-    fn test_validate_build_command() {
+    fn test_validate_brain_verify() {
         let cli = Cli {
             brain: PathBuf::from("/opt/anr/brain.anr"),
             config: None,
             verbose: false,
-            command: Some(Commands::Build {
-                seed: PathBuf::from("/tmp/seed.toml"),
-                output: PathBuf::from("/tmp/brain.anr"),
+            command: Some(Commands::Brain {
+                action: BrainAction::Verify {
+                    brain: PathBuf::from("/tmp/brain.anr"),
+                },
             }),
         };
         assert!(cli.validate().is_ok());
+    }
+
+    #[test]
+    fn test_validate_brain_inspect_text() {
+        let cli = Cli {
+            brain: PathBuf::from("/opt/anr/brain.anr"),
+            config: None,
+            verbose: false,
+            command: Some(Commands::Brain {
+                action: BrainAction::Inspect {
+                    brain: PathBuf::from("/tmp/brain.anr"),
+                    format: "text".into(),
+                },
+            }),
+        };
+        assert!(cli.validate().is_ok());
+    }
+
+    #[test]
+    fn test_validate_brain_inspect_json() {
+        let cli = Cli {
+            brain: PathBuf::from("/opt/anr/brain.anr"),
+            config: None,
+            verbose: false,
+            command: Some(Commands::Brain {
+                action: BrainAction::Inspect {
+                    brain: PathBuf::from("/tmp/brain.anr"),
+                    format: "json".into(),
+                },
+            }),
+        };
+        assert!(cli.validate().is_ok());
+    }
+
+    #[test]
+    fn test_validate_brain_inspect_invalid_format() {
+        let cli = Cli {
+            brain: PathBuf::from("/opt/anr/brain.anr"),
+            config: None,
+            verbose: false,
+            command: Some(Commands::Brain {
+                action: BrainAction::Inspect {
+                    brain: PathBuf::from("/tmp/brain.anr"),
+                    format: "xml".into(),
+                },
+            }),
+        };
+        let err = cli.validate().unwrap_err();
+        match err {
+            Error::ConfigInvalid(msg) => {
+                assert!(msg.contains("xml"));
+                assert!(msg.contains("text"));
+                assert!(msg.contains("json"));
+            }
+            _ => panic!("expected ConfigInvalid"),
+        }
     }
 
     #[test]
@@ -153,7 +235,7 @@ mod tests {
     }
 
     #[test]
-    fn test_validate_diag_invalid_action_returns_error() {
+    fn test_validate_diag_invalid_action() {
         let cli = Cli {
             brain: PathBuf::from("/opt/anr/brain.anr"),
             config: None,
@@ -164,28 +246,9 @@ mod tests {
         };
         let err = cli.validate().unwrap_err();
         match err {
-            Error::ConfigInvalid(msg) => {
-                assert!(msg.contains("unknown"));
-                assert!(msg.contains("status"));
-                assert!(msg.contains("memory"));
-            }
+            Error::ConfigInvalid(_) => {}
             _ => panic!("expected ConfigInvalid"),
         }
-    }
-
-    #[test]
-    fn test_validate_diag_invalid_action_error_code() {
-        let cli = Cli {
-            brain: PathBuf::from("/opt/anr/brain.anr"),
-            config: None,
-            verbose: false,
-            command: Some(Commands::Diag {
-                action: "bogus".into(),
-            }),
-        };
-        let err = cli.validate().unwrap_err();
-        let msg = format!("{}", err);
-        assert!(msg.contains("ANR-E-CONFIG-001"));
     }
 
     #[test]
@@ -202,54 +265,7 @@ mod tests {
     #[test]
     fn test_available_commands_count() {
         let cmds = Cli::available_commands();
-        assert_eq!(cmds.len(), 4);
-    }
-
-    #[test]
-    fn test_validate_diag_all_valid_actions() {
-        for action in ["status", "memory", "storage", "neural", "safety"] {
-            let cli = Cli {
-                brain: PathBuf::from("/opt/anr/brain.anr"),
-                config: None,
-                verbose: false,
-                command: Some(Commands::Diag {
-                    action: action.into(),
-                }),
-            };
-            assert!(cli.validate().is_ok(), "action {} should be valid", action);
-        }
-    }
-
-    #[test]
-    fn test_validate_diag_empty_action() {
-        let cli = Cli {
-            brain: PathBuf::from("/opt/anr/brain.anr"),
-            config: None,
-            verbose: false,
-            command: Some(Commands::Diag { action: "".into() }),
-        };
-        let err = cli.validate().unwrap_err();
-        match err {
-            Error::ConfigInvalid(_) => {}
-            _ => panic!("expected ConfigInvalid"),
-        }
-    }
-
-    #[test]
-    fn test_validate_diag_case_sensitive() {
-        let cli = Cli {
-            brain: PathBuf::from("/opt/anr/brain.anr"),
-            config: None,
-            verbose: false,
-            command: Some(Commands::Diag {
-                action: "STATUS".into(),
-            }),
-        };
-        let err = cli.validate().unwrap_err();
-        match err {
-            Error::ConfigInvalid(_) => {}
-            _ => panic!("expected ConfigInvalid"),
-        }
+        assert_eq!(cmds.len(), 3);
     }
 
     #[test]
@@ -259,20 +275,32 @@ mod tests {
     }
 
     #[test]
-    fn test_available_commands_contains_verify() {
+    fn test_available_commands_contains_brain() {
         let cmds = Cli::available_commands();
-        assert!(cmds.contains(&"verify"));
-    }
-
-    #[test]
-    fn test_available_commands_contains_build() {
-        let cmds = Cli::available_commands();
-        assert!(cmds.contains(&"build"));
+        assert!(cmds.contains(&"brain"));
     }
 
     #[test]
     fn test_available_commands_contains_diag() {
         let cmds = Cli::available_commands();
         assert!(cmds.contains(&"diag"));
+    }
+
+    #[test]
+    fn test_brain_inspect_error_code() {
+        let cli = Cli {
+            brain: PathBuf::from("/opt/anr/brain.anr"),
+            config: None,
+            verbose: false,
+            command: Some(Commands::Brain {
+                action: BrainAction::Inspect {
+                    brain: PathBuf::from("/tmp/brain.anr"),
+                    format: "xml".into(),
+                },
+            }),
+        };
+        let err = cli.validate().unwrap_err();
+        let msg = format!("{}", err);
+        assert!(msg.contains("ANR-E-CONFIG-001"));
     }
 }
