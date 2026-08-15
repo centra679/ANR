@@ -1,8 +1,8 @@
 # PROGRESS
 
-*Sesi Saat Ini:* WP-9 — Runtime State Machine + Scheduler + Vertical Slice  
-*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai; WP-4 memory manager selesai; WP-5 neural core SoA + SIMD selesai; WP-6 brain sections + provisioning core selesai; WP-7 perception + mock plugins selesai; WP-8 decision + safety + actuator mock selesai  
-*Sesi Berikutnya:* WP-10 — Learning Dasar  
+*Sesi Saat Ini:* WP-10 — Learning Dasar  
+*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai; WP-4 memory manager selesai; WP-5 neural core SoA + SIMD selesai; WP-6 brain sections + provisioning core selesai; WP-7 perception + mock plugins selesai; WP-8 decision + safety + actuator mock selesai; WP-9 E2E vertical slice selesai  
+*Sesi Berikutnya:* WP-11 — Replay/Consolidation/Retention/GC  
 
 ---
 
@@ -66,8 +66,8 @@
 | Real | 257 | Test dengan assertion |
 | Fake (legacy) | 1.274 | Test tanpa assertion / stub |
 | Unknown | 4 | Belum dikategorikan |
-| Unit real | 409 (catalog strict) / 205 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
-| Domain kanonik | 30 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) + WP-4(4) + WP-5(3) + WP-6(4) + WP-7(4) + WP-8(4) |
+| Unit real | 422 (catalog strict) / 205 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
+| Domain kanonik | 31 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) + WP-4(4) + WP-5(3) + WP-6(4) + WP-7(4) + WP-8(4) + WP-9(1) |
 | Fake difilter | 80 | 60 WP-1 + 20 trans/recovery |
 | Build | HIJAU | cargo build --all-targets |
 | Clippy | HIJAU | -D warnings |
@@ -232,6 +232,21 @@
 
 **completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery", "memory-quota", "allocator", "gc-normal", "gc-aggressive", "simd-fallback", "soa-layout", "neural-core", "cortex-interface", "cerebellum-interface", "hippocampus-episode", "brain-provisioning", "sensor-frame", "perception-fusion", "plugin-lifecycle", "plugin-isolation", "decision-candidate", "safety-constraints", "actuator", "feedback-prediction"]`
 
+
+## WP-9 — E2E Vertical Slice (SELESAI)
+
+**Waktu:** 2026-08-15  
+**Commit:** 5cd6ae2
+
+**Hasil:**
+- `src/core/mod.rs`: Runtime wired with all subsystems (camera, perception, neural, decision, safety, actuator, feedback, hippocampus, scheduler)
+- E2E cycle: boot → sense(sim) → decide → safety → act(mock) → feedback → episode → shutdown
+- 12 unit tests + 1 E2E integration test for core-run-loop domain
+- Catalog: core-run-loop domain registered
+- E2E vertical slice CONFIRMED WORKING
+
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery", "memory-quota", "allocator", "gc-normal", "gc-aggressive", "simd-fallback", "soa-layout", "neural-core", "cortex-interface", "cerebellum-interface", "hippocampus-episode", "brain-provisioning", "sensor-frame", "perception-fusion", "plugin-lifecycle", "plugin-isolation", "decision-candidate", "safety-constraints", "actuator", "feedback-prediction", "core-run-loop"]`
+
 ---
 
 ## Riwayat WP
@@ -248,7 +263,7 @@
 | WP-6 | Brain Sections + Provisioning Core | SELESAI | f929b5a |
 | WP-7 | Perception + Mock Plugins | SELESAI | a57d1f3 |
 | WP-8 | Decision + Safety + Actuator Mock | SELESAI | fd78be7 |
-| WP-9 | Runtime State Machine + Scheduler + Vertical Slice | PENDING | — |
+| WP-9 | E2E Vertical Slice | SELESAI | 5cd6ae2 |
 | WP-10 | Learning Dasar | PENDING | — |
 | WP-11 | Replay/Consolidation/Retention/GC | PENDING | — |
 | WP-12 | Interface Lengkap | PENDING | — |
