@@ -1,8 +1,8 @@
 # PROGRESS
 
-*Sesi Saat Ini:* WP-4 — Memory Manager  
-*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai  
-*Sesi Berikutnya:* WP-5 — Neural Core SoA + SIMD  
+*Sesi Saat Ini:* WP-5 — Neural Core SoA + SIMD  
+*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai; WP-4 memory manager selesai  
+*Sesi Berikutnya:* WP-6 — Brain Sections + Provisioning Core  
 
 ---
 
@@ -63,11 +63,11 @@
 |--------|-------|------------|
 | Total test invocations | 3.265 | Dari `cargo test -- --list` |
 | Total catalog entries | 1.451 | Setelah filter 20 fake trans/recovery |
-| Real | 173 | Test dengan assertion |
+| Real | 221 | Test dengan assertion |
 | Fake (legacy) | 1.274 | Test tanpa assertion / stub |
 | Unknown | 4 | Belum dikategorikan |
-| Unit real | 173 (catalog strict) / 101 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
-| Domain kanonik | 11 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) |
+| Unit real | 221 (catalog strict) / 149 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
+| Domain kanonik | 15 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) + WP-4(4) |
 | Fake difilter | 80 | 60 WP-1 + 20 trans/recovery |
 | Build | HIJAU | cargo build --all-targets |
 | Clippy | HIJAU | -D warnings |
@@ -124,6 +124,23 @@
 
 **completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery"]`
 
+
+---
+
+## WP-4 — Memory Manager (SELESAI)
+
+**Waktu:** 2026-08-14
+
+**Hasil:**
+- `src/memory/quota.rs`: MemoryQuota(min/target/max), SectionMemoryState, PressureLevel (5 states)
+- `src/memory/allocator.rs`: SlabAllocator with free list, best-fit, compact, coalesce
+- `src/memory/gc.rs`: GarbageCollector with pressure-based GcMode selection
+- `src/memory/mod.rs`: MemoryManager with per-section isolation (Cortex/Cerebellum/Hippocampus)
+- 48 real tests (12 quota + 12 allocator + 12 GC + 12 memory-manager)
+- Catalog: 4 new domains registered, 24 fake stubs filtered
+
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery", "memory-quota", "allocator", "gc-normal", "gc-aggressive"]`
+
 ---
 
 ## BLOK-R — Finalization (SELESAI)
@@ -147,7 +164,7 @@
 | WP-2 | Storage Read Path | SELESAI | 96a09ca |
 | WP-3 | Storage Write Path & Recovery | SELESAI | 08c9ad9 |
 | BLOK-R | Finalization | SELESAI | (sesi ini) |
-| WP-4 | Memory Manager | PENDING | — |
+| WP-4 | Memory Manager | SELESAI | (sesi ini) |
 | WP-5 | Neural Core SoA + SIMD | PENDING | — |
 | WP-6 | Brain Sections + Provisioning Core | PENDING | — |
 | WP-7 | Perception + Mock Plugins | PENDING | — |

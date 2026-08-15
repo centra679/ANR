@@ -1,10 +1,10 @@
 pub mod action_tests;
+pub mod allocator_tests;
 pub mod builder_tests;
 pub mod cli_tests;
-/// Unit Tests
-/// 840 unit tests across 70 domains
 pub mod core_tests;
 pub mod error_tests;
+pub mod gc_tests;
 pub mod group_a_core_tests;
 pub mod group_b_resource_tests;
 pub mod group_c_block_tests;
@@ -13,7 +13,8 @@ pub mod group_e_storage_tests;
 pub mod group_f_provision_tests;
 pub mod group_g_learning_tests;
 pub mod learning_tests;
-pub mod memory_tests;
+pub mod memory_manager_tests;
+pub mod memory_quota_tests;
 pub mod neural_tests;
 pub mod perception_tests;
 pub mod plugin_tests;
