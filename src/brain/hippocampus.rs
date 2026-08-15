@@ -42,6 +42,10 @@ impl Hippocampus {
         self.episodes.iter().find(|e| e.id == id)
     }
 
+    pub fn get_episode_by_index(&self, index: usize) -> Option<&Episode> {
+        self.episodes.get(index)
+    }
+
     pub fn episode_count(&self) -> usize {
         self.episodes.len()
     }

@@ -1,6 +1,6 @@
 # PROGRESS
 
-*Sesi Saat Ini:* WP-10 — Learning Dasar  
+*Sesi Saat Ini:* WP-11 — Replay/Consolidation/Retention/GC  
 *Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai; WP-4 memory manager selesai; WP-5 neural core SoA + SIMD selesai; WP-6 brain sections + provisioning core selesai; WP-7 perception + mock plugins selesai; WP-8 decision + safety + actuator mock selesai; WP-9 E2E vertical slice selesai  
 *Sesi Berikutnya:* WP-11 — Replay/Consolidation/Retention/GC  
 
@@ -247,7 +247,24 @@
 
 **completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery", "memory-quota", "allocator", "gc-normal", "gc-aggressive", "simd-fallback", "soa-layout", "neural-core", "cortex-interface", "cerebellum-interface", "hippocampus-episode", "brain-provisioning", "sensor-frame", "perception-fusion", "plugin-lifecycle", "plugin-isolation", "decision-candidate", "safety-constraints", "actuator", "feedback-prediction", "core-run-loop"]`
 
+## WP-10 — Learning Dasar (SELESAI)
+
+**Waktu:** 2026-08-15  
+
+**Hasil:**
+- `src/learning/hebbian.rs`: Hebbian learning rule (fire together, wire together), SynapseUpdate, batch_update
+- `src/learning/temporal.rs`: Temporal association, TemporalAssociation, within_window, temporal_strength, associate
+- `src/learning/replay.rs`: Replay engine, ReplayCandidate, score_episode, enqueue, select, acknowledge
+- `src/learning/consolidation.rs`: ConsolidationDecision enum (Keep/ConsolidateToCortex/ConsolidateToCerebellum/Compress/Delete), evaluate
+- `src/learning/mod.rs`: Learning engine orchestrating all modes, LearningResult, cycle()
+- `src/brain/hippocampus.rs`: Added get_episode_by_index() for learning cycle access
+- 36 real tests (12 hebbian + 12 temporal + 12 replay) across 3 domains
+- Catalog: 3 new domains registered (hebbian-learning, temporal-learning, replay-selection)
+
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery", "memory-quota", "allocator", "gc-normal", "gc-aggressive", "simd-fallback", "soa-layout", "neural-core", "cortex-interface", "cerebellum-interface", "hippocampus-episode", "brain-provisioning", "sensor-frame", "perception-fusion", "plugin-lifecycle", "plugin-isolation", "decision-candidate", "safety-constraints", "actuator", "feedback-prediction", "core-run-loop", "hebbian-learning", "temporal-learning", "replay-selection"]`
+
 ---
+
 
 ## Riwayat WP
 
@@ -264,7 +281,7 @@
 | WP-7 | Perception + Mock Plugins | SELESAI | a57d1f3 |
 | WP-8 | Decision + Safety + Actuator Mock | SELESAI | fd78be7 |
 | WP-9 | E2E Vertical Slice | SELESAI | 5cd6ae2 |
-| WP-10 | Learning Dasar | PENDING | — |
+| WP-10 | Learning Dasar | SELESAI | (sesi ini) |
 | WP-11 | Replay/Consolidation/Retention/GC | PENDING | — |
 | WP-12 | Interface Lengkap | PENDING | — |
 | WP-13 | Hardening | PENDING | — |
