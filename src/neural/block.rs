@@ -1,8 +1,7 @@
 /// Block - context/sequence/episode/prediction unit
 /// Implements: AC §13, SD-06
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy)]
 pub struct Block {
     pub id: u32,
     pub context_id: u32,
@@ -28,8 +27,6 @@ impl Block {
     }
 }
 
-/// BlockPool - SoA layout for blocks
-/// AC §16, SD-06: Production data layout must use Structure of Arrays
 pub struct BlockPool {
     pub block_id: Vec<u64>,
     pub context_tag: Vec<u64>,

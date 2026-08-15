@@ -1,8 +1,7 @@
 /// Synapse - connection between cells/columns
 /// Implements: AC §14, SD-06
-use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy)]
 pub struct Synapse {
     pub id: u32,
     pub source: u32,
@@ -44,8 +43,6 @@ impl Synapse {
     }
 }
 
-/// SynapseTable - SoA layout for synapses
-/// AC §16, SD-06: Production data layout must use Structure of Arrays
 pub struct SynapseTable {
     pub source_kind: Vec<u8>,
     pub source_id: Vec<u64>,

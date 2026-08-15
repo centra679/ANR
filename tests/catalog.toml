@@ -19093,3 +19093,474 @@ owner = "WP-4"
 quality = "real"
 source = "unit::memory_manager_tests::tc_u_memory_manager_012"
 criticality = "medium"
+
+# WP-5: SIMD scalar fallback tests
+[[test]]
+id = "TC-U-SCALAR-001"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_001"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-002"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_002"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-003"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_003"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-004"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-005"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_005"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-006"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_006"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-007"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_007"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-008"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_008"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-009"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_009"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-010"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_010"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-011"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_011"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SCALAR-012"
+level = "unit"
+domain = "simd-fallback"
+requirement = "AC-61"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::simd_scalar_tests::tc_u_scalar_012"
+criticality = "medium"
+
+# WP-5: SoA layout tests
+[[test]]
+id = "TC-U-SOA-001"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_001"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-002"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_002"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-003"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_003"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-004"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-005"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_005"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-006"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_006"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-007"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_007"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-008"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_008"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-009"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_009"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-010"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_010"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-011"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_011"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SOA-012"
+level = "unit"
+domain = "soa-layout"
+requirement = "AC-16"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::soa_layout_tests::tc_u_soa_012"
+criticality = "medium"
+
+# WP-5: NeuralCore integration tests
+[[test]]
+id = "TC-U-NEURAL-CORE-001"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-10"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_001"
+criticality = "high"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-002"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-10"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_002"
+criticality = "high"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-003"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-10"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_003"
+criticality = "high"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-004"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-10"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-005"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-10"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_005"
+criticality = "high"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-006"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-10"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_006"
+criticality = "high"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-007"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-10"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_007"
+criticality = "high"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-008"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-15"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_008"
+criticality = "high"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-009"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-15"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_009"
+criticality = "high"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-010"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-15"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_010"
+criticality = "high"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-011"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-10"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_011"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-NEURAL-CORE-012"
+level = "unit"
+domain = "neural-core"
+requirement = "AC-10"
+test_type = "real"
+status = "active"
+owner = "WP-5"
+legacy = false
+quality = "real"
+source = "unit::neural_core_tests::tc_u_neural_core_012"
+criticality = "medium"

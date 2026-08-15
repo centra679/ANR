@@ -1,33 +1,31 @@
-/// Column Implementation
-/// Implements: AC §13 Column Contract, SD-06
-/// Collection of cells with Winner-Take-All (WTA) competition
-use serde::{Deserialize, Serialize};
+//! Column Implementation
+//! Implements: AC §13 Column Contract, SD-06
 
 const WTA_THRESHOLD: f32 = 0.3;
 const WTA_INHIBITION_STRENGTH: f32 = 0.9;
 
-#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum ColumnState {
-    Silent,    // No active cells
-    Competing, // Multiple cells active
-    Winner,    // Single winner selected
+    Silent,
+    Competing,
+    Winner,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct Column {
     pub id: u32,
-    pub cell_indices: Vec<u32>,  // Indices into CellPool
-    pub winner_idx: Option<u32>, // Current winner cell index
+    pub cell_indices: Vec<u32>,
+    pub winner_idx: Option<u32>,
     pub state: ColumnState,
-    pub inhibition_level: f32,  // Current lateral inhibition
-    pub competition_count: u32, // Cycles since last WTA
+    pub inhibition_level: f32,
+    pub competition_count: u32,
 }
 
 impl Column {
     pub fn new(id: u32) -> Self {
         Self {
             id,
-            cell_indices: Vec::new(),
+            cell_indices: Vec::with_capacity(8),
             winner_idx: None,
             state: ColumnState::Silent,
             inhibition_level: 0.0,
@@ -41,8 +39,6 @@ impl Column {
         }
     }
 
-    /// Perform Winner-Take-All competition
-    /// AC §13.2: Lateral inhibition and sparse activation
     pub fn winner_take_all(&mut self, cell_activations: &[f32]) -> Option<u32> {
         if self.cell_indices.is_empty() {
             self.state = ColumnState::Silent;
@@ -50,7 +46,6 @@ impl Column {
             return None;
         }
 
-        // Find cell with highest activation in this column
         let mut max_activation = -1.0f32;
         let mut max_idx = None;
 
@@ -76,7 +71,6 @@ impl Column {
         }
     }
 
-    /// Get column activation (sum of active cells)
     pub fn get_activation(&self, cell_activations: &[f32]) -> f32 {
         self.cell_indices
             .iter()
@@ -84,7 +78,6 @@ impl Column {
             .sum()
     }
 
-    /// Decay inhibition over time
     pub fn decay(&mut self) {
         self.inhibition_level *= 0.95;
         self.competition_count += 1;
@@ -99,11 +92,10 @@ impl Column {
     }
 }
 
-/// ColumnPool for SoA layout
 pub struct ColumnPool {
     pub ids: Vec<u32>,
-    pub cell_start: Vec<u32>, // Offset into cell array
-    pub cell_len: Vec<u32>,   // Number of cells in this column
+    pub cell_start: Vec<u32>,
+    pub cell_len: Vec<u32>,
     pub winner_idx: Vec<Option<u32>>,
     pub state: Vec<ColumnState>,
     pub inhibition: Vec<f32>,
@@ -127,16 +119,14 @@ impl ColumnPool {
         self.ids.len()
     }
 
-    /// Perform WTA across all active columns
     pub fn winner_take_all_all(&mut self, cell_activations: &[f32]) -> Vec<u32> {
-        let mut winners = Vec::new();
+        let mut winners = Vec::with_capacity(self.ids.len() / 4);
 
         for idx in 0..self.ids.len() {
             if self.usage[idx] == 0 {
                 continue;
             }
 
-            // Get cells for this column
             let start = self.cell_start[idx] as usize;
             let len = self.cell_len[idx] as usize;
 
@@ -146,7 +136,7 @@ impl ColumnPool {
             for cell_offset in 0..len {
                 let cell_idx = start + cell_offset;
                 if let Some(activation) = cell_activations.get(cell_idx) {
-                    if *activation > max_activation && *activation > 0.3 {
+                    if *activation > max_activation && *activation > WTA_THRESHOLD {
                         max_activation = *activation;
                         max_cell = Some(cell_idx as u32);
                     }
@@ -156,7 +146,7 @@ impl ColumnPool {
             if let Some(winner) = max_cell {
                 self.winner_idx[idx] = Some(winner);
                 self.state[idx] = ColumnState::Winner;
-                self.inhibition[idx] = 0.9;
+                self.inhibition[idx] = WTA_INHIBITION_STRENGTH;
                 winners.push(winner);
             } else {
                 self.winner_idx[idx] = None;

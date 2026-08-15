@@ -1,1 +1,1 @@
-pub struct AVX;
+pub struct AvxKernel;

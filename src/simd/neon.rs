@@ -1,1 +1,1 @@
-pub struct NEON;
+pub struct NeonKernel;
