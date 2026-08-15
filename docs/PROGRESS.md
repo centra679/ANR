@@ -180,7 +180,7 @@
 ## WP-6 — Brain Sections + Provisioning Core (SELESAI)
 
 **Waktu:** 2026-08-15  
-**Commit:** e01e014
+**Commit:** f929b5a
 
 **Hasil:**
 - `src/brain/cortex.rs`: Knowledge struct, Cortex with capacity, add/get/query_by_pattern
@@ -206,7 +206,7 @@
 | BLOK-R | Finalization | SELESAI | (sesi ini) |
 | WP-4 | Memory Manager | SELESAI | (sesi ini) |
 | WP-5 | Neural Core SoA + SIMD | SELESAI | 2393a57 |
-| WP-6 | Brain Sections + Provisioning Core | SELESAI | e01e014 |
+| WP-6 | Brain Sections + Provisioning Core | SELESAI | f929b5a |
 | WP-7 | Perception + Mock Plugins | PENDING | — |
 | WP-8 | Decision + Safety + Actuator Mock | PENDING | — |
 | WP-9 | Runtime State Machine + Scheduler + Vertical Slice | PENDING | — |
