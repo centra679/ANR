@@ -1,8 +1,8 @@
 # PROGRESS
 
-*Sesi Saat Ini:* WP-5 — Neural Core SoA + SIMD  
-*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai; WP-4 memory manager selesai  
-*Sesi Berikutnya:* WP-6 — Brain Sections + Provisioning Core  
+*Sesi Saat Ini:* WP-6 — Brain Sections + Provisioning Core  
+*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai; WP-4 memory manager selesai; WP-5 neural core SoA + SIMD selesai  
+*Sesi Berikutnya:* WP-7 — Perception + Mock Plugins  
 
 ---
 
@@ -63,11 +63,11 @@
 |--------|-------|------------|
 | Total test invocations | 3.265 | Dari `cargo test -- --list` |
 | Total catalog entries | 1.451 | Setelah filter 20 fake trans/recovery |
-| Real | 221 | Test dengan assertion |
+| Real | 257 | Test dengan assertion |
 | Fake (legacy) | 1.274 | Test tanpa assertion / stub |
 | Unknown | 4 | Belum dikategorikan |
-| Unit real | 221 (catalog strict) / 149 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
-| Domain kanonik | 15 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) + WP-4(4) |
+| Unit real | 257 (catalog strict) / 149 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
+| Domain kanonik | 18 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) + WP-4(4) + WP-5(3) |
 | Fake difilter | 80 | 60 WP-1 + 20 trans/recovery |
 | Build | HIJAU | cargo build --all-targets |
 | Clippy | HIJAU | -D warnings |
@@ -143,6 +143,27 @@
 
 ---
 
+## WP-5 — Neural Core SoA + SIMD (SELESAI)
+
+**Waktu:** 2026-08-15
+**Commit:** 2393a57
+
+**Hasil:**
+- `src/simd/mod.rs`: SimdBackend enum, SimdKernel trait, detect_backend(), get_kernel()
+- `src/simd/scalar.rs`: ScalarKernel with sigmoid, relu, dot_product, weighted_accumulate, argmax
+- `src/neural/cell.rs`: removed serde, pre-allocated fired Vec in update_all()
+- `src/neural/column.rs`: removed serde, pre-allocated cell_indices and winners Vecs
+- `src/neural/block.rs`: removed serde from Block
+- `src/neural/synapse.rs`: removed serde from Synapse
+- `src/neural/graph.rs`: replaced HashMap adjacency with SoA arrays (adj_offsets + adj_targets)
+- `src/neural/mod.rs`: NeuralCore with real pools, cycle(), active_columns()
+- 36 real tests (12 scalar + 12 soa-layout + 12 neural-core)
+- Catalog: 3 new domains registered
+
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery", "memory-quota", "allocator", "gc-normal", "gc-aggressive", "simd-fallback", "soa-layout", "neural-core"]`
+
+---
+
 ## BLOK-R — Finalization (SELESAI)
 
 **Waktu:** 2026-08-14
@@ -165,7 +186,7 @@
 | WP-3 | Storage Write Path & Recovery | SELESAI | 08c9ad9 |
 | BLOK-R | Finalization | SELESAI | (sesi ini) |
 | WP-4 | Memory Manager | SELESAI | (sesi ini) |
-| WP-5 | Neural Core SoA + SIMD | PENDING | — |
+| WP-5 | Neural Core SoA + SIMD | SELESAI | 2393a57 |
 | WP-6 | Brain Sections + Provisioning Core | PENDING | — |
 | WP-7 | Perception + Mock Plugins | PENDING | — |
 | WP-8 | Decision + Safety + Actuator Mock | PENDING | — |
