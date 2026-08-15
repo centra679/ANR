@@ -1,8 +1,8 @@
 # PROGRESS
 
-*Sesi Saat Ini:* WP-7 — Perception + Mock Plugins  
+*Sesi Saat Ini:* WP-8 — Decision + Safety + Actuator Mock  
 *Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai; WP-4 memory manager selesai; WP-5 neural core SoA + SIMD selesai; WP-6 brain sections + provisioning core selesai  
-*Sesi Berikutnya:* WP-8 — Decision + Safety + Actuator Mock  
+*Sesi Berikutnya:* WP-9 — Runtime State Machine + Scheduler + Vertical Slice  
 
 ---
 
@@ -66,8 +66,8 @@
 | Real | 257 | Test dengan assertion |
 | Fake (legacy) | 1.274 | Test tanpa assertion / stub |
 | Unknown | 4 | Belum dikategorikan |
-| Unit real | 313 (catalog strict) / 205 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
-| Domain kanonik | 22 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) + WP-4(4) + WP-5(3) + WP-6(4) |
+| Unit real | 361 (catalog strict) / 205 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
+| Domain kanonik | 26 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) + WP-4(4) + WP-5(3) + WP-6(4) + WP-7(4) |
 | Fake difilter | 80 | 60 WP-1 + 20 trans/recovery |
 | Build | HIJAU | cargo build --all-targets |
 | Clippy | HIJAU | -D warnings |
@@ -195,6 +195,29 @@
 
 ---
 
+## WP-7 — Perception + Mock Plugins (SELESAI)
+
+**Waktu:** 2026-08-15  
+**Commit:** a57d1f3
+
+**Hasil:**
+- `src/perception/sensor.rs`: SensorFrame, SensorFormat, BoundedBuffer<T>, DropPolicy
+- `src/perception/camera.rs`: CameraConfig, MockCamera with bounded buffer
+- `src/perception/audio.rs`: AudioConfig, MockAudio with bounded buffer
+- `src/perception/fusion.rs`: Fusion engine, PerceptionOutput, multi-sensor fusion
+- `src/perception/mod.rs`: Perception pipeline (process_frames)
+- `src/plugins/lifecycle.rs`: PluginState (7 states), PluginEvent (6 events), FSM
+- `src/plugins/isolation.rs`: PluginIsolation (failure tracking, health degradation)
+- `src/plugins/mod.rs`: Plugin trait, PluginRegistry
+- `src/hardware/mod.rs`: Hal trait
+- `src/hardware/mock.rs`: MockHAL
+- 48 real tests (12 sensor + 12 fusion + 12 plugin-lifecycle + 12 plugin-isolation)
+- Catalog: 4 new domains registered
+
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery", "memory-quota", "allocator", "gc-normal", "gc-aggressive", "simd-fallback", "soa-layout", "neural-core", "cortex-interface", "cerebellum-interface", "hippocampus-episode", "brain-provisioning", "sensor-frame", "perception-fusion", "plugin-lifecycle", "plugin-isolation"]`
+
+---
+
 ## Riwayat WP
 
 | WP | Nama | Status | Commit |
@@ -207,7 +230,7 @@
 | WP-4 | Memory Manager | SELESAI | (sesi ini) |
 | WP-5 | Neural Core SoA + SIMD | SELESAI | 2393a57 |
 | WP-6 | Brain Sections + Provisioning Core | SELESAI | f929b5a |
-| WP-7 | Perception + Mock Plugins | PENDING | — |
+| WP-7 | Perception + Mock Plugins | SELESAI | a57d1f3 |
 | WP-8 | Decision + Safety + Actuator Mock | PENDING | — |
 | WP-9 | Runtime State Machine + Scheduler + Vertical Slice | PENDING | — |
 | WP-10 | Learning Dasar | PENDING | — |
