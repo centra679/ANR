@@ -19564,3 +19564,635 @@ legacy = false
 quality = "real"
 source = "unit::neural_core_tests::tc_u_neural_core_012"
 criticality = "medium"
+
+# ── WP-6: Cortex Interface Domain (12 tests) ─────────────────────────────
+
+[[test]]
+id = "TC-U-CORTEX-001"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_001_new_creates_empty_cortex"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-002"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_002_add_knowledge_stores"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-003"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_003_get_knowledge_by_id"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-004"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_004_get_knowledge_missing_returns_none"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-005"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_005_knowledge_count_increments"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-006"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_006_capacity_respected_rejects_when_full"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORTEX-007"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_007_is_full_when_at_capacity"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-008"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_008_query_by_pattern_matches"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-009"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_009_query_by_pattern_no_match_returns_empty"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-010"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_010_multiple_knowledge_items"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-011"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_011_confidence_value_preserved"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORTEX-012"
+level = "unit"
+domain = "cortex-interface"
+requirement = "AC-7"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cortex_tests::tc_u_cortex_012_origin_recorded_as_seed"
+criticality = "medium"
+
+# ── WP-6: Cerebellum Interface Domain (12 tests) ─────────────────────────
+
+[[test]]
+id = "TC-U-CEREBELLUM-001"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_001_new_creates_empty_cerebellum"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-002"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_002_add_skill_stores"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-003"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_003_get_skill_by_id"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-004"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_004_get_skill_missing_returns_none"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-005"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_005_skill_count_increments"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-006"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_006_capacity_respected"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CEREBELLUM-007"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_007_validated_skills_returns_only_validated"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-008"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_008_unvalidated_skill_stored_but_not_in_validated_list"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-009"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_009_multiple_skills"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-010"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_010_action_string_preserved"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-011"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_011_origin_recorded_as_seed"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CEREBELLUM-012"
+level = "unit"
+domain = "cerebellum-interface"
+requirement = "AC-8"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::cerebellum_tests::tc_u_cerebellum_012_is_full_when_at_capacity"
+criticality = "medium"
+
+# ── WP-6: Hippocampus Episode Domain (12 tests) ──────────────────────────
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-001"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_001_new_creates_empty_hippocampus"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-002"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_002_add_episode_stores"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-003"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_003_get_episode_by_id"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-004"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_004_get_episode_missing_returns_none"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-005"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_005_episode_count_increments"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-006"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_006_capacity_respected"
+criticality = "high"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-007"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_007_gc_eligible_returns_low_reward"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-008"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_008_high_reward_not_in_gc_eligible"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-009"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_009_multiple_episodes"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-010"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_010_context_action_reward_preserved"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-011"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_011_origin_recorded_as_seed"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-HIPPOCAMPUS-012"
+level = "unit"
+domain = "hippocampus-episode"
+requirement = "AC-9"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::hippocampus_tests::tc_u_hippocampus_012_is_full_when_at_capacity"
+criticality = "medium"
+
+# ── WP-6: Brain Provisioning Domain (12 tests) ───────────────────────────
+
+[[test]]
+id = "TC-U-BRAIN-PROV-001"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "AC-49"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_001_parse_seed_reads_valid_toml"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-002"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "AC-49"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_002_parse_seed_rejects_missing_file"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-003"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "AC-49"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_003_parse_seed_rejects_malformed_toml"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-004"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "AC-49"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_004_validate_seed_accepts_valid"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-005"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "AC-49"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_005_validate_seed_rejects_empty_name"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-006"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "AC-49"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_006_validate_seed_rejects_confidence_gt_1"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-007"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "AC-49"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_007_validate_seed_rejects_reward_lt_0"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-008"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "SD-03"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_008_build_knowledge_record_returns_bytes"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-009"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "SD-03"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_009_build_skill_record_returns_bytes"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-010"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "SD-03"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_010_build_episode_record_returns_bytes"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-011"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "AC-49"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_011_build_from_seed_creates_output_file"
+criticality = "high"
+
+[[test]]
+id = "TC-U-BRAIN-PROV-012"
+level = "unit"
+domain = "brain-provisioning"
+requirement = "AC-49"
+test_type = "real"
+status = "active"
+owner = "WP-6"
+legacy = false
+quality = "real"
+source = "unit::brain_provisioning_tests::tc_u_brain_prov_012_brain_total_objects_sums_sections"
+criticality = "medium"

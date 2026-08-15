@@ -19,7 +19,6 @@ pub mod plugins;
 pub mod simd;
 pub mod storage;
 
-// Re-export commonly used types
 pub use brain::Brain;
 pub use core::Runtime;
 pub use neural::NeuralCore;

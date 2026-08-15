@@ -1,8 +1,8 @@
 # PROGRESS
 
-*Sesi Saat Ini:* WP-6 — Brain Sections + Provisioning Core  
-*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai; WP-4 memory manager selesai; WP-5 neural core SoA + SIMD selesai  
-*Sesi Berikutnya:* WP-7 — Perception + Mock Plugins  
+*Sesi Saat Ini:* WP-7 — Perception + Mock Plugins  
+*Status Awal:* WP-0 audit + WP-1 core hygiene selesai; WP-2 storage read path selesai; WP-3 storage write path & recovery selesai; BLOK-R finalization selesai; WP-4 memory manager selesai; WP-5 neural core SoA + SIMD selesai; WP-6 brain sections + provisioning core selesai  
+*Sesi Berikutnya:* WP-8 — Decision + Safety + Actuator Mock  
 
 ---
 
@@ -66,8 +66,8 @@
 | Real | 257 | Test dengan assertion |
 | Fake (legacy) | 1.274 | Test tanpa assertion / stub |
 | Unknown | 4 | Belum dikategorikan |
-| Unit real | 257 (catalog strict) / 149 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
-| Domain kanonik | 18 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) + WP-4(4) + WP-5(3) |
+| Unit real | 313 (catalog strict) / 205 (lib binary) | Target global 840 (di-enforce mulai WP-13) |
+| Domain kanonik | 22 | Dari 136 generated domain; selesai: WP-1(5) + WP-2(4) + WP-3(2) + WP-4(4) + WP-5(3) + WP-6(4) |
 | Fake difilter | 80 | 60 WP-1 + 20 trans/recovery |
 | Build | HIJAU | cargo build --all-targets |
 | Clippy | HIJAU | -D warnings |
@@ -176,6 +176,25 @@
 
 ---
 
+
+## WP-6 — Brain Sections + Provisioning Core (SELESAI)
+
+**Waktu:** 2026-08-15  
+**Commit:** e01e014
+
+**Hasil:**
+- `src/brain/cortex.rs`: Knowledge struct, Cortex with capacity, add/get/query_by_pattern
+- `src/brain/cerebellum.rs`: Skill struct, Cerebellum with capacity, add/get/validated_skills
+- `src/brain/hippocampus.rs`: Episode struct, Hippocampus with capacity, add/get/gc_eligible
+- `src/brain/mod.rs`: Brain integration, total_objects()
+- `src/storage/builder.rs`: TOML seed parser (serde), TLV record writers (ANRR magic, 0x0100/0x0200/0x0300), BLAKE3 checksum, section allocation pipeline
+- 56 real tests (14 cortex + 14 cerebellum + 15 hippocampus + 13 provisioning)
+- Catalog: 4 new domains registered (cortex-interface, cerebellum-interface, hippocampus-episode, brain-provisioning)
+
+**completed_domains:** `["error-taxonomy", "config-load", "config-validation", "logging-tracing", "cli-commands", "brain-header", "brain-offset-size", "checksum", "brain-verify-inspect", "transaction", "recovery", "memory-quota", "allocator", "gc-normal", "gc-aggressive", "simd-fallback", "soa-layout", "neural-core", "cortex-interface", "cerebellum-interface", "hippocampus-episode", "brain-provisioning"]`
+
+---
+
 ## Riwayat WP
 
 | WP | Nama | Status | Commit |
@@ -187,7 +206,7 @@
 | BLOK-R | Finalization | SELESAI | (sesi ini) |
 | WP-4 | Memory Manager | SELESAI | (sesi ini) |
 | WP-5 | Neural Core SoA + SIMD | SELESAI | 2393a57 |
-| WP-6 | Brain Sections + Provisioning Core | PENDING | — |
+| WP-6 | Brain Sections + Provisioning Core | SELESAI | e01e014 |
 | WP-7 | Perception + Mock Plugins | PENDING | — |
 | WP-8 | Decision + Safety + Actuator Mock | PENDING | — |
 | WP-9 | Runtime State Machine + Scheduler + Vertical Slice | PENDING | — |
