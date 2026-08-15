@@ -20820,3 +20820,627 @@ legacy = false
 quality = "real"
 source = "plugin_isolation_tests::tc_u_isolation_012"
 criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-001"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_001"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-002"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_002"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-003"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_003"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-004"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-005"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_005"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-006"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_006"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-007"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_007"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-008"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_008"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-009"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_009"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-010"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_010"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-011"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_011"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-DECISION-012"
+level = "unit"
+domain = "decision-candidate"
+requirement = "AC-30"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "decision_candidate_tests::tc_u_decision_012"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SAFETY-001"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_001"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-002"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_002"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-003"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_003"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-004"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_004"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-005"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_005"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-006"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_006"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-007"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_007"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-008"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_008"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-009"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_009"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-010"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_010"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-011"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_011"
+criticality = "high"
+
+[[test]]
+id = "TC-U-SAFETY-012"
+level = "unit"
+domain = "safety-constraints"
+requirement = "AC-31"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "safety_constraints_tests::tc_u_safety_012"
+criticality = "high"
+
+[[test]]
+id = "TC-U-ACTUATOR-001"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_001"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-002"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_002"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-003"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_003"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-004"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-005"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_005"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-006"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_006"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-007"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_007"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-008"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_008"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-009"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_009"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-010"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_010"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-011"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_011"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ACTUATOR-012"
+level = "unit"
+domain = "actuator"
+requirement = "SD-11"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "actuator_tests::tc_u_actuator_012"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-001"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_001"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-002"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_002"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-003"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_003"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-004"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-005"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_005"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-006"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_006"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-007"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_007"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-008"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_008"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-009"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_009"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FEEDBACK-010"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_010"
+criticality = "high"
+
+[[test]]
+id = "TC-U-FEEDBACK-011"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_011"
+criticality = "high"
+
+[[test]]
+id = "TC-U-FEEDBACK-012"
+level = "unit"
+domain = "feedback-prediction"
+requirement = "AC-32"
+test_type = "real"
+status = "active"
+owner = "WP-8"
+legacy = false
+quality = "real"
+source = "feedback_tests::tc_u_feedback_012"
+criticality = "medium"
