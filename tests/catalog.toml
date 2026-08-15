@@ -20196,3 +20196,627 @@ legacy = false
 quality = "real"
 source = "unit::brain_provisioning_tests::tc_u_brain_prov_012_brain_total_objects_sums_sections"
 criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-001"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-24"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_001"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-002"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-24"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_002"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-003"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-24"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_003"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-004"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-24"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-005"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-26"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_005"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-006"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-26"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_006"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-007"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-26"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_007"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-008"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-26"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_008"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-009"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-26"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_009"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-010"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-26"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_010"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-011"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-26"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_011"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-SENSOR-012"
+level = "unit"
+domain = "sensor-frame"
+requirement = "AC-26"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "sensor_frame_tests::tc_u_sensor_012"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-001"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_001"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-002"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_002"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-003"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_003"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-004"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-005"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_005"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-006"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_006"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-007"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_007"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-008"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_008"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-009"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_009"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-010"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_010"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-011"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_011"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-FUSION-012"
+level = "unit"
+domain = "perception-fusion"
+requirement = "SD-09"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "perception_fusion_tests::tc_u_fusion_012"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-001"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_001"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-002"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_002"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-003"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_003"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-004"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-005"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_005"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-006"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_006"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-007"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_007"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-008"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_008"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-009"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_009"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-010"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_010"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-011"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_011"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-PLUGIN-LIFECYCLE-012"
+level = "unit"
+domain = "plugin-lifecycle"
+requirement = "SD-10"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_lifecycle_tests::tc_u_plugin_lifecycle_012"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-001"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-28"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_001"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-002"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-28"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_002"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-003"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-28"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_003"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-004"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-28"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_004"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-005"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-28"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_005"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-006"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-28"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_006"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-007"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-28"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_007"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-008"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-29"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_008"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-009"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-29"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_009"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-010"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-29"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_010"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-011"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-28"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_011"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-ISOLATION-012"
+level = "unit"
+domain = "plugin-isolation"
+requirement = "AC-28"
+test_type = "real"
+status = "active"
+owner = "WP-7"
+legacy = false
+quality = "real"
+source = "plugin_isolation_tests::tc_u_isolation_012"
+criticality = "medium"

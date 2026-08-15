@@ -1,4 +1,7 @@
-/// Hardware Abstraction Layer
 pub mod mock;
 
-pub struct HAL;
+pub trait Hal {
+    fn initialize(&mut self) -> crate::Result<()>;
+    fn is_ready(&self) -> bool;
+    fn shutdown(&mut self);
+}
