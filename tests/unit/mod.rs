@@ -5,6 +5,7 @@ pub mod brain_provisioning_tests;
 pub mod builder_tests;
 pub mod cerebellum_tests;
 pub mod cli_tests;
+pub mod core_run_loop_tests;
 pub mod core_tests;
 pub mod cortex_tests;
 pub mod decision_candidate_tests;

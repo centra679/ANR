@@ -20,7 +20,7 @@ pub async fn run() -> crate::Result<()> {
     match args.command {
         Some(Commands::Run { maintenance }) => {
             let mut runtime = crate::core::Runtime::new(&args.brain, args.config)?;
-            runtime.run(maintenance).await?;
+            runtime.run_loop(maintenance).await?;
         }
         Some(Commands::Brain { action }) => match action {
             BrainAction::Init { output } => {
@@ -50,7 +50,7 @@ pub async fn run() -> crate::Result<()> {
         }
         None => {
             let mut runtime = crate::core::Runtime::new(&args.brain, args.config)?;
-            runtime.run(false).await?;
+            runtime.run_loop(false).await?;
         }
     }
 

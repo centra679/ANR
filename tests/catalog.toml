@@ -21444,3 +21444,172 @@ legacy = false
 quality = "real"
 source = "feedback_tests::tc_u_feedback_012"
 criticality = "medium"
+
+[[test]]
+id = "TC-U-CORE-RUN-001"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_001_new_creates_powered_off"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORE-RUN-002"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_002_boot_transitions_to_running"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORE-RUN-003"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_003_cycle_increments_count"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORE-RUN-004"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_004_run_e2e_ten_cycles"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORE-RUN-005"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_005_run_e2e_zero_completes"
+criticality = "medium"
+
+[[test]]
+id = "TC-U-CORE-RUN-006"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_006_episodes_stored_after_cycles"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORE-RUN-007"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_007_commands_executed_after_cycles"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORE-RUN-008"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_008_shutdown_sets_powered_off"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORE-RUN-009"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_009_e2e_result_fields_correct"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORE-RUN-010"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_010_full_e2e_vertical_slice"
+criticality = "critical"
+
+[[test]]
+id = "TC-U-CORE-RUN-011"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_011_safety_rejection_stores_episode"
+criticality = "high"
+
+[[test]]
+id = "TC-U-CORE-RUN-012"
+level = "unit"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "unit::core_run_loop_tests::tc_u_core_run_012_multiple_run_e2e_independent"
+criticality = "high"
+
+[[test]]
+id = "TC-E2E-VERTICAL-SLICE-001"
+level = "e2e"
+domain = "core-run-loop"
+requirement = "WP-9"
+test_type = "real"
+status = "active"
+owner = "WP-9"
+legacy = false
+quality = "real"
+source = "e2e::vertical_slice::tc_e2e_vertical_slice_001"
+criticality = "critical"

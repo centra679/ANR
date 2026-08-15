@@ -59,7 +59,7 @@ path = "tests/integration/all_domains.rs"
 
 [[test]]
 name = "e2e"
-path = "tests/e2e/all_scenarios.rs"
+path = "tests/e2e/mod.rs"
 
 [[test]]
 name = "unit"
